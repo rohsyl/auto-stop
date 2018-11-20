@@ -6,4 +6,17 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+
+
+
+
+    <string name="profile_fullname_label">Fullname</string>
+    <string name="profile_sex_label">Title</string>
+    <string name="profile_birthdate_label">Birthdate</string>
+    <string name="profile_birthdate_btn_label">Set</string>
+    <string-array name="profile_sex_array">
+        <item>Mr</item>
+        <item>Mme</item>
+    </string-array>
 </resources>
