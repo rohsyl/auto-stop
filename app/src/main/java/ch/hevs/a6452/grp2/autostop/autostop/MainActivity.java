@@ -1,5 +1,6 @@
 package ch.hevs.a6452.grp2.autostop.autostop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -84,7 +85,10 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
+
         } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(this, LocationActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
 
