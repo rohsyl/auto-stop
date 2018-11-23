@@ -1,4 +1,4 @@
-package ch.hevs.a6452.grp2.autostop.autostop.Fragments.Picker;
+package ch.hevs.a6452.grp2.autostop.autostop.Fragments;
 
 
 import android.content.Intent;

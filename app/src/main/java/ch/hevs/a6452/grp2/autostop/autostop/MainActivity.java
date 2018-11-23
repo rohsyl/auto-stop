@@ -19,10 +19,10 @@ import android.widget.Button;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ch.hevs.a6452.grp2.autostop.autostop.Fragments.Picker.FragmentAbout;
-import ch.hevs.a6452.grp2.autostop.autostop.Fragments.Picker.FragmentSettings;
-import ch.hevs.a6452.grp2.autostop.autostop.Fragments.Picker.FragmentStart;
-import ch.hevs.a6452.grp2.autostop.autostop.Fragments.Picker.FragmentTrip;
+import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentAbout;
+import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentSettings;
+import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentStart;
+import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentTrip;
 
 
 public class MainActivity extends AppCompatActivity
