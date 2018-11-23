@@ -18,6 +18,7 @@
     <string name="profile_fullname_label">Fullname</string>
     <string name="profile_sex_label">Title</string>
     <string name="profile_birthdate_label">Birthdate</string>
+    <string name="profile_birthdate_btn_label">Set</string>
     <string name="profile_emergency_phone_label">Emergency person phone</string>
     <string name="profile_emergency_mail_label">Emergency person e-mail</string>
     <string-array name="profile_sex_array">
@@ -38,4 +39,5 @@
     <string name="clear_text">Select</string>
     <string name="selected_place">Last selected</string>
 
+    <string name="potostop_logo" translatable="false">Potostop logo</string>
 </resources>
