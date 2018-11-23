@@ -31,13 +31,15 @@ public class FragmentStart extends Fragment {
 
         buttonStartTrip = (Button) view.findViewById(R.id.buttonStartTrip);
 
+
+        //Action listener for START
         buttonStartTrip.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "ButtonStartTrip clicked");
 
-                /* TODO Implement the activity select Plate
+                /* TODO Implement start the activity select Plate
 
                 Intent intent = new Intent(this, LocationActivity.class);
                 startActivity(intent);
