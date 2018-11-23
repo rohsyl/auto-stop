@@ -20,6 +20,7 @@ import android.widget.Button;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentAbout;
+import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentProfile;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentSettings;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentStart;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentTrip;
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_trip) {
             fragmentClass = FragmentTrip.class;
         } else if (id == R.id.nav_profile) {
-
+            fragmentClass = FragmentProfile.class;
         } else if (id == R.id.nav_settings) {
             fragmentClass = FragmentSettings.class;
         } else if (id == R.id.nav_about) {

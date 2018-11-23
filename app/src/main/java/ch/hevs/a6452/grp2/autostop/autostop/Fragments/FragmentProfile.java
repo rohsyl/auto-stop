@@ -1,13 +1,15 @@
-package ch.hevs.a6452.grp2.autostop.autostop;
+package ch.hevs.a6452.grp2.autostop.autostop.Fragments;
 
 import android.app.DatePickerDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatSpinner;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -20,10 +22,17 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.Picker.DatePickerFragment;
+import ch.hevs.a6452.grp2.autostop.autostop.R;
 import ch.hevs.a6452.grp2.autostop.autostop.Utils.FirebaseConverter;
+import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.ProfileViewModel;
 
-public class ProfileActivity extends AppCompatActivity {
+public class FragmentProfile extends Fragment {
 
+    private ProfileViewModel mViewModel;
+
+    public static FragmentProfile newInstance() {
+        return new FragmentProfile();
+    }
 
     @BindView(R.id.profile_fullname)
     protected EditText txtFullname;
@@ -38,28 +47,31 @@ public class ProfileActivity extends AppCompatActivity {
     protected TextView lblDate;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
-        setContentView(R.layout.activity_profile);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        ButterKnife.bind(this, view);
 
-        ButterKnife.bind(this);
+        return view;
+    }
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.profile_sex_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spiSex.setAdapter(adapter);
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
+        // TODO: Use the ViewModel
+
+
+        popolateTitleSpinner();
+
 
         btnDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatePickerFragment dialogFragmentDatePicker = new DatePickerFragment();
                 Long date = Calendar.getInstance().getTimeInMillis();
 
+                DatePickerFragment dialogFragmentDatePicker = new DatePickerFragment();
                 dialogFragmentDatePicker.setDate(new Date(date));
                 dialogFragmentDatePicker.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -75,7 +87,15 @@ public class ProfileActivity extends AppCompatActivity {
                 dialogFragmentDatePicker.show(getFragmentManager(), "datepicker");
             }
         });
+    }
 
+    private void popolateTitleSpinner(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.profile_sex_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spiSex.setAdapter(adapter);
     }
 
 }

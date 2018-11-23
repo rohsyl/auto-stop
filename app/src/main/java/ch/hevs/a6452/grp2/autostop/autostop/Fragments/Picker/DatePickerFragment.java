@@ -1,11 +1,9 @@
 package ch.hevs.a6452.grp2.autostop.autostop.Fragments.Picker;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.widget.DatePicker;
-import android.widget.TextView;
+import android.support.v4.app.DialogFragment;
 
 import java.util.Calendar;
 import java.util.Date;
