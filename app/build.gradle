@@ -14,7 +14,7 @@ android {
     }
     buildTypes {
         debug {
-             resValue 'string', "MY_GOOGLE_API_KEY", MyGoogleApiKey
+            resValue 'string', "MY_GOOGLE_API_KEY", MyGoogleApiKey
         }
         release {
             minifyEnabled false

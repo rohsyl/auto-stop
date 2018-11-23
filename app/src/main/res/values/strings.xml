@@ -27,8 +27,6 @@
     <string name="title_activity_profile">ProfileActivity</string>
 
 
-
-
     <string name="profile_fullname_label">Fullname</string>
     <string name="profile_sex_label">Title</string>
     <string name="profile_birthdate_label">Birthdate</string>
@@ -39,6 +37,9 @@
     </string-array>
     <string name="startTrip">Start Trip !</string>
     <string name="title_activity_test">testActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
