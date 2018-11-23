@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,7 +19,10 @@ import android.widget.Button;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ch.hevs.a6452.grp2.autostop.autostop.Fragments.Picker.FragmentStart;
+import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentAbout;
+import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentSettings;
+import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentStart;
+import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentTrip;
 
 
 public class MainActivity extends AppCompatActivity
@@ -91,20 +95,29 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Fragment fragment = null;
+        Class fragmentClass = null;
 
         if (id == R.id.nav_trip) {
-            // Handle the camera action
+            fragmentClass = FragmentTrip.class;
         } else if (id == R.id.nav_profile) {
 
         } else if (id == R.id.nav_settings) {
-
+            fragmentClass = FragmentSettings.class;
         } else if (id == R.id.nav_about) {
-
+            fragmentClass = FragmentAbout.class;
         } else if (id == R.id.nav_logout) {
 
         }
+        try {
+            fragment = (Fragment) (fragmentClass != null ? fragmentClass.newInstance() : null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
