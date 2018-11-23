@@ -11,14 +11,24 @@ import ch.hevs.a6452.grp2.autostop.autostop.Models.Report;
 
 public class ReportEntity implements Report {
 
-    @Exclude
     @NonNull
+    @Exclude
     private String uid;
 
     private String message;
     private Long timestamp;
     private String tripUid;
 
+    public ReportEntity(){
+
+    }
+
+    public ReportEntity(Report report){
+        this.uid = report.getUid();
+        this.message = report.getUid();
+        this.timestamp = report.getTimestamp();
+        this.tripUid = report.getTripUid();
+    }
 
     @Override
     public String getUid() {
