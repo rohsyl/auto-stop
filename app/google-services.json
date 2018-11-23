@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "846589367212",
+    "firebase_url": "https://auto-stop-8c24a.firebaseio.com",
+    "project_id": "auto-stop-8c24a",
+    "storage_bucket": "auto-stop-8c24a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846589367212:android:3e23e098f750bbea",
+        "android_client_info": {
+          "package_name": "ch.hevs.a6452.grp2.autostop.autostop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "846589367212-o90fiaaoseirpad166nug2idq2g4nk29.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ch.hevs.a6452.grp2.autostop.autostop",
+            "certificate_hash": "a292785cc99d7536cc9b4f32a2a43fbbbe9e1c43"
+          }
+        },
+        {
+          "client_id": "846589367212-e0ks0om8trhaphll6ethfll37eh6l48i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyTilC3Cda2OOAEbJD-56DWQxV6uqMsTA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "846589367212-e0ks0om8trhaphll6ethfll37eh6l48i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

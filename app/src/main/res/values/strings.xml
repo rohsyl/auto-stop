@@ -6,6 +6,24 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
+    <string name="selected_place">Last Selected Place:</string>
+    <string name="place_details">
+    <![CDATA[
+        <b>%1$s</b>
+        <br/>
+        <i>Place Id: %2$s</i>
+        <br/>
+        Address: %3$s
+        <br/>
+        Phone: %4$s
+        <br/>
+        Website: %5$s
+    ]]>
+</string>
+    <string name="clear_text">Selectionner</string>
+    <string name="autocomplete_hint">Rechercher</string>
+
     <string name="title_activity_profile">ProfileActivity</string>
 
 
@@ -19,4 +37,8 @@
         <item>Mr</item>
         <item>Mme</item>
     </string-array>
+    <string name="startTrip">Start Trip !</string>
+    <string name="title_activity_test">testActivity</string>
+
+
 </resources>
