@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AutoStop</string>
+    <string name="profile_sex_label">Titre</string>
+    <string name="profile_fullname_label">Nom complet</string>
+    <string name="profile_birthdate_label">Date de naissance</string>
+    <string name="autocomplete_hint">Rechercher</string>
+    <string name="clear_text">Sélectionner</string>
+    <string name="selected_place">Derniers sélectionnés</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="label_google_login">Connection Google</string>
+    <string name="label_logout_button">Déconnecté</string>
+    <string name="navigation_drawer_open">Ouvrir l\'onglet de navigation</string>
+    <string name="navigation_drawer_close">Fermer l\'onglet de navigation</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="ok">Ok</string>
+    <string name="destination">Destination</string>
+    <string name="nav_trip_label">Trajet</string>
+    <string name="nav_profile_label">Profil</string>
+    <string name="separator_options">Options</string>
+    <string name="nav_settings_label">Paramètres</string>
+    <string name="nav_about_label">A propos</string>
+    <string name="nav_logout_label">Déconnection</string>
+    <string name="profile_emergency_phone_label">Téléphone personne de contact</string>
+    <string name="profile_emergency_mail_label">E-mail personne de contact</string>
+    <string name="startTrip">Commencer le trajet !</string>
+    <string name="about_text">\"Cette application a été créée pour le module 645-2.\\n\\n         Avec Potostop, vous pouvez sécuriser vos trajets en autostop.\\n\\n         &#169; 2018\"\\n\\n         Créé par :</string>
+</resources>
