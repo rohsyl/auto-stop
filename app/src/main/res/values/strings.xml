@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AutoStop</string>
+    <string name="app_name" translatable="false">Potostop</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -27,8 +27,6 @@
     <string name="title_activity_profile">ProfileActivity</string>
 
 
-
-
     <string name="profile_fullname_label">Fullname</string>
     <string name="profile_sex_label">Title</string>
     <string name="profile_birthdate_label">Birthdate</string>
@@ -37,4 +35,5 @@
         <item>Mr</item>
         <item>Mme</item>
     </string-array>
+    <string name="potostop_logo">Potostop logo</string>
 </resources>
