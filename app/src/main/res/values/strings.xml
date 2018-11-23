@@ -27,10 +27,20 @@
     <string name="title_activity_profile">ProfileActivity</string>
 
 
+    <string name="nav_trip_label">Trip</string>
+    <string name="nav_profile_label">Profile</string>
+    <string name="separator_options">Options</string>
+    <string name="nav_settings_label">Settings</string>
+    <string name="nav_about_label">About</string>
+    <string name="nav_logout_label">Log out</string>
+
+
     <string name="profile_fullname_label">Fullname</string>
     <string name="profile_sex_label">Title</string>
     <string name="profile_birthdate_label">Birthdate</string>
     <string name="profile_birthdate_btn_label">Set</string>
+    <string name="profile_emergency_phone_label">Emergency person phone</string>
+    <string name="profile_emergency_mail_label">Emergency person e-mail</string>
     <string-array name="profile_sex_array">
         <item>Mr</item>
         <item>Mme</item>
