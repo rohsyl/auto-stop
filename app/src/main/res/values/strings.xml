@@ -37,4 +37,8 @@
         <item>Mr</item>
         <item>Mme</item>
     </string-array>
+    <string name="startTrip">Start Trip !</string>
+    <string name="title_activity_test">testActivity</string>
+
+
 </resources>
