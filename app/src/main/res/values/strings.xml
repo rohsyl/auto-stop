@@ -27,5 +27,11 @@
     </string-array>
     <string name="startTrip">Start Trip !</string>
     <string name="title_activity_test">testActivity</string>
+    <string name="about_text">
+        "This application was created for the module 645-2.\n\n
+        With Potostop, you can securise your hitchhiking trip.\n\n
+        &#169; 2018"\n\n
+        Created by :
+    </string>
 
 </resources>
