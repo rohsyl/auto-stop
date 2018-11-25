@@ -24,7 +24,7 @@ public class SplashActivity extends AppCompatActivity implements Runnable {
     private void loading()
     {
         try {
-            Thread.sleep(3000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
