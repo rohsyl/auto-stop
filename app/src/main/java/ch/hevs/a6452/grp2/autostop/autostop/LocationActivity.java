@@ -17,6 +17,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.hevs.a6452.grp2.autostop.autostop.Adapter.PlaceAutocompleteAdapter;
 
 public class LocationActivity extends FragmentActivity{
@@ -27,7 +29,11 @@ public class LocationActivity extends FragmentActivity{
 
     private PlaceAutocompleteAdapter mAdapter;
 
-    private AutoCompleteTextView mAutocompleteView;
+    @BindView(R.id.autocomplete_places)
+    protected AutoCompleteTextView mAutocompleteView;
+
+    @BindView(R.id.buttonValidate)
+    protected Button buttonValidate;
 
     private static final LatLngBounds BOUNDS_VALAIS = new LatLngBounds(
             new LatLng(45.803399, 6.768166), new LatLng(46.534593, 8.36554000));
@@ -41,9 +47,7 @@ public class LocationActivity extends FragmentActivity{
 
         setContentView(R.layout.activity_location);
 
-        // Retrieve the AutoCompleteTextView that will display Place suggestions.
-        mAutocompleteView = (AutoCompleteTextView)
-                findViewById(R.id.autocomplete_places);
+        ButterKnife.bind(this);
 
         // Register a listener that receives callbacks when a suggestion has been selected
         mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
@@ -53,18 +57,18 @@ public class LocationActivity extends FragmentActivity{
         mAdapter = new PlaceAutocompleteAdapter(this, mGeoDataClient, BOUNDS_VALAIS, null);
         mAutocompleteView.setAdapter(mAdapter);
 
-        // Set up the 'clear text' button that clears the text in the autocomplete view
-        Button okButton = (Button) findViewById(R.id.button_ok);
-        okButton.setOnClickListener(new View.OnClickListener() {
+
+        //Action listener for VALIDATE
+        buttonValidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "okButton clicked");
+                Log.i(TAG, "buttonValidate clicked");
 
                 if(mAutocompleteView.getText().toString()==""){
                     return;
                 }
 
-                /* TODO Implement the activity validateTrip
+                /* TODO Implement the activity TrackingTrip
 
                 Intent intent = new Intent(this, LocationActivity.class);
                 startActivity(intent);
