@@ -48,6 +48,12 @@
     <string name="startTrip">Start Trip !</string>
     <string name="title_activity_test">testActivity</string>
 
+    <!-- Waiting End of Trip Activity -->
+    <string name="eot_title_activity">Trip in progress</string>
+    <string name="eot_label_arrival_time">Arrival time</string>
+    <string name="eot_button_end_trip">End trip</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
