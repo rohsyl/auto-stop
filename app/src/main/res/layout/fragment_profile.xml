@@ -16,7 +16,8 @@
             android:id="@+id/profile_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="15dp">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -27,26 +28,26 @@
                     android:id="@+id/profile_sex_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="12sp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
                     android:layout_weight="1"
-                    android:text="@string/profile_sex_label" />
+                    android:text="@string/profile_sex_label"
+                    android:textSize="12sp" />
 
                 <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/profile_sex"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/profile_sex_label"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    ></android.support.v7.widget.AppCompatSpinner>
+                    android:hint="@string/profile_sex_label"></android.support.v7.widget.AppCompatSpinner>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
+
                 <EditText
                     android:id="@+id/profile_fullname"
                     android:layout_width="match_parent"
@@ -82,11 +83,11 @@
 
                 <TextView
                     android:id="@+id/profile_birthdate_display"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     app:layout_constraintBottom_toBottomOf="@id/profile_form"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/profile_birthdate_btn"
                     app:layout_constraintTop_toBottomOf="@+id/profile_birthdate_btn" />
 
             </android.support.design.widget.TextInputLayout>
@@ -95,12 +96,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
+
                 <EditText
                     android:id="@+id/profile_emergency_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/profile_emergency_phone_label"
-                    android:inputType="text"
+                    android:inputType="phone"
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
@@ -109,17 +111,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
+
                 <EditText
                     android:id="@+id/profile_emergency_mail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/profile_emergency_mail_label"
-                    android:inputType="text"
+                    android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
-
-
 
 
         </LinearLayout>
