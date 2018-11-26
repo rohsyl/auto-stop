@@ -23,7 +23,7 @@
             android:singleLine="true" />
 
         <Button
-            android:id="@+id/button_ok"
+            android:id="@+id/buttonValidate"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"

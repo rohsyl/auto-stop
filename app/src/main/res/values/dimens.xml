@@ -9,4 +9,10 @@
 
     <dimen name="horizontal_page_margin">16dp</dimen>
     <dimen name="vertical_page_margin">16dp</dimen>
+
+
+
+    <dimen name="police_big">35dp</dimen>
+    <dimen name="police_small">20dp</dimen>
+
 </resources>

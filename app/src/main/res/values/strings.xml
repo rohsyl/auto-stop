@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">AutoStop</string>
+    <string name="app_name" translatable="false">Potostop</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
     <string name="nav_header_desc" translatable="false">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="destination">Destination</string>
     <string name="title_activity_profile" translatable="false">ProfileActivity</string>
     <string name="nav_trip_label">Trip</string>
@@ -40,4 +40,43 @@
     <string name="selected_place">Last selected</string>
 
     <string name="potostop_logo" translatable="false">Potostop logo</string>
+    <string name="potostop_logo">Potostop logo</string>
+    <string name="plate_registering">Plate registering</string>
+    <string name="plate_number">Plate Number</string>
+    <string name="go">Go</string>
+    <string name="canton">Canton</string>
+
+    <string-array name="cantons">
+        <item>AG</item>
+        <item>AI</item>
+        <item>AR</item>
+        <item>BE</item>
+        <item>BL</item>
+        <item>BS</item>
+        <item>FR</item>
+        <item>GE</item>
+        <item>GL</item>
+        <item>GR</item>
+        <item>JU</item>
+        <item>LU</item>
+        <item>NE</item>
+        <item>NW</item>
+        <item>OW</item>
+        <item>SG</item>
+        <item>SH</item>
+        <item>SO</item>
+        <item>SZ</item>
+        <item>TG</item>
+        <item>TI</item>
+        <item>UR</item>
+        <item>VD</item>
+        <item>VS</item>
+        <item>ZG</item>
+        <item>ZH</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="report">Report</string>
+    <string name="pleaseRateTrip">Please rate your Trip</string>
+
 </resources>
