@@ -14,14 +14,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import ch.hevs.a6452.grp2.autostop.autostop.PlateActivity;
 import ch.hevs.a6452.grp2.autostop.autostop.R;
 
 
-public class FragmentStart extends Fragment {
+public class FragmentStart extends Fragment implements View.OnClickListener {
 
     public static final String TAG = "FragmentStart";
 
-    Button buttonStartTrip;
+    private Button buttonStartTrip;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,25 +34,7 @@ public class FragmentStart extends Fragment {
         View view = inflater.inflate(R.layout.fragment_start, container, false);
 
         buttonStartTrip = (Button) view.findViewById(R.id.buttonStartTrip);
-
-
-        //Action listener for START
-        buttonStartTrip.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Log.i(TAG, "ButtonStartTrip clicked");
-
-                /* TODO Implement start the activity select Plate
-
-                Intent intent = new Intent(this, LocationActivity.class);
-                startActivity(intent);
-                */
-            }
-        });
-
-
-
+        buttonStartTrip.setOnClickListener(this);
 
         return view;
     }
@@ -68,4 +54,19 @@ public class FragmentStart extends Fragment {
         return true;
     }
 
+    private void clickStartTrip()
+    {
+        Log.i(TAG, "ButtonStartTrip clicked");
+        Intent i = new Intent( this.getActivity(), PlateActivity.class );
+        startActivity( i );
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        if ( view == buttonStartTrip )
+        {
+            clickStartTrip();
+        }
+    }
 }
