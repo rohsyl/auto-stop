@@ -19,8 +19,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextClock
-        android:layout_width="100"
-        android:layout_height="50"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="8dp"
         android:text=""
@@ -32,8 +32,8 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="200"
-        android:layout_height="200"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginBottom="176dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,8 +41,8 @@
 
     <android.support.design.button.MaterialButton
         android:id="@+id/materialButton"
-        android:layout_width="200"
-        android:layout_height="100"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="56dp"
         android:background="@color/colorPrimary"
