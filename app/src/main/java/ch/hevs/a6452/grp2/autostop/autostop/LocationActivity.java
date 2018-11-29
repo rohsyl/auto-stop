@@ -33,9 +33,6 @@ public class LocationActivity extends FragmentActivity{
     @BindView(R.id.autocomplete_places)
     protected AutoCompleteTextView mAutocompleteView;
 
-    @BindView(R.id.buttonValidate)
-    protected Button buttonValidate;
-
     private static final LatLngBounds BOUNDS_VALAIS = new LatLngBounds(
             new LatLng(45.803399, 6.768166), new LatLng(46.534593, 8.36554000));
 
@@ -59,31 +56,31 @@ public class LocationActivity extends FragmentActivity{
         mAutocompleteView.setAdapter(mAdapter);
 
 
-        //Action listener for VALIDATE
-        buttonValidate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "buttonValidate clicked");
+    }
 
-                if(mAutocompleteView.getText().toString()==""){
-                    return;
-                }
 
-                Intent intent = new Intent(LocationActivity.this, WaitingEoTActivity.class);
-                startActivity(intent);
-            }
-        });
+    public void clickOk(View v)
+    {
+        Log.i(TAG, "Ok button clicked");
+        if (!mAutocompleteView.getText().toString().isEmpty())
+        {
+
+            Intent intent = new Intent(LocationActivity.this, WaitingEoTActivity.class);
+            startActivity(intent);
+
+        }
+
+        else
+        {
+            Toast.makeText(this, "Enter a destination", Toast.LENGTH_LONG).show();
+            Log.i(TAG, "Invalid destination");
+        }
     }
 
     private AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            /*
-             Retrieve the place ID of the selected item from the Adapter.
-             The adapter stores each Place suggestion in a AutocompletePrediction from which we
-             read the place ID and title.
-              */
             final AutocompletePrediction item = mAdapter.getItem(position);
             final String placeId = item.getPlaceId();
             final CharSequence destination = item.getPrimaryText(null);
@@ -94,7 +91,5 @@ public class LocationActivity extends FragmentActivity{
                     Toast.LENGTH_SHORT).show();
         }
     };
-
-
 
 }
