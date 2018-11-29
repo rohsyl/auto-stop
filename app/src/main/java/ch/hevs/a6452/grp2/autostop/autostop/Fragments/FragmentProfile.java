@@ -17,16 +17,17 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.util.Calendar;
 import java.util.Date;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.Picker.DatePickerFragment;
+import ch.hevs.a6452.grp2.autostop.autostop.MainActivity;
 import ch.hevs.a6452.grp2.autostop.autostop.R;
 import ch.hevs.a6452.grp2.autostop.autostop.Utils.FirebaseConverter;
 import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.ProfileViewModel;
+import android.content.Intent;
+
 
 public class FragmentProfile extends Fragment {
 
@@ -150,9 +151,19 @@ public class FragmentProfile extends Fragment {
                 }
                 else{
                     // TODO : save to db
+
+                     mainActivity();
                 }
             }
         });
+    }
+
+    private void mainActivity()
+    {
+        Intent i = new Intent(this.getActivity(), MainActivity.class);
+        startActivity(i);
+
+
     }
 
     private void popolateTitleSpinner(){
