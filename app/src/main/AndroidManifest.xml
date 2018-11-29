@@ -42,6 +42,10 @@
             android:name=".WaitingEoTActivity"
             android:label="@string/eot_title_activity">
         </activity>
+        <activity
+            android:name=".RatingTripActivity"
+            android:label="@string/ratingTripActivity">
+        </activity>
     </application>
 
 </manifest>

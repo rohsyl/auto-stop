@@ -1,5 +1,6 @@
 package ch.hevs.a6452.grp2.autostop.autostop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -68,11 +69,8 @@ public class LocationActivity extends FragmentActivity{
                     return;
                 }
 
-                /* TODO Implement the activity TrackingTrip
-
-                Intent intent = new Intent(this, LocationActivity.class);
+                Intent intent = new Intent(LocationActivity.this, WaitingEoTActivity.class);
                 startActivity(intent);
-                */
             }
         });
     }
