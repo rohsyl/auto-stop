@@ -27,7 +27,9 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".LocationActivity" />
+        <activity
+            android:name=".LocationActivity"
+            android:label="@string/destination"/>
         <activity
             android:name=".SplashActivity"
             android:label="@string/app_name"

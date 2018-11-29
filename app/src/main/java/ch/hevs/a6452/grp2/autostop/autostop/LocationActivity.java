@@ -3,6 +3,7 @@ package ch.hevs.a6452.grp2.autostop.autostop;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hevs.a6452.grp2.autostop.autostop.Adapter.PlaceAutocompleteAdapter;
 
-public class LocationActivity extends FragmentActivity{
+public class LocationActivity extends AppCompatActivity {
 
     public static final String TAG = "LocationActivity";
 
