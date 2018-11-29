@@ -64,7 +64,6 @@ public class LocationActivity extends FragmentActivity{
         Log.i(TAG, "Ok button clicked");
         if (!mAutocompleteView.getText().toString().isEmpty())
         {
-
             Intent intent = new Intent(LocationActivity.this, WaitingEoTActivity.class);
             startActivity(intent);
 
