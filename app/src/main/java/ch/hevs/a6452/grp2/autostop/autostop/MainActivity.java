@@ -2,11 +2,8 @@ package ch.hevs.a6452.grp2.autostop.autostop;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,7 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +21,7 @@ import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentAbout;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentProfile;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentSettings;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentStart;
+import ch.hevs.a6452.grp2.autostop.autostop.Utils.PotostopSession;
 
 
 public class MainActivity extends AppCompatActivity
@@ -37,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,12 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        //Check if a user is logged in
+        if(mAuth.getCurrentUser() == null)
+            redirectToLogin();
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -56,6 +62,14 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragmentStart).commit();
 
+        //Check if profile is already set
+        Bundle extra = getIntent().getExtras();
+        //If not : open profile Fragment
+        if(extra != null) {
+            FragmentProfile fragmentProfile = new FragmentProfile();
+            fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragmentProfile).commit();
+        }
     }
 
     @Override
@@ -122,5 +136,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-
+    private void redirectToLogin() {
+        Intent login = new Intent(this, LoginActivity.class);
+        startActivity(login);
+        finish();
+    }
 }

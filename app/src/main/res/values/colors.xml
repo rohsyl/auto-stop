@@ -2,8 +2,9 @@
 <resources>
     <color name="colorPrimary">#2ca089</color>
     <color name="colorPrimaryDark">#5fd3bc</color>
-    <color name="colorAccent">#666666</color>
+    <color name="colorAccent">#56565656</color>
     <color name="colorLogin">#434343</color>
+    <color name="colorLoginFields">#888888</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
 </resources>

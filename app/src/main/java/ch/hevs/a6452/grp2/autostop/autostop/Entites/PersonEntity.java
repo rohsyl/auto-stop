@@ -16,12 +16,11 @@ public class PersonEntity implements Person{
     @NonNull
     private String uid;
 
-
-    private String fullname;
-    private String email;
-    private String sex;
-    private Long birthDate;
-    private EmergencyPerson emergencyPerson;
+    private String fullname = null;
+    private String email = null;
+    private String sex = null;
+    private Long birthDate = null;
+    private EmergencyPerson emergencyPerson = null;
 
     public PersonEntity(Person person) {
         this.uid = person.getUid();
@@ -33,7 +32,11 @@ public class PersonEntity implements Person{
     }
 
     public PersonEntity() {
-
+        this.fullname = "";
+        this.sex = "";
+        this.email = "";
+        this.birthDate = 0L;
+        this.emergencyPerson = null;
     }
 
     @Override
