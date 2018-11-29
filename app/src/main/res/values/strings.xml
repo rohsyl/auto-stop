@@ -21,6 +21,11 @@
     <string name="profile_birthdate_btn_label" translatable="false">Set</string>
     <string name="profile_emergency_phone_label">Emergency person phone</string>
     <string name="profile_emergency_mail_label">Emergency person e-mail</string>
+    <string name="profile_error_fullname_empty" translatable="false">The fullname field is required</string>
+    <string name="profile_error_date_empty" translatable="false">The date field is required</string>
+    <string name="profile_error_phone_empty" translatable="false">The emergency phone field is required</string>
+    <string name="profile_error_mail_empty" translatable="false">The emergency mail field is required</string>
+
     <string-array name="profile_sex_array">
         <item>Mr</item>
         <item>Mme</item>
@@ -34,12 +39,26 @@
         With Potostop, you can secure your hitchhiking trip.\n\n
         &#169; 2018"\n\n
         Created by :
+        "This application was created for the module 645-2.\n\nWith Potostop, you can securise your hitchhiking trip.\n\n
+        Created by :\n
+         -Gaétan Huser\n
+         -Hugo Rebelo\n
+         -Julien Reichenbach\n
+         -Fabien Terrani\n
+         -Vlado Mitrovic\n
+         -Sylvain Roh\n
+        &#169; 2018"
     </string>
     <string name="autocomplete_hint">Search</string>
     <string name="clear_text">Select</string>
     <string name="selected_place">Last selected</string>
 
-    <string name="potostop_logo" translatable="false">Potostop logo</string>
+    <!-- Waiting End of Trip Activity -->
+    <string name="eot_title_activity" translatable="false">Trip in progress</string>
+    <string name="eot_label_arrival_time" translatable="false">Arrival time</string>
+    <string name="eot_button_end_trip" translatable="false">End trip</string>
+
+
     <string name="plate_registering">Plate registering</string>
     <string name="plate_number">Plate Number</string>
     <string name="go">Go</string>
@@ -77,6 +96,7 @@
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="report">Report</string>
     <string name="pleaseRateTrip">Please rate your Trip</string>
+    <string name="ratingTripActivity" translatable="false">Rate your Trip</string>
 
     <string name="toast_could_not_sign_in">You must be signed in</string>
     <string name="email_label">Email address</string>

@@ -1,12 +1,15 @@
 package ch.hevs.a6452.grp2.autostop.autostop;
 
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
+import android.content.Intent;
+
 import android.widget.Toast;
 
 import com.google.android.gms.location.places.AutocompletePrediction;
@@ -21,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hevs.a6452.grp2.autostop.autostop.Adapter.PlaceAutocompleteAdapter;
 
-public class LocationActivity extends FragmentActivity{
+public class LocationActivity extends AppCompatActivity {
 
     public static final String TAG = "LocationActivity";
 
@@ -31,9 +34,6 @@ public class LocationActivity extends FragmentActivity{
 
     @BindView(R.id.autocomplete_places)
     protected AutoCompleteTextView mAutocompleteView;
-
-    @BindView(R.id.buttonValidate)
-    protected Button buttonValidate;
 
     private static final LatLngBounds BOUNDS_VALAIS = new LatLngBounds(
             new LatLng(45.803399, 6.768166), new LatLng(46.534593, 8.36554000));
@@ -58,34 +58,30 @@ public class LocationActivity extends FragmentActivity{
         mAutocompleteView.setAdapter(mAdapter);
 
 
-        //Action listener for VALIDATE
-        buttonValidate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "buttonValidate clicked");
+    }
 
-                if(mAutocompleteView.getText().toString()==""){
-                    return;
-                }
 
-                /* TODO Implement the activity TrackingTrip
+    public void clickOk(View v)
+    {
+        Log.i(TAG, "Ok button clicked");
+        if (!mAutocompleteView.getText().toString().isEmpty())
+        {
+            Intent intent = new Intent(LocationActivity.this, WaitingEoTActivity.class);
+            startActivity(intent);
 
-                Intent intent = new Intent(this, LocationActivity.class);
-                startActivity(intent);
-                */
-            }
-        });
+        }
+
+        else
+        {
+            Toast.makeText(this, "Enter a destination", Toast.LENGTH_LONG).show();
+            Log.i(TAG, "Invalid destination");
+        }
     }
 
     private AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            /*
-             Retrieve the place ID of the selected item from the Adapter.
-             The adapter stores each Place suggestion in a AutocompletePrediction from which we
-             read the place ID and title.
-              */
             final AutocompletePrediction item = mAdapter.getItem(position);
             final String placeId = item.getPlaceId();
             final CharSequence destination = item.getPrimaryText(null);
@@ -96,7 +92,5 @@ public class LocationActivity extends FragmentActivity{
                     Toast.LENGTH_SHORT).show();
         }
     };
-
-
 
 }
