@@ -18,14 +18,14 @@
     <string name="profile_fullname_label">Fullname</string>
     <string name="profile_sex_label">Title</string>
     <string name="profile_birthdate_label">Birthdate</string>
-    <string name="profile_birthdate_btn_label" translatable="false">Set</string>
+    <string name="profile_birthdate_btn_label">Set birthdate</string>
     <string name="profile_emergency_phone_label">Emergency person phone</string>
     <string name="profile_emergency_mail_label">Emergency person e-mail</string>
-    <string name="profile_error_fullname_empty" translatable="false">The fullname field is required</string>
-    <string name="profile_error_date_empty" translatable="false">The date field is required</string>
-    <string name="profile_error_phone_empty" translatable="false">The emergency phone field is required</string>
-    <string name="profile_error_mail_empty" translatable="false">The emergency mail field is required</string>
-    <string name="profile_save_message" translatable="false">Profile saved!</string>
+    <string name="profile_error_fullname_empty">The fullname field is required</string>
+    <string name="profile_error_date_empty">The date field is required</string>
+    <string name="profile_error_phone_empty">The emergency phone field is required</string>
+    <string name="profile_error_mail_empty">The emergency mail field is required</string>
+    <string name="profile_save_message">Profile saved!</string>
 
     <string-array name="profile_sex_array">
         <item>Mr</item>
