@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
         //GOOGLE LOGIN REFERENCES
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("846589367212-o90fiaaoseirpad166nug2idq2g4nk29.apps.googleusercontent.com")
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -279,6 +279,10 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            //Insert the user in the DB
+                            // TODO : check if user exist, don't create in db
+                            insertUserInDb(user);
                             // Sign in success, update UI with the signed-in user's information
                             getUserAndChangeUI(mAuth.getCurrentUser().getUid());
                         } else {
