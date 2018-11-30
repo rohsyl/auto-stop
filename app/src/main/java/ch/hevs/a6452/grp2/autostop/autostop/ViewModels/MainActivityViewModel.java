@@ -30,22 +30,24 @@ public class MainActivityViewModel extends AndroidViewModel {
         mDatabase = FirebaseDatabase.getInstance();
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference refPerson = mDatabase.getReference(PotostopSession.NODE_PERSON).child(mUser.getUid());
-        refPerson.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                PersonEntity person = dataSnapshot.getValue(PersonEntity.class);
-                person.setUid(mUser.getUid());
-                personFullname.setValue(person.getFullname());
-                personEmail.setValue(person.getEmail());
-            }
+        if(mUser != null){
+            DatabaseReference refPerson = mDatabase.getReference(PotostopSession.NODE_PERSON).child(mUser.getUid());
+            refPerson.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    PersonEntity person = dataSnapshot.getValue(PersonEntity.class);
+                    person.setUid(mUser.getUid());
+                    personFullname.setValue(person.getFullname());
+                    personEmail.setValue(person.getEmail());
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("Error while getting current user");
-                System.out.println(databaseError.getMessage());
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.out.println("Error while getting current user");
+                    System.out.println(databaseError.getMessage());
+                }
+            });
+        }
 
     }
 

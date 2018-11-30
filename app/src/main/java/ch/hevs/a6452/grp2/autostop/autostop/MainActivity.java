@@ -59,16 +59,15 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
 
-        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
-
-        observeViewModel();
-
 
         mAuth = FirebaseAuth.getInstance();
 
         //Check if a user is logged in
         if(mAuth.getCurrentUser() == null)
             redirectToLogin();
+
+        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        observeViewModel();
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
