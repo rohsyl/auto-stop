@@ -3,6 +3,7 @@ package ch.hevs.a6452.grp2.autostop.autostop.Entites;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.Map;
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Plate;
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Report;
 
-public class PlateEntity implements Plate {
+public class PlateEntity implements Plate, Serializable {
 
     @NotNull
     @Exclude
