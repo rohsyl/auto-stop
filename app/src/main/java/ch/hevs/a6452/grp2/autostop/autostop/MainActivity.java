@@ -1,7 +1,10 @@
 package ch.hevs.a6452.grp2.autostop.autostop;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
@@ -12,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -22,6 +27,8 @@ import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentProfile;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentSettings;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentStart;
 import ch.hevs.a6452.grp2.autostop.autostop.Utils.PotostopSession;
+import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.MainActivityViewModel;
+import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.ProfileViewModel;
 
 
 public class MainActivity extends AppCompatActivity
@@ -36,7 +43,13 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
+    protected TextView lblFullname;
+
+    protected TextView lblEmail;
+
     private FirebaseAuth mAuth;
+
+    private MainActivityViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +57,12 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+
+        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
+        observeViewModel();
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -61,6 +80,13 @@ public class MainActivity extends AppCompatActivity
         FragmentStart fragmentStart = new FragmentStart();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragmentStart).commit();
+
+
+        View headerView = navigationView.getHeaderView(0);
+
+
+        lblEmail = headerView.findViewById(R.id.nav_menu_email);
+        lblFullname = headerView.findViewById(R.id.nav_menu_fullname);
 
         //Check if profile is already set
         Bundle extra = getIntent().getExtras();
@@ -142,5 +168,22 @@ public class MainActivity extends AppCompatActivity
         Intent login = new Intent(this, LoginActivity.class);
         startActivity(login);
         finish();
+    }
+
+
+    private void observeViewModel(){
+        mViewModel.getEmail().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                lblEmail.setText(s);
+            }
+        });
+        mViewModel.getFullname().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                lblFullname.setText(s);
+
+            }
+        });
     }
 }
