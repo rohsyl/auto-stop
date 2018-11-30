@@ -121,7 +121,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             fragmentClass = FragmentAbout.class;
         } else if (id == R.id.nav_logout) {
-
+            mAuth.signOut();
+            redirectToLogin();
+            return true;
         }
         try {
             fragment = (Fragment) (fragmentClass != null ? fragmentClass.newInstance() : null);

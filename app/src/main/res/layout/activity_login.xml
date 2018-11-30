@@ -34,7 +34,7 @@
             android:gravity="center_horizontal"
             android:text="@string/email_label"
             android:textColor="@color/colorWhite"
-            android:textSize="10pt" />
+            android:textSize="22sp" />
 
         <EditText
             android:id="@+id/email_input"
@@ -45,7 +45,7 @@
             android:background="@color/colorLoginFields"
             android:ems="10"
             android:inputType="textEmailAddress"
-            android:textSize="10pt"
+            android:textSize="22sp"
             android:textColor="@color/colorWhite"/>
 
         <TextView
@@ -64,7 +64,7 @@
             android:gravity="center_horizontal"
             android:text="@string/password_label"
             android:textColor="@color/colorWhite"
-            android:textSize="10pt" />
+            android:textSize="22sp" />
 
         <EditText
             android:id="@+id/password_input"
@@ -75,7 +75,7 @@
             android:background="@color/colorLoginFields"
             android:ems="10"
             android:inputType="textPassword"
-            android:textSize="10pt"
+            android:textSize="22sp"
             android:textColor="@color/colorWhite"/>
 
         <TextView
@@ -101,7 +101,7 @@
                 android:background="@color/colorPrimary"
                 android:text="@string/label_login_button"
                 android:textColor="@color/colorWhite"
-                android:textSize="9pt" />
+                android:textSize="22sp" />
 
             <Button
                 android:id="@+id/create_account_button"
@@ -113,7 +113,7 @@
                 android:textColor="@color/colorPrimary"
                 android:background="@color/colorWhite"
                 android:text="@string/label_create_account"
-                android:textSize="9pt"
+                android:textSize="22sp"
                 />
 
         </LinearLayout>
@@ -131,11 +131,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
             android:padding="6dp"
             android:text="@string/label_google_login"
             android:textColor="@color/colorWhite"
-            android:textSize="10pt" />
+            android:textSize="30sp" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
@@ -143,7 +145,7 @@
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="13dp"></com.google.android.gms.common.SignInButton>
+            android:layout_marginBottom="48dp"></com.google.android.gms.common.SignInButton>
 
     </RelativeLayout>
 </LinearLayout>
