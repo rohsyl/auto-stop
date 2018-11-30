@@ -52,8 +52,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private PersonEntity userEntity;
 
-    @BindView(R.id.appLogo)
-    ImageView appLogo;
     @BindView(R.id.email_input)
     EditText emailInput;
     @BindView(R.id.email_error)

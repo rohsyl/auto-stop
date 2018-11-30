@@ -6,7 +6,8 @@
     tools:context=".WaitingEoTActivity"
     android:orientation="vertical"
     android:layout_gravity="top"
-    android:id="@+id/rating_trip_activity_layout">
+    android:id="@+id/rating_trip_activity_layout"
+    >
 
 
         <TextView

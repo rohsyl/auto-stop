@@ -28,7 +28,7 @@ public class LocationActivity extends AppCompatActivity {
 
     public static final String TAG = "LocationActivity";
 
-    protected GeoDataClient  mGeoDataClient;
+    protected GeoDataClient mGeoDataClient;
 
     private PlaceAutocompleteAdapter mAdapter;
 

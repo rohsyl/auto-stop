@@ -122,10 +122,6 @@
             </LinearLayout>
         </ScrollView>
 
-
-
-
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_save_team"
         android:layout_width="wrap_content"

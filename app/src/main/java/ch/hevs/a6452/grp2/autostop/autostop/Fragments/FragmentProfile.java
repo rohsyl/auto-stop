@@ -77,7 +77,7 @@ public class FragmentProfile extends Fragment {
         // TODO: Use the ViewModel
 
 
-        popolateTitleSpinner();
+        populateTitleSpinner();
 
 
         btnDate.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +166,7 @@ public class FragmentProfile extends Fragment {
 
     }
 
-    private void popolateTitleSpinner(){
+    private void populateTitleSpinner(){
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.profile_sex_array, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
