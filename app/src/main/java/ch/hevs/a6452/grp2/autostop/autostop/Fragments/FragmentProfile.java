@@ -20,6 +20,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.PersonEntity;
@@ -153,6 +156,12 @@ public class FragmentProfile extends Fragment {
                     cancel = true;
                 }
 
+                if(!isEmailValid(emergencyEmail)){
+                    txtEmergencyMail.setError(getString(R.string.label_mail_error));
+                    focusView = txtEmergencyMail;
+                    cancel = true;
+                }
+
 
                 if(cancel){
                     focusView.requestFocus();
@@ -173,6 +182,15 @@ public class FragmentProfile extends Fragment {
                 }
             }
         });
+    }
+
+
+    private boolean isEmailValid(String email) {
+        //Check the pattern of the email input
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     private void mainActivity()
