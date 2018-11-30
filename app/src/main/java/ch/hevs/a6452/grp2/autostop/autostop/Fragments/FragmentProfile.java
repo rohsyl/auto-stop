@@ -1,6 +1,7 @@
 package ch.hevs.a6452.grp2.autostop.autostop.Fragments;
 
 import android.app.DatePickerDialog;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,12 +22,14 @@ import java.util.Calendar;
 import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ch.hevs.a6452.grp2.autostop.autostop.Entites.PersonEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.Picker.DatePickerFragment;
 import ch.hevs.a6452.grp2.autostop.autostop.MainActivity;
 import ch.hevs.a6452.grp2.autostop.autostop.R;
 import ch.hevs.a6452.grp2.autostop.autostop.Utils.FirebaseConverter;
 import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.ProfileViewModel;
 import android.content.Intent;
+import android.widget.Toast;
 
 
 public class FragmentProfile extends Fragment {
@@ -60,6 +63,8 @@ public class FragmentProfile extends Fragment {
 
     private Long birthdate = null;
 
+    private PersonEntity person = null;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -79,6 +84,7 @@ public class FragmentProfile extends Fragment {
 
         populateTitleSpinner();
 
+        observeViewModel();
 
         btnDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,8 +157,17 @@ public class FragmentProfile extends Fragment {
                 }
                 else{
                     // TODO : save to db
+                    person.setSex(spiSex.getSelectedItemPosition());
+                    person.setFullname(txtFullname.getText().toString());
+                    person.setBirthDate(birthdate);
 
-                     mainActivity();
+                    person.setEmergencyEmail(txtEmergencyMail.getText().toString());
+                    person.setEmergencyPhone(txtEmergencyPhone.getText().toString());
+
+                    mViewModel.updatePerson(person);
+
+                    Toast.makeText(FragmentProfile.this.getActivity(), getString(R.string.profile_save_message), Toast.LENGTH_SHORT).show();
+                    mainActivity();
                 }
             }
         });
@@ -166,9 +181,28 @@ public class FragmentProfile extends Fragment {
 
     }
 
+    private void observeViewModel(){
+
+        mViewModel.getPerson().observe(this, new Observer<PersonEntity>() {
+            @Override
+            public void onChanged(@Nullable PersonEntity personEntity) {
+                person = personEntity;
+                spiSex.setSelection(person.getSex());
+                txtFullname.setText(person.getFullname());
+                txtEmergencyMail.setText(personEntity.getEmergencyEmail());
+                txtEmergencyPhone.setText(personEntity.getEmergencyPhone());
+                if(person.getBirthDate() != 0){
+                    birthdate = person.getBirthDate();
+                    lblDate.setText(FirebaseConverter.toNiceDateFormat(birthdate));
+                }
+            }
+        });
+    }
+
     private void populateTitleSpinner(){
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.profile_sex_array, android.R.layout.simple_spinner_item);
+
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner

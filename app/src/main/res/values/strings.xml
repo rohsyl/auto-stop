@@ -25,6 +25,7 @@
     <string name="profile_error_date_empty" translatable="false">The date field is required</string>
     <string name="profile_error_phone_empty" translatable="false">The emergency phone field is required</string>
     <string name="profile_error_mail_empty" translatable="false">The emergency mail field is required</string>
+    <string name="profile_save_message" translatable="false">Profile saved!</string>
 
     <string-array name="profile_sex_array">
         <item>Mr</item>
