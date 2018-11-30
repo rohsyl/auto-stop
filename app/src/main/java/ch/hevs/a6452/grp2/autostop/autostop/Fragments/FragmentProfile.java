@@ -90,6 +90,8 @@ public class FragmentProfile extends Fragment {
             @Override
             public void onClick(View view) {
                 Long date = Calendar.getInstance().getTimeInMillis();
+                if(birthdate != null)
+                    date = birthdate;
 
                 DatePickerFragment dialogFragmentDatePicker = new DatePickerFragment();
                 dialogFragmentDatePicker.setDate(new Date(date));
