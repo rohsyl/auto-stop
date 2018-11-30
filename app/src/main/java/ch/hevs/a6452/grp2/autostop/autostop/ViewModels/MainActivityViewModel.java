@@ -36,9 +36,11 @@ public class MainActivityViewModel extends AndroidViewModel {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     PersonEntity person = dataSnapshot.getValue(PersonEntity.class);
-                    person.setUid(mUser.getUid());
-                    personFullname.setValue(person.getFullname());
-                    personEmail.setValue(person.getEmail());
+                    if(person != null){
+                        person.setUid(mUser.getUid());
+                        personFullname.setValue(person.getFullname());
+                        personEmail.setValue(person.getEmail());
+                    }
                 }
 
                 @Override
