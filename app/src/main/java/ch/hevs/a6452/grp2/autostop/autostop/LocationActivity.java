@@ -1,6 +1,9 @@
 package ch.hevs.a6452.grp2.autostop.autostop;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -12,21 +15,29 @@ import android.widget.Toast;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.GeoDataClient;
 
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.RuntimeRemoteException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hevs.a6452.grp2.autostop.autostop.Adapter.PlaceAutocompleteAdapter;
+import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
 
-public class LocationActivity extends FragmentActivity{
+public class LocationActivity extends FragmentActivity {
 
     public static final String TAG = "LocationActivity";
 
-    protected GeoDataClient  mGeoDataClient;
+    public static final String EXTRA_KEY_LOCATION = "location";
+    private PositionEntity location;
 
+    protected GeoDataClient  mGeoDataClient;
     private PlaceAutocompleteAdapter mAdapter;
 
     @BindView(R.id.autocomplete_places)
@@ -68,11 +79,7 @@ public class LocationActivity extends FragmentActivity{
                     return;
                 }
 
-                /* TODO Implement the activity TrackingTrip
-
-                Intent intent = new Intent(this, LocationActivity.class);
-                startActivity(intent);
-                */
+                returnLocationResult( location );
             }
         });
     }
@@ -87,16 +94,54 @@ public class LocationActivity extends FragmentActivity{
              read the place ID and title.
               */
             final AutocompletePrediction item = mAdapter.getItem(position);
+
+            // Getting infos about the place
+            Task<PlaceBufferResponse> placeResult = mGeoDataClient.getPlaceById( item.getPlaceId() );
+            placeResult.addOnCompleteListener( mUpdatePlaceDetailsCallback );
+            /*
             final String placeId = item.getPlaceId();
             final CharSequence destination = item.getPrimaryText(null);
+
 
             Log.i(TAG, "Autocomplete item selected: " + destination + " place id : " + placeId);
 
             Toast.makeText(getApplicationContext(), "Clicked: " + destination +" Id: "+ placeId,
                     Toast.LENGTH_SHORT).show();
+            */
         }
     };
 
+    private OnCompleteListener<PlaceBufferResponse> mUpdatePlaceDetailsCallback
+            = new OnCompleteListener<PlaceBufferResponse>() {
+        @Override
+        public void onComplete(Task<PlaceBufferResponse> task) {
+            try {
+                PlaceBufferResponse places = task.getResult();
 
+                // Get the Place object from the buffer.
+                Place place = places.get(0);
+                location = new PositionEntity();
+                location.setName( place.getName().toString() );
+                location.setLatitude( place.getLatLng().latitude );
+                location.setLongitude( place.getLatLng().longitude );
+                // The timestamp is not set since we don't know exactly when the passenger will be there
 
+                places.release();
+            }
+
+            catch (RuntimeRemoteException e) {
+                // Request did not complete successfully
+                Log.e(TAG, "Place query did not complete.", e);
+                return;
+            }
+        }
+    };
+
+    private void returnLocationResult( PositionEntity location )
+    {
+        Intent i = new Intent();
+        i.putExtra(EXTRA_KEY_LOCATION, location);
+        setResult(Activity.RESULT_OK, i);
+        finish();
+    }
 }

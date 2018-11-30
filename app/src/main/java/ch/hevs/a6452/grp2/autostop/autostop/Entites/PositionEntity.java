@@ -3,12 +3,13 @@ package ch.hevs.a6452.grp2.autostop.autostop.Entites;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Position;
 
-public class PositionEntity implements Position {
+public class PositionEntity implements Position, Serializable {
 
     @NotNull
     @Exclude

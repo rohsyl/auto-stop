@@ -2,6 +2,7 @@ package ch.hevs.a6452.grp2.autostop.autostop.Entites;
 
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,9 @@ import java.util.Map;
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Position;
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Trip;
 
-public class TripEntity implements Trip {
+public class TripEntity implements Trip, Serializable {
+
+
 
 
     private String uid;
