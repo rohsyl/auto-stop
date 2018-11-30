@@ -7,7 +7,6 @@ import com.google.firebase.database.Exclude;
 import java.util.HashMap;
 import java.util.Map;
 
-import ch.hevs.a6452.grp2.autostop.autostop.Models.EmergencyPerson;
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Person;
 
 public class PersonEntity implements Person{
@@ -18,9 +17,12 @@ public class PersonEntity implements Person{
 
     private String fullname = null;
     private String email = null;
-    private String sex = null;
+    private int sex = 0;
     private Long birthDate = null;
-    private EmergencyPerson emergencyPerson = null;
+
+
+    private String emergencyEmail;
+    private String emergencyPhone;
 
     public PersonEntity(Person person) {
         this.uid = person.getUid();
@@ -28,15 +30,17 @@ public class PersonEntity implements Person{
         this.sex = person.getSex();
         this.email = person.getEmail();
         this.birthDate = person.getBirthDate();
-        this.emergencyPerson = person.getEmergencyPerson();
+        this.emergencyEmail = person.getEmergencyEmail();
+        this.emergencyPhone = person.getEmergencyPhone();
     }
 
     public PersonEntity() {
         this.fullname = "";
-        this.sex = "";
+        this.sex = 0;
         this.email = "";
         this.birthDate = 0L;
-        this.emergencyPerson = null;
+        this.emergencyEmail = null;
+        this.emergencyPhone = null;
     }
 
     @Override
@@ -55,7 +59,7 @@ public class PersonEntity implements Person{
     }
 
     @Override
-    public String getSex() {
+    public int getSex() {
         return sex;
     }
 
@@ -65,8 +69,13 @@ public class PersonEntity implements Person{
     }
 
     @Override
-    public EmergencyPerson getEmergencyPerson() {
-        return emergencyPerson;
+    public String getEmergencyEmail() {
+        return emergencyEmail;
+    }
+
+    @Override
+    public String getEmergencyPhone() {
+        return emergencyPhone;
     }
 
     public void setUid(String uid) {
@@ -81,31 +90,32 @@ public class PersonEntity implements Person{
         this.email = email;
     }
 
-    public void setEmergencyPerson(EmergencyPerson emergencyPerson) {
-        this.emergencyPerson = emergencyPerson;
+    public void setEmergencyEmail(String emergencyEmail) {
+        this.emergencyEmail = emergencyEmail;
+    }
+
+    public void setEmergencyPhone(String emergencyPhone) {
+        this.emergencyPhone = emergencyPhone;
     }
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
     }
 
-    public void setSex(String sex) {
+    public void setSex(int sex) {
         this.sex = sex;
     }
 
     @Exclude
     public Map<String, Object> toMap() {
 
-        HashMap<String, Object> emergency = new HashMap<>();
-        emergency.put("phone", getEmergencyPerson().getPhone());
-        emergency.put("email", getEmergencyPerson().getEmail());
-
         HashMap<String, Object> result = new HashMap<>();
         result.put("fullname", getFullname());
         result.put("sex", getSex());
         result.put("email", getEmail());
         result.put("birthdate", getBirthDate());
-        result.put("emergency_contact", emergency);
+        result.put("emergency_phone", getEmergencyPhone());
+        result.put("emergency_email", getEmergencyEmail());
         return result;
     }
 

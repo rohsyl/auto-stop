@@ -4,9 +4,10 @@ public interface Person {
     String getUid();
     String getEmail();
     String getFullname();
-    String getSex();
+    int getSex();
     Long getBirthDate();
-    EmergencyPerson getEmergencyPerson();
+    String getEmergencyEmail();
+    String getEmergencyPhone();
 
 
 }

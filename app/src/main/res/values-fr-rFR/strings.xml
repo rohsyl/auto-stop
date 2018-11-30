@@ -3,6 +3,12 @@
     <string name="profile_sex_label">Titre</string>
     <string name="profile_fullname_label">Nom complet</string>
     <string name="profile_birthdate_label">Date de naissance</string>
+    <string name="profile_error_fullname_empty">Champs obligatoire</string>
+    <string name="profile_error_date_empty" >Champs obligatoire</string>
+    <string name="profile_error_phone_empty">Champs obligatoire</string>
+    <string name="profile_error_mail_empty">Champs obligatoire</string>
+    <string name="profile_save_message">Profil mis à jour!</string>
+    <string name="profile_birthdate_btn_label">Date de naissance</string>
     <string name="autocomplete_hint">Rechercher</string>
     <string name="clear_text">Sélectionner</string>
     <string name="selected_place">Derniers sélectionnés</string>

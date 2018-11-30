@@ -341,11 +341,13 @@ public class LoginActivity extends AppCompatActivity {
         //Check all user's fields : if one is empty return false
         if(user.getFullname().equals(""))
             return false;
-        if(user.getSex().equals(""))
+        if(user.getSex() == 0)
             return false;
         if(user.getBirthDate() == 0L)
             return false;
-        if(user.getEmergencyPerson() == null)
+        if(user.getEmergencyEmail() == null)
+            return false;
+        if(user.getEmergencyPhone() == null)
             return false;
 
         return true;
