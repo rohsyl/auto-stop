@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WaitingEoTActivity"
+    android:orientation="vertical"
+    android:layout_gravity="top"
+    android:id="@+id/waiting_eot_activity_layout">
+
+
+        <TextView
+            android:id="@+id/arrivTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="25dp"
+            android:text="@string/eot_label_arrival_time"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+
+        <TextClock
+            android:id="@+id/arrivTimeClock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:textAlignment="center"
+            android:textSize="35sp" />
+
+        <Button
+            android:id="@+id/buttonEndTrip"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="35dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/eot_button_end_trip"
+            android:textSize="20sp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:layout_marginBottom="400dp" />
+
+</LinearLayout>

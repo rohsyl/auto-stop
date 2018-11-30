@@ -26,6 +26,7 @@
             android:id="@+id/buttonValidate"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:onClick="clickOk"
             android:layout_gravity="center_horizontal"
             android:text="@string/ok" />
 

@@ -1,12 +1,15 @@
 package ch.hevs.a6452.grp2.autostop.autostop.Fragments;
 
 import android.app.DatePickerDialog;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatSpinner;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +18,22 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ch.hevs.a6452.grp2.autostop.autostop.Entites.PersonEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.Picker.DatePickerFragment;
+import ch.hevs.a6452.grp2.autostop.autostop.MainActivity;
 import ch.hevs.a6452.grp2.autostop.autostop.R;
 import ch.hevs.a6452.grp2.autostop.autostop.Utils.FirebaseConverter;
 import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.ProfileViewModel;
+import android.content.Intent;
+import android.widget.Toast;
+
 
 public class FragmentProfile extends Fragment {
 
@@ -46,6 +55,19 @@ public class FragmentProfile extends Fragment {
     @BindView(R.id.profile_birthdate_display)
     protected TextView lblDate;
 
+    @BindView(R.id.profile_emergency_phone)
+    protected EditText txtEmergencyPhone;
+
+    @BindView(R.id.profile_emergency_mail)
+    protected EditText txtEmergencyMail;
+
+    @BindView(R.id.fab_save_team)
+    protected FloatingActionButton btnSave;
+
+    private Long birthdate = null;
+
+    private PersonEntity person = null;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -63,13 +85,16 @@ public class FragmentProfile extends Fragment {
         // TODO: Use the ViewModel
 
 
-        popolateTitleSpinner();
+        populateTitleSpinner();
 
+        observeViewModel();
 
         btnDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Long date = Calendar.getInstance().getTimeInMillis();
+                if(birthdate != null)
+                    date = birthdate;
 
                 DatePickerFragment dialogFragmentDatePicker = new DatePickerFragment();
                 dialogFragmentDatePicker.setDate(new Date(date));
@@ -81,17 +106,123 @@ public class FragmentProfile extends Fragment {
                         c.set(Calendar.MONTH, m);
                         c.set(Calendar.DAY_OF_MONTH, d);
 
+                        birthdate = c.getTimeInMillis();
+
                         lblDate.setText(FirebaseConverter.toNiceDateFormat(c.getTimeInMillis()));
                     }
                 });
                 dialogFragmentDatePicker.show(getFragmentManager(), "datepicker");
             }
         });
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //reset errors
+                txtFullname.setError(null);
+                lblDate.setError(null);
+                txtEmergencyPhone.setError(null);
+                txtEmergencyMail.setError(null);
+
+                String fullname = txtFullname.getText().toString();
+                String emergencyPhone = txtEmergencyPhone.getText().toString();
+                String emergencyEmail = txtEmergencyMail.getText().toString();
+
+                boolean cancel = false;
+                View focusView = null;
+
+                if(TextUtils.isEmpty(fullname)){
+                    txtFullname.setError(getString(R.string.profile_error_fullname_empty));
+                    focusView = txtFullname;
+                    cancel = true;
+                }
+
+                if(birthdate == null){
+                    btnDate.setError(getString(R.string.profile_error_date_empty));
+                    focusView = btnDate;
+                    cancel = true;
+                }
+
+                if(TextUtils.isEmpty((emergencyPhone))){
+                    txtEmergencyPhone.setError(getString(R.string.profile_error_phone_empty));
+                    focusView = txtEmergencyPhone;
+                    cancel = true;
+                }
+
+                if(TextUtils.isEmpty((emergencyEmail))){
+                    txtEmergencyMail.setError(getString(R.string.profile_error_mail_empty));
+                    focusView = txtEmergencyMail;
+                    cancel = true;
+                }
+
+                if(!isEmailValid(emergencyEmail)){
+                    txtEmergencyMail.setError(getString(R.string.label_mail_error));
+                    focusView = txtEmergencyMail;
+                    cancel = true;
+                }
+
+
+                if(cancel){
+                    focusView.requestFocus();
+                }
+                else{
+                    // TODO : save to db
+                    person.setSex(spiSex.getSelectedItemPosition());
+                    person.setFullname(txtFullname.getText().toString());
+                    person.setBirthDate(birthdate);
+
+                    person.setEmergencyEmail(txtEmergencyMail.getText().toString());
+                    person.setEmergencyPhone(txtEmergencyPhone.getText().toString());
+
+                    mViewModel.updatePerson(person);
+
+                    Toast.makeText(FragmentProfile.this.getActivity(), getString(R.string.profile_save_message), Toast.LENGTH_SHORT).show();
+                    mainActivity();
+                }
+            }
+        });
     }
 
-    private void popolateTitleSpinner(){
+
+    private boolean isEmailValid(String email) {
+        //Check the pattern of the email input
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    private void mainActivity()
+    {
+        Intent i = new Intent(this.getActivity(), MainActivity.class);
+        startActivity(i);
+
+
+    }
+
+    private void observeViewModel(){
+
+        mViewModel.getPerson().observe(this, new Observer<PersonEntity>() {
+            @Override
+            public void onChanged(@Nullable PersonEntity personEntity) {
+                person = personEntity;
+                spiSex.setSelection(person.getSex());
+                txtFullname.setText(person.getFullname());
+                txtEmergencyMail.setText(personEntity.getEmergencyEmail());
+                txtEmergencyPhone.setText(personEntity.getEmergencyPhone());
+                if(person.getBirthDate() != 0){
+                    birthdate = person.getBirthDate();
+                    lblDate.setText(FirebaseConverter.toNiceDateFormat(birthdate));
+                }
+            }
+        });
+    }
+
+    private void populateTitleSpinner(){
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.profile_sex_array, android.R.layout.simple_spinner_item);
+
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
