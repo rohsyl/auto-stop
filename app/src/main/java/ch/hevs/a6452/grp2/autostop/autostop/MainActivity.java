@@ -21,8 +21,6 @@ import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentAbout;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentProfile;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentSettings;
 import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentStart;
-import ch.hevs.a6452.grp2.autostop.autostop.Utils.PotostopSession;
-
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

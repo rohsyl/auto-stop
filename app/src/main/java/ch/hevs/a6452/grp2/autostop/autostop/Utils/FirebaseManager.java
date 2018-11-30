@@ -16,7 +16,7 @@ public class FirebaseManager {
     private static FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
 
     public static void getUser(String uid, final FirebaseCallBack firebaseCallBack) {
-        //
+        //Get the entity Person from an uid
         DatabaseReference ref = mFirebaseDatabase.getReference().child(PotostopSession.NODE_PERSON).child(uid);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

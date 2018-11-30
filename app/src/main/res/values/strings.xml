@@ -108,4 +108,7 @@
     <string name="label_password_error" translatable="false">Invalid password</string>
     <string name="register_failed">Registering failed.</string>
     <string name="potostop_logo" translatable="false">Official logo</string>
+    <string name="toast_invalid_password">Invalid password</string>
+    <string name="toast_invalid_email">Invalid email</string>
+    <string name="toast_could_not_log_in">Login failed</string>
 </resources>
