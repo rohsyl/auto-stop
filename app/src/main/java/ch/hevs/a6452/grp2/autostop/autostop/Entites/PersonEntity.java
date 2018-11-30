@@ -17,7 +17,7 @@ public class PersonEntity implements Person{
 
     private String fullname = null;
     private String email = null;
-    private int sex = 0;
+    private int sex = 999;
     private Long birthDate = null;
 
 
