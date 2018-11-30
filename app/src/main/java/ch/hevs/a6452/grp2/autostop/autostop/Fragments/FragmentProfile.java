@@ -81,9 +81,8 @@ public class FragmentProfile extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
-        // TODO: Use the ViewModel
 
+        mViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
 
         populateTitleSpinner();
 
@@ -206,15 +205,15 @@ public class FragmentProfile extends Fragment {
         mViewModel.getPerson().observe(this, new Observer<PersonEntity>() {
             @Override
             public void onChanged(@Nullable PersonEntity personEntity) {
-                person = personEntity;
-                spiSex.setSelection(person.getSex());
-                txtFullname.setText(person.getFullname());
-                txtEmergencyMail.setText(personEntity.getEmergencyEmail());
-                txtEmergencyPhone.setText(personEntity.getEmergencyPhone());
-                if(person.getBirthDate() != 0){
-                    birthdate = person.getBirthDate();
-                    lblDate.setText(FirebaseConverter.toNiceDateFormat(birthdate));
-                }
+            person = personEntity;
+            spiSex.setSelection(person.getSex());
+            txtFullname.setText(person.getFullname());
+            txtEmergencyMail.setText(personEntity.getEmergencyEmail());
+            txtEmergencyPhone.setText(personEntity.getEmergencyPhone());
+            if(person.getBirthDate() != 0){
+                birthdate = person.getBirthDate();
+                lblDate.setText(FirebaseConverter.toNiceDateFormat(birthdate));
+            }
             }
         });
     }

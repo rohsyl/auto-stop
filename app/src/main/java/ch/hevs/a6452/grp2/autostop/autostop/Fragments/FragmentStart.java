@@ -40,6 +40,7 @@ import ch.hevs.a6452.grp2.autostop.autostop.Models.Position;
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Trip;
 import ch.hevs.a6452.grp2.autostop.autostop.PlateActivity;
 import ch.hevs.a6452.grp2.autostop.autostop.R;
+import ch.hevs.a6452.grp2.autostop.autostop.WaitingEoTActivity;
 
 
 public class FragmentStart extends Fragment implements View.OnClickListener {
@@ -156,10 +157,7 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
 
     private void startWaitingEoTActivity()
     {
-        // TODO: Mettre la bonne classe ==> WaitingEoTActivity.class
-        //Intent i = new Intent( this.getActivity(), PlateActivity.class );
-        //startActivity( i );
-
-        // TODO Fabien: Afficher l'activité de tracking par-dessus la MainActivity?
+        Intent i = new Intent( this.getActivity(), WaitingEoTActivity.class );
+        startActivity( i );
     }
 }
