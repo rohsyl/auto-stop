@@ -3,6 +3,7 @@ package ch.hevs.a6452.grp2.autostop.autostop;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +44,9 @@ public class PlateActivity extends AppCompatActivity
     @BindView(value=R.id.spCanton)
     protected Spinner spCanton;
 
+    @BindView(R.id.fab_validate_plate)
+    protected FloatingActionButton btnValidatePlate;
+
     // This variable is used to keep the plate in memory while selecting a location
     private PlateEntity plate;
 
@@ -52,6 +56,13 @@ public class PlateActivity extends AppCompatActivity
         setContentView(R.layout.activity_plate);
 
         ButterKnife.bind(this);
+
+        btnValidatePlate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickGo(view);
+            }
+        });
     }
 
     public void clickGo(View v)
