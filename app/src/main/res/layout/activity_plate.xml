@@ -7,13 +7,21 @@
     tools:context=".PlateActivity">
 
 
-
     <LinearLayout
         android:id="@+id/plate_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical"
         android:padding="15dp">
+
+        <TextView
+            android:id="@+id/tvPlateRegistering"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/plate_registering_instructions"
+            android:textSize="14sp" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -24,36 +32,40 @@
                 android:id="@+id/etPlateNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/plate_number"
-                android:inputType="number"
+                android:hint="@string/plate_number_hint"
+                android:inputType="text|textCapCharacters"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textSize="18sp" />
+
         </android.support.design.widget.TextInputLayout>
 
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="40dp" />
 
-        <android.support.design.widget.TextInputLayout
+        <TextView
+            android:id="@+id/tvPlatePicture"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:text="@string/plate_picture_instructions" />
 
-            <TextView
-                android:id="@+id/tvCanton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:text="@string/canton"
-                android:textSize="12sp"  />
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/take_plate_picture" />
 
-            <Spinner
-                android:id="@+id/spCanton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:entries="@array/cantons" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
 
-        </android.support.design.widget.TextInputLayout>
+        <ImageView
+            android:id="@+id/ivPlatePicture"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            app:srcCompat="@android:color/darker_gray" />
+
 
     </LinearLayout>
 

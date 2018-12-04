@@ -46,4 +46,14 @@
     <string name="toast_invalid_password">Invalid password</string>
     <string name="toast_invalid_email">Invalid email</string>
     <string name="toast_could_not_log_in">Login failed</string>
+    <string name="eot_label_arrival_time">Heure d\'arrivée</string>
+    <string name="eot_title_activity">Voyage en cours</string>
+    <string name="eot_button_end_trip">Fin du voyage</string>
+    <string name="ratingTripActivity" translatable="false">Évaluez votre voyage</string>
+    <string name="label_password_error">Mot de passe invalide</string>
+    <string name="potostop_logo">Logo officiel</string>
+    <string name="plate_registering_instructions">Entrez le numéro de plaque de votre conducteur ci-dessous (lettres et nombres uniquement)</string>
+    <string name="plate_number_hint">Numéro de plaque du conducteur - VS 12345</string>
+    <string name="plate_picture_instructions">Si vous voulez, vous pouvez prendre une photo de la plaque du conducteur</string>
+    <string name="take_plate_picture">Prendre une photo de la plaque</string>
 </resources>

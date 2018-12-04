@@ -55,9 +55,9 @@
     <string name="selected_place">Last selected</string>
 
     <!-- Waiting End of Trip Activity -->
-    <string name="eot_title_activity" translatable="false">Trip in progress</string>
-    <string name="eot_label_arrival_time" translatable="false">Arrival time</string>
-    <string name="eot_button_end_trip" translatable="false">End trip</string>
+    <string name="eot_title_activity">Trip in progress</string>
+    <string name="eot_label_arrival_time">Arrival time</string>
+    <string name="eot_button_end_trip">End trip</string>
 
 
     <string name="plate_registering">Plate registering</string>
@@ -97,7 +97,7 @@
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="report">Report</string>
     <string name="pleaseRateTrip">Please rate your Trip</string>
-    <string name="ratingTripActivity" translatable="false">Rate your Trip</string>
+    <string name="ratingTripActivity">Rate your Trip</string>
 
     <string name="toast_could_not_sign_in">You must be signed in</string>
     <string name="email_label">Email address</string>
@@ -107,8 +107,12 @@
     <string name="label_mail_error">Invalid email</string>
     <string name="label_password_error" translatable="false">Invalid password</string>
     <string name="register_failed">Registering failed.</string>
-    <string name="potostop_logo" translatable="false">Official logo</string>
+    <string name="potostop_logo">Official logo</string>
     <string name="toast_invalid_password">Invalid password</string>
     <string name="toast_invalid_email">Invalid email</string>
     <string name="toast_could_not_log_in">Login failed</string>
+    <string name="plate_registering_instructions">Type the plate number of your driver below (letters and numbers only)</string>
+    <string name="plate_number_hint">Driver\'s plate number - VS 12345</string>
+    <string name="plate_picture_instructions">If you want, you can take a picture of the driver\'s plate</string>
+    <string name="take_plate_picture">Take a picture of the plate</string>
 </resources>
