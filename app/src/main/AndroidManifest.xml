@@ -42,7 +42,8 @@
         </activity>
         <activity
             android:name=".PlateActivity"
-            android:label="@string/plate_registering" />
+            android:label="@string/plate_registering"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".WaitingEoTActivity"
             android:label="@string/eot_title_activity">
