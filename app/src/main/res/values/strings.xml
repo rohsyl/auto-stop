@@ -111,4 +111,5 @@
     <string name="toast_invalid_password">Invalid password</string>
     <string name="toast_invalid_email">Invalid email</string>
     <string name="toast_could_not_log_in">Login failed</string>
+    <string name="noGPSgranted">To use this service, you have to grant the acess to the location</string>
 </resources>

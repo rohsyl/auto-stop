@@ -22,6 +22,9 @@ public class TripEntity implements Trip, Serializable {
     private String plateUid;
     private List<Position> positions;
 
+
+
+
     @Override
     public String getUid() {
         return uid;
@@ -51,6 +54,8 @@ public class TripEntity implements Trip, Serializable {
     public List<Position> getPositions() {
         return positions;
     }
+
+    public void addPosition(Position p){this.positions.add(p);}
 
     public void setDestination(Position destination) {
         this.destination = destination;
@@ -85,4 +90,6 @@ public class TripEntity implements Trip, Serializable {
         result.put("plate", getPlateUid());
         return result;
     }
+
+
 }

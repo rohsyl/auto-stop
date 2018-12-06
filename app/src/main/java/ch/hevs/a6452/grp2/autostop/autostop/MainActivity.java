@@ -1,13 +1,18 @@
 package ch.hevs.a6452.grp2.autostop.autostop;
 
+import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -33,6 +39,8 @@ import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.ProfileViewModel;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private final int PERMISSIONS_REQUEST = 100;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -58,7 +66,7 @@ public class MainActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
-
+        checkGps();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -184,5 +192,30 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+    }
+
+
+    private void checkGps(){
+        //Check if permission is not granted
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST);
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
+            grantResults) {
+
+        //If no permission, display warning message
+        if (requestCode != PERMISSIONS_REQUEST || grantResults.length == 1
+                && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+
+            Toast.makeText(this, R.string.noGPSgranted, Toast.LENGTH_SHORT).show();
+        }
     }
 }
