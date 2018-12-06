@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -39,10 +40,7 @@ public class PlateActivity extends AppCompatActivity
     public static final int REQUEST_DESTINATION = 90;
 
     @BindView(value=R.id.etPlateNumber)
-    protected EditText tvPlateNumber;
-
-    @BindView(value=R.id.spCanton)
-    protected Spinner spCanton;
+    protected EditText etPlateNumber;
 
     @BindView(R.id.fab_validate_plate)
     protected FloatingActionButton btnValidatePlate;
@@ -67,9 +65,13 @@ public class PlateActivity extends AppCompatActivity
 
     public void clickGo(View v)
     {
-        String plateNumber = spCanton.getSelectedItem().toString();
-        plateNumber += tvPlateNumber.getText().toString();
+        String plateNumber = etPlateNumber.getText().toString();
 
+        // Formatting the plate number and updating the view
+        plateNumber = formatPlateNumber(plateNumber);
+        etPlateNumber.setText( plateNumber );
+
+        // Checking if the plate number format is valid
         if ( isPlateNumberValid( plateNumber ) )
         {
             Log.i(TAG, "Go button clicked");
@@ -87,9 +89,16 @@ public class PlateActivity extends AppCompatActivity
         }
     }
 
+    private String formatPlateNumber( String plateNumber )
+    {
+        plateNumber = plateNumber.toUpperCase(Locale.ROOT);
+        plateNumber = plateNumber.replaceAll("[^A-Z0-9]", "");
+        return plateNumber;
+    }
+
     private boolean isPlateNumberValid( String plateNumber )
     {
-        String platePattern = "[A-Z]{2}[0-9]+";
+        String platePattern = "[A-Z0-9]+";
 
         return plateNumber.matches( platePattern );
     }

@@ -53,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     //Users created and tested
     private PersonEntity userEntity;
     private PersonEntity checkUser = null;
+    private boolean userExists = false;
     //Layout elements
     @BindView(R.id.email_input)
     EditText emailInput;
@@ -66,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     Toast registerFailed;
     Toast passwordInvalid;
     Toast emailInvalid;
+    Toast userAlreadyExists;
 
     //GOOGLE LOGIN REFERENCES
     private static final int RC_SIGN_IN = 1212;
@@ -76,6 +78,8 @@ public class LoginActivity extends AppCompatActivity {
     protected SignInButton signInButton;
 
     protected GoogleSignInClient mGoogleSignInClient;
+
+    //TODO Julien rework layout to make it cute
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +95,9 @@ public class LoginActivity extends AppCompatActivity {
 
         loginFailed = Toast.makeText(this, R.string.toast_could_not_sign_in, Toast.LENGTH_LONG);
         loginFailed.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 0);
+
+        userAlreadyExists = Toast.makeText(this, R.string.toast_user_already_exists, Toast.LENGTH_LONG);
+        userAlreadyExists.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 0);
 
         passwordInvalid = Toast.makeText(this, R.string.toast_invalid_password, Toast.LENGTH_LONG);
         passwordInvalid.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 0);
@@ -133,6 +140,8 @@ public class LoginActivity extends AppCompatActivity {
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
+        //Google auth disabled for the moment : need to check if user already exists to make it work properly
+        signInButton.setEnabled(false);
     }
 
     @Override
@@ -238,6 +247,10 @@ public class LoginActivity extends AppCompatActivity {
                                 insertUserInDb(user);
                                 getUserAndChangeUI(user.getUid());
                             }
+                            //Check if the account already exists
+                            else if(!task.isSuccessful()){
+                                userAlreadyExists.show();
+                            }
                             //Email was incorrect : do nothing
                             else {
                                 registerFailed.show();
@@ -245,6 +258,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     });
+
         }
     }
 
@@ -258,14 +272,13 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             //Insert the user in the DB
                             //If user exists, it won't overwrite the existing values
-                            if(!userExists())
-                                insertUserInDb(user);
+                            //TODO Julien check if user exists in DB to avoid overwritting
+                            insertUserInDb(user);
                             // Sign in success, update UI with the signed-in user's information
                             getUserAndChangeUI(mAuth.getCurrentUser().getUid());
                         } else {
                             // If sign in fails, display a message to the user.
                             loginFailed.show();
-                            updateUI(null);
                         }
                     }
                 });
@@ -284,22 +297,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-
-    private boolean userExists() {
-        //Try to get user in the db
-        FirebaseManager.getUser(mAuth.getUid(), new FirebaseCallBack() {
-            @Override
-            public void onCallBack(Object o) {
-                checkUser = (PersonEntity) o;
-            }
-        });
-        //If still null : false
-        if(checkUser == null)
-            return false;
-
-        return true;
     }
 
     private void getUserAndChangeUI(String uId){
