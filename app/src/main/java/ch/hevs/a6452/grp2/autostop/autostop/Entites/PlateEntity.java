@@ -7,6 +7,7 @@ import com.google.firebase.database.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,8 @@ public class PlateEntity implements Plate, Serializable {
     private String uid;
 
     private String plateNumber;
-    private List<Report> reports;
+    private List<Report> reports = new ArrayList<Report>();
+
     private byte[] picture;
 
     public PlateEntity(){
@@ -69,6 +71,8 @@ public class PlateEntity implements Plate, Serializable {
     }
 
     @Exclude
+    public void addReport(ReportEntity p){this.reports.add(p);}
+
     public void setPicture(byte[] picture) {
         this.picture = picture;
     }
