@@ -53,6 +53,9 @@
         <activity
             android:name=".RatingTripActivity"
             android:label="@string/ratingTripActivity"></activity>
+        <activity
+            android:name=".ReportActivity"
+            android:label="@string/report_Your_Trip"></activity>
 
         <service
             android:name=".Utils.TrackingService"

@@ -125,6 +125,7 @@ public class PlateActivity extends AppCompatActivity
             plate.setPlateNumber( plateNumber );
             plate.setReports(new ArrayList<Report>());
             requestTripDestination();
+
         }
 
         else
@@ -153,6 +154,8 @@ public class PlateActivity extends AppCompatActivity
         Intent i = new Intent(this, LocationActivity.class);
         startActivityForResult( i, REQUEST_DESTINATION );
     }
+
+
 
     @Override
     public void onActivityResult( int requestCode, int resultCode, Intent intent)

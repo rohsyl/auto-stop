@@ -31,6 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hevs.a6452.grp2.autostop.autostop.Adapter.PlaceAutocompleteAdapter;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
+import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.TripViewModel;
 
 public class LocationActivity extends FragmentActivity {
 
@@ -54,6 +55,7 @@ public class LocationActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         // Construct a GeoDataClient for the Google Places API for Android.
         mGeoDataClient = Places.getGeoDataClient(this);
@@ -142,6 +144,7 @@ public class LocationActivity extends FragmentActivity {
     {
         Intent i = new Intent();
         i.putExtra(EXTRA_KEY_LOCATION, location);
+        i.putExtra("uidPlate", (getIntent().getStringExtra("uidPlate")));
         setResult(Activity.RESULT_OK, i);
         finish();
     }
