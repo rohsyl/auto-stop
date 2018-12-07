@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.TripEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Trip;
+import ch.hevs.a6452.grp2.autostop.autostop.Utils.TrackingService;
 import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.TripViewModel;
 
 
@@ -53,6 +54,8 @@ public class WaitingEoTActivity extends AppCompatActivity {
     private TripEntity trip;
     private TripViewModel mViewModel;
 
+    private  String uidTrip;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +64,12 @@ public class WaitingEoTActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        TripViewModel.Factory factory = new TripViewModel.Factory(this.getApplication(), getIntent().getStringExtra("uidTrip"));
+        uidTrip = getIntent().getStringExtra("uidTrip");
+
+        startTracking();
+
+        /*
+        TripViewModel.Factory factory = new TripViewModel.Factory(this.getApplication(), uidTrip);
 
         mViewModel = ViewModelProviders.of(this, factory).get(TripViewModel.class);
 
@@ -70,6 +78,7 @@ public class WaitingEoTActivity extends AppCompatActivity {
         observeViewModel();
 
         requestLocationUpdates();
+        */
 
         //Action listener for VALIDATE
         buttonEndTrip.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +114,7 @@ public class WaitingEoTActivity extends AppCompatActivity {
         LocationRequest request = new LocationRequest();
 
         //Interval between each positions
-        request.setInterval(10000);
+        request.setInterval(5000);
 
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         client = LocationServices.getFusedLocationProviderClient(this);
@@ -136,9 +145,18 @@ public class WaitingEoTActivity extends AppCompatActivity {
             client.requestLocationUpdates(request,locationCallback, null);
 
         }
+    }
 
 
+    private void startTracking(){
 
+
+        Log.i("Services", "Trip uid  : "+ uidTrip);
+
+        Intent serviceIntent = new Intent(this, TrackingService.class);
+        serviceIntent.putExtra("uidTrip", uidTrip);
+        startService(serviceIntent);
 
     }
+
 }
