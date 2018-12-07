@@ -122,6 +122,7 @@ public class PlateActivity extends AppCompatActivity
                 System.out.println("No picture taken.");
             }
             requestTripDestination();
+
         }
 
         else
@@ -149,6 +150,8 @@ public class PlateActivity extends AppCompatActivity
         Intent i = new Intent(this, LocationActivity.class);
         startActivityForResult( i, REQUEST_DESTINATION );
     }
+
+
 
     @Override
     public void onActivityResult( int requestCode, int resultCode, Intent intent)

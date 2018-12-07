@@ -43,15 +43,15 @@ public class RatingTripActivity extends AppCompatActivity {
             }
         });
 
-        //Action listener for VALIDATE
         buttonReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Report clicked");
 
-
-                Intent intent = new Intent(RatingTripActivity.this, MainActivity.class);
-                startActivity(intent);
+                Intent i = new Intent(RatingTripActivity.this, ReportActivity.class);
+                i.putExtra("uidTrip", (getIntent().getStringExtra("uidTrip")));
+                i.putExtra("uidPlate", (getIntent().getStringExtra("uidPlate")));
+                startActivity(i);
+                finish();
             }
         });
 

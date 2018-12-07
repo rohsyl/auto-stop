@@ -80,6 +80,8 @@ public class WaitingEoTActivity extends AppCompatActivity {
                 trip.setStatus(Trip.STATUS_FINISHED);
                 mViewModel.updateTrip(trip);
                 Intent intent = new Intent(WaitingEoTActivity.this, RatingTripActivity.class);
+                intent.putExtra("uidTrip", trip.getUid());
+                intent.putExtra("uidPlate", trip.getPlateUid());
                 startActivity(intent);
             }
         });
