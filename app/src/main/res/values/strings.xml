@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">Potostop</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -111,10 +111,11 @@
     <string name="toast_invalid_password">Invalid password</string>
     <string name="toast_invalid_email">Invalid email</string>
     <string name="toast_could_not_log_in">Login failed</string>
-    <string name="noGPSgranted">To use this service, you have to grant the acess to the location</string>
+    <string name="noGPSgranted" translatable="false">To use this service, you have to grant the acess to the location</string>
     <string name="toast_user_already_exists">User already exists.</string>
     <string name="plate_registering_instructions">Type the plate number of your driver below (letters and numbers only)</string>
     <string name="plate_number_hint">Driver\'s plate number - VS 12345</string>
     <string name="plate_picture_instructions">If you want, you can take a picture of the driver\'s plate</string>
     <string name="take_plate_picture">Take a picture of the plate</string>
+    <string name="noCameraGranted">Potostop cannot access the camera</string>
 </resources>

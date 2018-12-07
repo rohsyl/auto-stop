@@ -1,24 +1,36 @@
 package ch.hevs.a6452.grp2.autostop.autostop;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.view.View;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -38,15 +50,28 @@ public class PlateActivity extends AppCompatActivity
     public static final String EXTRA_KEY_PLATE = "plate";
     public static final String EXTRA_KEY_DESTINATION = "destination";
     public static final int REQUEST_DESTINATION = 90;
+    private static final int PERMISSIONS_REQUEST = 1515;
+    private static final int CAMERA_RESULT = 2323;
 
-    @BindView(value=R.id.etPlateNumber)
+    //Firebase stuff
+    private FirebaseAuth mAuth;
+    private StorageReference mStorageRef;
+
+    @BindView(R.id.etPlateNumber)
     protected EditText etPlateNumber;
-
     @BindView(R.id.fab_validate_plate)
     protected FloatingActionButton btnValidatePlate;
+    @BindView(R.id.button_remove_picture)
+    protected FloatingActionButton btnRemovePic;
+    @BindView(R.id.button_picture_plate)
+    protected Button btnTakePicture;
+    @BindView(R.id.ivPlatePicture)
+    protected ImageView platePreview;
 
     // This variable is used to keep the plate in memory while selecting a location
     private PlateEntity plate;
+
+    private Bitmap picture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +80,30 @@ public class PlateActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
+        //Instantiate the Firebase objects
+        mAuth = FirebaseAuth.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
         btnValidatePlate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clickGo(view);
+            }
+        });
+
+        btnTakePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Check if permission is granted
+                checkCamera();
+            }
+        });
+
+        btnRemovePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                picture = null;
+                platePreview.setImageResource(R.drawable.ic_plaque_bidon_v4);
             }
         });
     }
@@ -112,6 +157,7 @@ public class PlateActivity extends AppCompatActivity
     @Override
     public void onActivityResult( int requestCode, int resultCode, Intent intent)
     {
+        super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == REQUEST_DESTINATION)
         {
             if (resultCode == Activity.RESULT_OK)
@@ -122,6 +168,15 @@ public class PlateActivity extends AppCompatActivity
                 {
                     checkPlateAndReturnResult( plate, (PositionEntity) destination );
                 }
+            }
+        }
+        //If the request code is from the camera
+        if(requestCode == CAMERA_RESULT)
+        {
+            try {
+                picture = (Bitmap) intent.getExtras().get("data");
+                platePreview.setImageBitmap(picture);
+            } catch (NullPointerException e) {
             }
         }
     }
@@ -180,5 +235,37 @@ public class PlateActivity extends AppCompatActivity
         i.putExtra(EXTRA_KEY_DESTINATION, destination);
         setResult(Activity.RESULT_OK, i);
         finish();
+    }
+
+    private void checkCamera(){
+        //Check if permission is not granted
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            //If not : ask the user
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    PERMISSIONS_REQUEST);
+        }
+        else
+            startCamera();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
+            grantResults) {
+        //If no permission, display warning message
+        if (requestCode != PERMISSIONS_REQUEST || grantResults.length == 1
+                && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, R.string.noCameraGranted, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //Start camera
+        else
+            startCamera();
+    }
+
+    private void startCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, CAMERA_RESULT);
     }
 }
