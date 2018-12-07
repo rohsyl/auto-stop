@@ -50,6 +50,7 @@ public class PlateEntity implements Plate, Serializable {
         return reports;
     }
 
+    @Exclude
     @Override
     public byte[] getPicture(){
         return picture;
@@ -67,6 +68,7 @@ public class PlateEntity implements Plate, Serializable {
         this.reports = reports;
     }
 
+    @Exclude
     public void setPicture(byte[] picture) {
         this.picture = picture;
     }
