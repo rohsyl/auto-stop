@@ -1,13 +1,17 @@
 package ch.hevs.a6452.grp2.autostop.autostop.Fragments;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,6 +51,8 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
 
     public static final String TAG = "FragmentStart";
     public static final int REQUEST_NEW_TRIP = 92;
+
+    private final int PERMISSIONS_REQUEST = 100;
 
     private Button buttonStartTrip;
 
@@ -89,6 +95,15 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
 
     private void clickStartTrip()
     {
+
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST);
+            return;
+        }
+
         Log.i(TAG, "ButtonStartTrip clicked");
         Intent i = new Intent( this.getActivity(), PlateActivity.class );
         startActivityForResult( i, REQUEST_NEW_TRIP );
@@ -121,7 +136,7 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
         // Inserting in Firebase
         DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
 
-        String tripUid = refRoot.push().getKey();
+        final String tripUid = refRoot.push().getKey();
         TripEntity trip = createNewTrip( tripUid, destination, plate.getUid() );
 
         // Adding the trip
@@ -131,7 +146,7 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
                     public void onComplete(@NonNull Task<Void> task) {
                         if ( task.isSuccessful() )
                         {
-                            startWaitingEoTActivity();
+                            startWaitingEoTActivity(tripUid);
                         }
                     }
                 });
@@ -150,14 +165,15 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
         trip.setDestination( destination );
         trip.setOwnerUid( userId );
         trip.setPlateUid( plateUid );
-        trip.setPositions( new ArrayList<Position>());
+        trip.setPositions( new ArrayList<PositionEntity>());
 
         return trip;
     }
 
-    private void startWaitingEoTActivity()
+    private void startWaitingEoTActivity(String tripUid)
     {
         Intent i = new Intent( this.getActivity(), WaitingEoTActivity.class );
+        i.putExtra("uidTrip", tripUid);
         startActivity( i );
     }
 }
