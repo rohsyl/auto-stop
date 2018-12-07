@@ -3,8 +3,12 @@ package ch.hevs.a6452.grp2.autostop.autostop.Entites;
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Position;
@@ -17,10 +21,10 @@ public class TripEntity implements Trip, Serializable {
 
     private String uid;
     private String status;
-    private Position destination;
+    private PositionEntity destination;
     private String ownerUid;
     private String plateUid;
-    private List<Position> positions;
+    private List<PositionEntity> positions = new ArrayList<PositionEntity>();
 
 
 
@@ -51,13 +55,11 @@ public class TripEntity implements Trip, Serializable {
     }
 
     @Override
-    public List<Position> getPositions() {
-        return positions;
-    }
+    public List<PositionEntity> getPositions() { return positions; }
 
-    public void addPosition(Position p){this.positions.add(p);}
+    public void addPosition(PositionEntity p){this.positions.add(p);}
 
-    public void setDestination(Position destination) {
+    public void setDestination(PositionEntity destination) {
         this.destination = destination;
     }
 
@@ -73,7 +75,7 @@ public class TripEntity implements Trip, Serializable {
         this.plateUid = plateUid;
     }
 
-    public void setPositions(List<Position> positions) {
+    public void setPositions(List<PositionEntity> positions) {
         this.positions = positions;
     }
 

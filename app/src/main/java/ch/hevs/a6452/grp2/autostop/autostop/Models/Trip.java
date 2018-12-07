@@ -2,6 +2,8 @@ package ch.hevs.a6452.grp2.autostop.autostop.Models;
 
 import java.util.List;
 
+import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
+
 public interface Trip {
 
     String STATUS_NOT_STARTED = "not_started";
@@ -13,5 +15,5 @@ public interface Trip {
     Position getDestination();
     String getOwnerUid();
     String getPlateUid();
-    List<Position> getPositions();
+    List<PositionEntity> getPositions();
 }

@@ -5,54 +5,33 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextClock;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ch.hevs.a6452.grp2.autostop.autostop.Entites.PersonEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.TripEntity;
-import ch.hevs.a6452.grp2.autostop.autostop.Models.Position;
-import ch.hevs.a6452.grp2.autostop.autostop.Utils.FirebaseConverter;
-import ch.hevs.a6452.grp2.autostop.autostop.Utils.PotostopSession;
-import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.ProfileViewModel;
+import ch.hevs.a6452.grp2.autostop.autostop.Models.Trip;
 import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.TripViewModel;
 
-import static android.widget.Toast.makeText;
 
 public class WaitingEoTActivity extends AppCompatActivity {
-
-    private TripViewModel mViewModel;
-
-    private TripEntity trip;
 
     public static final String TAG = "WaitingEoTActivity";
 
@@ -68,7 +47,11 @@ public class WaitingEoTActivity extends AppCompatActivity {
     @BindView(R.id.buttonEndTrip)
     protected Button buttonEndTrip;
 
-    //DatabaseReference tripRef;
+    private FusedLocationProviderClient client;
+    private LocationCallback locationCallback;
+    private PositionEntity currentPosition;
+    private TripEntity trip;
+    private TripViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,83 +61,82 @@ public class WaitingEoTActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-
-        TripViewModel.Factory factory = new TripViewModel.Factory(this.getApplication(), "-LStZCH87vXHErdvgVYQ" );
+        TripViewModel.Factory factory = new TripViewModel.Factory(this.getApplication(), getIntent().getStringExtra("uidTrip"));
 
         mViewModel = ViewModelProviders.of(this, factory).get(TripViewModel.class);
 
+        currentPosition = new PositionEntity();
 
-        //observeViewModel();
+        observeViewModel();
 
-        //requestLocationUpdates();
+        requestLocationUpdates();
 
         //Action listener for VALIDATE
         buttonEndTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "buttonEndTrip clicked");
-
+                client.removeLocationUpdates(locationCallback);
+                trip.setStatus(Trip.STATUS_FINISHED);
+                mViewModel.updateTrip(trip);
                 Intent intent = new Intent(WaitingEoTActivity.this, RatingTripActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-
-    private void observeViewModel(){
-
+    //Our observer to retriev the trip object
+    private void observeViewModel() {
+        Log.i(TAG, "Observe trip : "+getIntent().getStringExtra("uidTrip"));
         mViewModel.getTrip().observe(this, new Observer<TripEntity>() {
             @Override
             public void onChanged(@Nullable TripEntity tripEntity) {
                 trip = tripEntity;
-                Log.d("TripVM", "-----------Trip observed");
-                if(trip!=null){
-                    Log.d("TripVM", "-----------TripNOTNULL"+trip.getUid());
-                }
             }
         });
     }
 
 
+    //Use to start tracking
     private void requestLocationUpdates() {
-        Log.d("TripVM", "-----------requestLocationUpdates");
+        Log.i(TAG, "RequestLocationUpdates");
         LocationRequest request = new LocationRequest();
 
+        //Interval between each positions
         request.setInterval(10000);
 
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
-        int permission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
+        client = LocationServices.getFusedLocationProviderClient(this);
 
+        locationCallback =  new LocationCallback() {
 
-        if (permission == PackageManager.PERMISSION_GRANTED) {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
 
-           final Toast toast = makeText(this, "new location !!!", Toast.LENGTH_SHORT);
+                //Fill Position object
+                currentPosition.setLatitude(locationResult.getLastLocation().getLatitude());
+                currentPosition.setLongitude(locationResult.getLastLocation().getLongitude());
+                currentPosition.setTimestamp(locationResult.getLastLocation().getTime());
 
-
-            client.requestLocationUpdates(request, new LocationCallback() {
-
-                @Override
-                public void onLocationResult(LocationResult locationResult) {
-                    toast.show();
-
-                    PositionEntity currentPosition = new PositionEntity();
-                    currentPosition.setLatitude(locationResult.getLastLocation().getLatitude());
-                    currentPosition.setLongitude(locationResult.getLastLocation().getLongitude());
-                    currentPosition.setTimestamp(locationResult.getLastLocation().getTime());
-
-                    if (currentPosition != null ) {
-                        Log.d("TripVM", "-----------set current position");
-                        //Log.d("TripVM", "-----------"+trip.getUid());
-                        //trip.addPosition(currentPosition);
-                        //mViewModel.updateTrip(trip);
-                    }
-
+                //Add the position to db
+                if (currentPosition !=null && trip!=null ) {
+                    Log.i(TAG, "New location : "+ locationResult);
+                    trip.addPosition(currentPosition);
+                    mViewModel.updateTrip(trip);
                 }
-            }, null);
+            }
+        };
+
+        //If the permission is granted we start the tracking
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            client.requestLocationUpdates(request,locationCallback, null);
+
         }
+
+
+
+
     }
-
-
 }

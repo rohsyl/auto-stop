@@ -218,4 +218,6 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, R.string.noGPSgranted, Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }
