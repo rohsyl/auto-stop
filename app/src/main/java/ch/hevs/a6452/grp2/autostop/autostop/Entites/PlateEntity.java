@@ -22,17 +22,17 @@ public class PlateEntity implements Plate, Serializable {
     private String uid;
 
     private String plateNumber;
-    private List<Report> reports = new ArrayList<Report>();
-
+    private List<Report> reports;
     private byte[] picture;
 
     public PlateEntity(){
-
+        reports = new ArrayList<Report>();
     }
 
     public PlateEntity(Plate plate){
         this.uid = plate.getUid();
         this.plateNumber = plate.getPlateNumber();
+        reports = new ArrayList<Report>();
         this.reports = plate.getReports();
         this.picture = plate.getPicture();
     }
