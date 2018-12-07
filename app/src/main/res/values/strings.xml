@@ -111,7 +111,12 @@
     <string name="toast_invalid_password">Invalid password</string>
     <string name="toast_invalid_email">Invalid email</string>
     <string name="toast_could_not_log_in">Login failed</string>
-    <string name="noGPSgranted" translatable="false">To use this service, you have to grant the acess to the location</string>
+
+
+    <string name="report_Your_Trip">Report your Trip</string>
+    <string name="error_report_text">Text is null</string>
+
+    <string name="noGPSgranted">To use this service, you have to grant the acess to the location</string>
     <string name="toast_user_already_exists">User already exists.</string>
     <string name="plate_registering_instructions">Type the plate number of your driver below (letters and numbers only)</string>
     <string name="plate_number_hint">Driver\'s plate number - VS 12345</string>
