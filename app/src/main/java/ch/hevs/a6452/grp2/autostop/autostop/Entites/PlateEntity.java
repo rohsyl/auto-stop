@@ -79,9 +79,12 @@ public class PlateEntity implements Plate, Serializable {
 
     @Exclude
     public static byte[] convertPicture(Bitmap pictureBmp){
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        pictureBmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
+        if(pictureBmp != null) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            pictureBmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            return stream.toByteArray();
+        }
+        return null;
     }
 
     @Exclude

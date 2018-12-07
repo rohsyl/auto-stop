@@ -4,7 +4,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
-    <string name="nav_header_desc" translatable="false">Navigation header</string>
+    <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="ok">OK</string>
     <string name="destination">Destination</string>
@@ -55,9 +55,9 @@
     <string name="selected_place">Last selected</string>
 
     <!-- Waiting End of Trip Activity -->
-    <string name="eot_title_activity" translatable="false">Trip in progress</string>
-    <string name="eot_label_arrival_time" translatable="false">Arrival time</string>
-    <string name="eot_button_end_trip" translatable="false">End trip</string>
+    <string name="eot_title_activity">Trip in progress</string>
+    <string name="eot_label_arrival_time">Arrival time</string>
+    <string name="eot_button_end_trip">End trip</string>
 
 
     <string name="plate_registering">Plate registering</string>
@@ -97,7 +97,7 @@
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="report">Report</string>
     <string name="pleaseRateTrip">Please rate your Trip</string>
-    <string name="ratingTripActivity" translatable="false">Rate your Trip</string>
+    <string name="ratingTripActivity">Rate your Trip</string>
 
     <string name="toast_could_not_sign_in">You must be signed in</string>
     <string name="email_label">Email address</string>
@@ -105,9 +105,9 @@
     <string name="label_login_button">Log in</string>
     <string name="label_create_account">New account</string>
     <string name="label_mail_error">Invalid email</string>
-    <string name="label_password_error" translatable="false">Invalid password</string>
+    <string name="label_password_error">Invalid password</string>
     <string name="register_failed">Registering failed.</string>
-    <string name="potostop_logo" translatable="false">Official logo</string>
+    <string name="potostop_logo">Official logo</string>
     <string name="toast_invalid_password">Invalid password</string>
     <string name="toast_invalid_email">Invalid email</string>
     <string name="toast_could_not_log_in">Login failed</string>
