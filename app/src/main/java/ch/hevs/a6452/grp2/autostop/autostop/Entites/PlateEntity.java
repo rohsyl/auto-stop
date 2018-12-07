@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Plate;
-import ch.hevs.a6452.grp2.autostop.autostop.Models.Report;
 
 public class PlateEntity implements Plate, Serializable {
 
@@ -22,17 +21,15 @@ public class PlateEntity implements Plate, Serializable {
     private String uid;
 
     private String plateNumber;
-    private List<Report> reports;
+    private List<ReportEntity> reports = new ArrayList<ReportEntity>();
     private byte[] picture;
 
-    public PlateEntity(){
-        reports = new ArrayList<Report>();
-    }
+public PlateEntity(){}
 
     public PlateEntity(Plate plate){
         this.uid = plate.getUid();
         this.plateNumber = plate.getPlateNumber();
-        reports = new ArrayList<Report>();
+        reports = new ArrayList<ReportEntity>();
         this.reports = plate.getReports();
         this.picture = plate.getPicture();
     }
@@ -48,7 +45,7 @@ public class PlateEntity implements Plate, Serializable {
     }
 
     @Override
-    public List<Report> getReports() {
+    public List<ReportEntity> getReports() {
         return reports;
     }
 
@@ -66,7 +63,7 @@ public class PlateEntity implements Plate, Serializable {
         this.plateNumber = plateNumber;
     }
 
-    public void setReports(List<Report> reports) {
+    public void setReports(List<ReportEntity> reports) {
         this.reports = reports;
     }
 

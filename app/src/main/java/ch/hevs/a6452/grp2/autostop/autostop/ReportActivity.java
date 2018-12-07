@@ -37,6 +37,7 @@ public class ReportActivity extends AppCompatActivity {
 
     private ReportEntity myReport;
     private PlateEntity myPlate;
+    private TripEntity myTrip;
 
 
     @BindView(R.id.editTextReport)
@@ -68,24 +69,10 @@ public class ReportActivity extends AppCompatActivity {
             myReport.setTimestamp(time);
             myReport.setTripUid(getIntent().getStringExtra("uidTrip"));
 
-            addReportToPlate(myReport, getIntent().getStringExtra("uidPlate"));
+            getTripDetails(getIntent().getStringExtra("uidTrip"));
             endReportTrip();
         }
     }
-
-/*
-    private void addReport(ReportEntity reportToAdd){
-        mDatabase.getReference().child("plates/").child(myPlate.getUid()).setValue(reportToAdd).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful())
-                {
-                    endReportTrip();
-                }
-            }
-        });
-    }
-    */
 
 
     private void endReportTrip()
@@ -113,11 +100,6 @@ public class ReportActivity extends AppCompatActivity {
                 System.out.println(databaseError.getMessage());
             }
         });
-
-
-
-
-
     }
 
 
@@ -137,7 +119,24 @@ public class ReportActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void getTripDetails(String uidTrip)
+    {
+        DatabaseReference refPlate = mDatabase.getReference(PotostopSession.NODE_TRIP).child(uidTrip);
+        refPlate.addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, "snap"+dataSnapshot);
+                myTrip = dataSnapshot.getValue(TripEntity.class);
+                addReportToPlate(myReport, myTrip.getPlateUid());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("Error while getting current trip");
+                System.out.println(databaseError.getMessage());
+            }
+        });
     }
 
 

@@ -1,20 +1,18 @@
 package ch.hevs.a6452.grp2.autostop.autostop.Utils;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.ActivityManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -28,59 +26,86 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.List;
-
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.TripEntity;
-import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.TripViewModel;
+import ch.hevs.a6452.grp2.autostop.autostop.Models.Trip;
+import ch.hevs.a6452.grp2.autostop.autostop.R;
 
 public class TrackingService extends Service {
 
-    private static final String TAG = "TrackingService";
+    private static final String TAG = TrackingService.class.getSimpleName();
 
     private FusedLocationProviderClient client;
     private LocationCallback locationCallback;
-    private FirebaseDatabase mDatabase;
     private PositionEntity currentPosition;
+    private FirebaseDatabase mDatabase;
+    private String mTripUid;
     private TripEntity trip;
-    private TripViewModel mViewModel;
 
-    private String uidTrip;
-
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-        uidTrip = intent.getStringExtra("uidTrip");
-        mDatabase = FirebaseDatabase.getInstance();
-        Log.d(TAG, "Uid trip start " +uidTrip);
-        retrievTrip(uidTrip);
-        return Service.START_REDELIVER_INTENT;
-    }
-
-
-    public TrackingService() {
-
-
-    }
 
     @Override
     public IBinder onBind(Intent intent) {
-       return null;
+        return null;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        currentPosition = new PositionEntity();
+        buildNotification();
+        requestLocationUpdates();
+    }
+
+    @Override
+    public int onStartCommand (Intent intent, int flags, int startId) {
+        mTripUid=(String) intent.getExtras().get("uidTrip");
+        Log.i(TAG, "trip uid " + mTripUid);
+        getTrip(mTripUid);
+        return flags;
+    }
+
+    @Override
+    public void onDestroy() {
+        trip.setStatus(Trip.STATUS_FINISHED);
+        updateTrip(trip);
+        client.removeLocationUpdates(locationCallback);
     }
 
 
+    private void buildNotification() {
+        Log.i(TAG, "Build notif ");
+        String stop = "stop";
+        registerReceiver(stopReceiver, new IntentFilter(stop));
+        PendingIntent broadcastIntent = PendingIntent.getBroadcast(
+                this, 0, new Intent(stop), PendingIntent.FLAG_UPDATE_CURRENT);
+        // Create the persistent notification
+        Notification.Builder builder = new Notification.Builder(this)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText("Trip en cours")
+                .setOngoing(true)
+                .setContentIntent(broadcastIntent)
+                .setSmallIcon(R.mipmap.ic_launcher);
+        startForeground(1, builder.build());
+    }
 
-    //Our observer to retriev the trip object
-    private void retrievTrip(String uid) {
-        Log.d(TAG, "Retrive data");
-        DatabaseReference refTrip = mDatabase.getReference(PotostopSession.NODE_TRIP).child(uid);
+    protected BroadcastReceiver stopReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            unregisterReceiver(stopReceiver);
+            stopSelf();
+        }
+    };
+
+
+    private void getTrip(String tripUid){
+        mDatabase = FirebaseDatabase.getInstance();
+        mTripUid = tripUid ;
+        DatabaseReference refTrip = mDatabase.getReference(PotostopSession.NODE_TRIP).child(mTripUid);
         refTrip.addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "DataSnapShot"+dataSnapshot.getValue());
+                Log.d("TripVM", "DataSnapShot"+dataSnapshot.getValue());
                 trip = dataSnapshot.getValue(TripEntity.class);
-
             }
 
             @Override
@@ -91,9 +116,24 @@ public class TrackingService extends Service {
         });
     }
 
+    private void updateTrip(TripEntity trip){
+        mDatabase.getReference(PotostopSession.NODE_TRIP).child(mTripUid).setValue(trip, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if(databaseError == null){
+                    System.out.println("TRIP SUCCESSFULLY udapted");
+                }
+                else {
+                    System.out.println("Error while updating trip");
+                    System.out.println(databaseError.getMessage());
+                }
+            }
+        });
+    }
 
-    //Use to start tracking
     private void requestLocationUpdates() {
+        Log.i(TAG, "track ");
+
         Log.i(TAG, "RequestLocationUpdates");
         LocationRequest request = new LocationRequest();
 
@@ -114,10 +154,10 @@ public class TrackingService extends Service {
                 currentPosition.setTimestamp(locationResult.getLastLocation().getTime());
 
                 //Add the position to db
-                if (currentPosition !=null && trip!=null ) {
-                    Log.i(TAG, "New location : "+ locationResult);
+                if (currentPosition !=null  ) {
+                    Log.i(TAG, "New location : "+ currentPosition);
                     trip.addPosition(currentPosition);
-                    mViewModel.updateTrip(trip);
+                    updateTrip(trip);
                 }
             }
         };
@@ -125,7 +165,6 @@ public class TrackingService extends Service {
         //If the permission is granted we start the tracking
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
             client.requestLocationUpdates(request,locationCallback, null);
         }
     }

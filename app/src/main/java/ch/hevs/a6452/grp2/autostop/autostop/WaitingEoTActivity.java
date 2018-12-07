@@ -48,13 +48,9 @@ public class WaitingEoTActivity extends AppCompatActivity {
     @BindView(R.id.buttonEndTrip)
     protected Button buttonEndTrip;
 
-    private FusedLocationProviderClient client;
-    private LocationCallback locationCallback;
-    private PositionEntity currentPosition;
-    private TripEntity trip;
-    private TripViewModel mViewModel;
-
     private  String uidTrip;
+
+    private Intent serviceTracking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,94 +64,28 @@ public class WaitingEoTActivity extends AppCompatActivity {
 
         startTracking();
 
-        /*
-        TripViewModel.Factory factory = new TripViewModel.Factory(this.getApplication(), uidTrip);
-
-        mViewModel = ViewModelProviders.of(this, factory).get(TripViewModel.class);
-
-        currentPosition = new PositionEntity();
-
-        observeViewModel();
-
-        requestLocationUpdates();
-        */
 
         //Action listener for VALIDATE
         buttonEndTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "buttonEndTrip clicked");
-                client.removeLocationUpdates(locationCallback);
-                trip.setStatus(Trip.STATUS_FINISHED);
-                mViewModel.updateTrip(trip);
+                stopService(serviceTracking);
                 Intent intent = new Intent(WaitingEoTActivity.this, RatingTripActivity.class);
-                intent.putExtra("uidTrip", trip.getUid());
-                intent.putExtra("uidPlate", trip.getPlateUid());
+                intent.putExtra("uidTrip", uidTrip);
                 startActivity(intent);
             }
         });
-    }
-
-    //Our observer to retriev the trip object
-    private void observeViewModel() {
-        Log.i(TAG, "Observe trip : "+getIntent().getStringExtra("uidTrip"));
-        mViewModel.getTrip().observe(this, new Observer<TripEntity>() {
-            @Override
-            public void onChanged(@Nullable TripEntity tripEntity) {
-                trip = tripEntity;
-            }
-        });
-    }
-
-
-    //Use to start tracking
-    private void requestLocationUpdates() {
-        Log.i(TAG, "RequestLocationUpdates");
-        LocationRequest request = new LocationRequest();
-
-        //Interval between each positions
-        request.setInterval(5000);
-
-        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        client = LocationServices.getFusedLocationProviderClient(this);
-
-        locationCallback =  new LocationCallback() {
-
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-
-                //Fill Position object
-                currentPosition.setLatitude(locationResult.getLastLocation().getLatitude());
-                currentPosition.setLongitude(locationResult.getLastLocation().getLongitude());
-                currentPosition.setTimestamp(locationResult.getLastLocation().getTime());
-
-                //Add the position to db
-                if (currentPosition !=null && trip!=null ) {
-                    Log.i(TAG, "New location : "+ locationResult);
-                    trip.addPosition(currentPosition);
-                    mViewModel.updateTrip(trip);
-                }
-            }
-        };
-
-        //If the permission is granted we start the tracking
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-            client.requestLocationUpdates(request,locationCallback, null);
-
-        }
     }
 
 
     private void startTracking(){
 
 
-        Log.i("Services", "Trip uid  : "+ uidTrip);
-
-        Intent serviceIntent = new Intent(this, TrackingService.class);
-        serviceIntent.putExtra("uidTrip", uidTrip);
-        startService(serviceIntent);
+        Log.i(TAG, "Trip uid  : "+ uidTrip);
+        serviceTracking = new Intent(this, TrackingService.class);
+        serviceTracking.putExtra("uidTrip", uidTrip);
+        startService(serviceTracking);
 
     }
 

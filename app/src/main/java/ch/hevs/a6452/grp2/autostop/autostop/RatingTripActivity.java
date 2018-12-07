@@ -49,7 +49,6 @@ public class RatingTripActivity extends AppCompatActivity {
 
                 Intent i = new Intent(RatingTripActivity.this, ReportActivity.class);
                 i.putExtra("uidTrip", (getIntent().getStringExtra("uidTrip")));
-                i.putExtra("uidPlate", (getIntent().getStringExtra("uidPlate")));
                 startActivity(i);
                 finish();
             }

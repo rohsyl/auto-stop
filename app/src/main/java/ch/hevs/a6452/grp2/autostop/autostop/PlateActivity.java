@@ -40,6 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.PlateEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
+import ch.hevs.a6452.grp2.autostop.autostop.Entites.ReportEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.TripEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Report;
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Trip;
@@ -115,7 +116,7 @@ public class PlateActivity extends AppCompatActivity
 
             plate = new PlateEntity();
             plate.setPlateNumber( plateNumber );
-            plate.setReports(new ArrayList<Report>());
+            plate.setReports(new ArrayList<ReportEntity>());
             try{
                 plate.setPicture(PlateEntity.convertPicture(picture));
             } catch (Exception e){
