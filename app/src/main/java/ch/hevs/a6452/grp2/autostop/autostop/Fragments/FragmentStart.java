@@ -29,6 +29,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +47,7 @@ import ch.hevs.a6452.grp2.autostop.autostop.Models.Position;
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Trip;
 import ch.hevs.a6452.grp2.autostop.autostop.PlateActivity;
 import ch.hevs.a6452.grp2.autostop.autostop.R;
+import ch.hevs.a6452.grp2.autostop.autostop.Utils.PotostopSession;
 import ch.hevs.a6452.grp2.autostop.autostop.WaitingEoTActivity;
 
 
@@ -56,6 +60,9 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
 
     private Button buttonStartTrip;
 
+    //Firebase storage
+    private StorageReference mStorageRef;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,6 +71,9 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
 
         buttonStartTrip = (Button) view.findViewById(R.id.buttonStartTrip);
         buttonStartTrip.setOnClickListener(this);
+
+        //Instantiate Firebase storage
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         return view;
     }
@@ -150,9 +160,25 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
                         }
                     }
                 });
+
+        //Add the picture in FireBase Storage
+        if(plate.getPicture() != null) {
+            storePlatePicture(plate, trip);
+        }
+        else
+            System.out.println("Picture is null");
     }
 
-
+    private void storePlatePicture(PlateEntity plate, TripEntity trip){
+        StorageReference platesRef = mStorageRef.child(PotostopSession.STORAGE_PLATES_NODES + "/" +
+                plate.getUid() + "/tripId_" + trip.getUid());
+        platesRef.putBytes(plate.getPicture()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                System.out.println("Image uploaded");
+            }
+        });
+    }
 
     private TripEntity createNewTrip( String tripUid, PositionEntity destination, String plateUid )
     {

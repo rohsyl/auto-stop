@@ -1,8 +1,11 @@
 package ch.hevs.a6452.grp2.autostop.autostop.Entites;
 
+import android.graphics.Bitmap;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +22,7 @@ public class PlateEntity implements Plate, Serializable {
 
     private String plateNumber;
     private List<Report> reports;
+    private byte[] picture;
 
     public PlateEntity(){
 
@@ -28,6 +32,7 @@ public class PlateEntity implements Plate, Serializable {
         this.uid = plate.getUid();
         this.plateNumber = plate.getPlateNumber();
         this.reports = plate.getReports();
+        this.picture = plate.getPicture();
     }
 
     @Override
@@ -45,6 +50,11 @@ public class PlateEntity implements Plate, Serializable {
         return reports;
     }
 
+    @Override
+    public byte[] getPicture(){
+        return picture;
+    }
+
     public void setUid(String uid) {
         this.uid = uid;
     }
@@ -57,6 +67,16 @@ public class PlateEntity implements Plate, Serializable {
         this.reports = reports;
     }
 
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
+    }
+
+    @Exclude
+    public static byte[] convertPicture(Bitmap pictureBmp){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        pictureBmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
+    }
 
     @Exclude
     public Map<String, Object> toMap() {

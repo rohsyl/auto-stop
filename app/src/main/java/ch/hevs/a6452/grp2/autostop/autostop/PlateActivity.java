@@ -53,10 +53,6 @@ public class PlateActivity extends AppCompatActivity
     private static final int PERMISSIONS_REQUEST = 1515;
     private static final int CAMERA_RESULT = 2323;
 
-    //Firebase stuff
-    private FirebaseAuth mAuth;
-    private StorageReference mStorageRef;
-
     @BindView(R.id.etPlateNumber)
     protected EditText etPlateNumber;
     @BindView(R.id.fab_validate_plate)
@@ -79,10 +75,6 @@ public class PlateActivity extends AppCompatActivity
         setContentView(R.layout.activity_plate);
 
         ButterKnife.bind(this);
-
-        //Instantiate the Firebase objects
-        mAuth = FirebaseAuth.getInstance();
-        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         btnValidatePlate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +116,11 @@ public class PlateActivity extends AppCompatActivity
             plate = new PlateEntity();
             plate.setPlateNumber( plateNumber );
             plate.setReports(new ArrayList<Report>());
+            try{
+                plate.setPicture(PlateEntity.convertPicture(picture));
+            } catch (Exception e){
+                System.out.println("No picture taken.");
+            }
             requestTripDestination();
         }
 
@@ -144,7 +141,6 @@ public class PlateActivity extends AppCompatActivity
     private boolean isPlateNumberValid( String plateNumber )
     {
         String platePattern = "[A-Z0-9]+";
-
         return plateNumber.matches( platePattern );
     }
 
@@ -173,18 +169,17 @@ public class PlateActivity extends AppCompatActivity
         //If the request code is from the camera
         if(requestCode == CAMERA_RESULT)
         {
-            try {
+            try
+            {
                 picture = (Bitmap) intent.getExtras().get("data");
                 platePreview.setImageBitmap(picture);
-            } catch (NullPointerException e) {
             }
+            catch (NullPointerException e) { }
         }
     }
 
     private void checkPlateAndReturnResult(final PlateEntity plateToCheck, final PositionEntity destination )
     {
-        // TODO Fabien: Ajouter la plaque si elle n'existe pas, sinon la récupérer
-
         final DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
 
         refRoot.child("plates").orderByChild("plateNumber").equalTo(plateToCheck.getPlateNumber()).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -195,6 +190,7 @@ public class PlateActivity extends AppCompatActivity
                 if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() == 1 )
                 {
                     final PlateEntity existingPlate = dataSnapshot.getChildren().iterator().next().getValue(PlateEntity.class);
+                    existingPlate.setPicture(PlateEntity.convertPicture(picture));
                     returnPlateLocationResult( existingPlate, (PositionEntity) destination  );
                 }
 
@@ -217,6 +213,7 @@ public class PlateActivity extends AppCompatActivity
 
         String newPlateUid = refRoot.child("plates").push().getKey();
         plateToAdd.setUid( newPlateUid );
+
         refRoot.child("plates/" + newPlateUid).setValue( plateToAdd ).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -227,6 +224,8 @@ public class PlateActivity extends AppCompatActivity
             }
         });
     }
+
+
 
     private void returnPlateLocationResult( PlateEntity plate, PositionEntity destination )
     {
