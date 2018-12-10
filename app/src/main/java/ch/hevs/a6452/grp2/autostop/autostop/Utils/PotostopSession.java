@@ -22,8 +22,9 @@ public class PotostopSession {
     private FirebaseDatabase mData = null;
 
     public static final String NODE_PERSON = "persons";
-    public static final String NODE_EMERGENCY_PERSON = "emergency_contact";
     public static final String NODE_TRIP = "trips";
+    public static final String NODE_PLATE = "plates";
+    public static final String STORAGE_PLATES_NODES = "Plates";
 
     private PotostopSession(){
         init();

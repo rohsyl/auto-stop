@@ -3,10 +3,10 @@
     <string name="profile_sex_label">Titre</string>
     <string name="profile_fullname_label">Nom complet</string>
     <string name="profile_birthdate_label">Date de naissance</string>
-    <string name="profile_error_fullname_empty">Champs obligatoire</string>
-    <string name="profile_error_date_empty" >Champs obligatoire</string>
-    <string name="profile_error_phone_empty">Champs obligatoire</string>
-    <string name="profile_error_mail_empty">Champs obligatoire</string>
+    <string name="profile_error_fullname_empty">Vous devez saisir votre nom omplet</string>
+    <string name="profile_error_date_empty" >Vous devez saisir votre date de naissance</string>
+    <string name="profile_error_phone_empty">Vous devez saisir un numéro de téléphone d\'urgence</string>
+    <string name="profile_error_mail_empty">Vous devez saisir une adresse mail d\'urgence</string>
     <string name="profile_save_message">Profil mis à jour!</string>
     <string name="profile_birthdate_btn_label">Date de naissance</string>
     <string name="autocomplete_hint">Rechercher</string>
@@ -37,16 +37,16 @@
     <string name="canton">Canton</string>
     <string name="report">Signaler</string>
     <string name="pleaseRateTrip">Veuillez noter votre trajet</string>
-    <string name="email_label">Email address</string>
-    <string name="password_label">Password</string>
-    <string name="label_login_button">Log in</string>
-    <string name="label_create_account">Create an account</string>
-    <string name="label_mail_error">Invalid email</string>
-    <string name="register_failed">Registering failed.</string>
-    <string name="toast_invalid_password">Invalid password</string>
-    <string name="toast_invalid_email">Invalid email</string>
-    <string name="toast_could_not_log_in">Login failed</string>
-    <string name="toast_user_already_exists">User already exists.</string>
+    <string name="email_label">Adresse e-mail</string>
+    <string name="password_label">Mot de passe</string>
+    <string name="label_login_button">Se connecter</string>
+    <string name="label_create_account">S\'inscrire</string>
+    <string name="label_mail_error">E-mail invalide</string>
+    <string name="register_failed">L\'inscription a échoué</string>
+    <string name="toast_invalid_password">Mot de passe invalide</string>
+    <string name="toast_invalid_email">E-mail invalide</string>
+    <string name="toast_could_not_log_in">La connexion a échoué</string>
+    <string name="toast_user_already_exists">Cet utilisateur existe déjà</string>
     <string name="eot_label_arrival_time">Heure d\'arrivée</string>
     <string name="eot_title_activity">Voyage en cours</string>
     <string name="eot_button_end_trip">Fin du voyage</string>
@@ -59,4 +59,12 @@
     <string name="take_plate_picture">Prendre une photo de la plaque</string>
     <string name="welcome_title">Bienvenue dans Potostop !</string>
     <string name="welcome_text">Nous sommes prêts à sécuriser votre voyage :)</string>
+
+
+    <string name="report_Your_Trip">Signaler votre voyage</string>
+    <string name="error_report_text">Texte Vide</string>
+    <string name="noCameraGranted">Aucun accès à la caméra</string>
+    <string name="noGPSgranted">Accès à la location</string>
+    <string name="nav_header_desc" translatable="false">En-tête de navigation</string>
+
 </resources>

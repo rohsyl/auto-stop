@@ -3,15 +3,12 @@ package ch.hevs.a6452.grp2.autostop.autostop;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.GeoDataClient;
@@ -44,8 +41,8 @@ public class LocationActivity extends FragmentActivity {
     @BindView(R.id.autocomplete_places)
     protected AutoCompleteTextView mAutocompleteView;
 
-    @BindView(R.id.buttonValidate)
-    protected Button buttonValidate;
+    @BindView(R.id.fab_validate_location)
+    protected FloatingActionButton btnValidateLocation;
 
     private static final LatLngBounds BOUNDS_VALAIS = new LatLngBounds(
             new LatLng(45.803399, 6.768166), new LatLng(46.534593, 8.36554000));
@@ -53,6 +50,7 @@ public class LocationActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         // Construct a GeoDataClient for the Google Places API for Android.
         mGeoDataClient = Places.getGeoDataClient(this);
@@ -70,10 +68,9 @@ public class LocationActivity extends FragmentActivity {
         mAutocompleteView.setAdapter(mAdapter);
 
 
-        //Action listener for VALIDATE
-        buttonValidate.setOnClickListener(new View.OnClickListener() {
+        btnValidateLocation.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Log.i(TAG, "buttonValidate clicked");
 
                 if(mAutocompleteView.getText().toString()==""){
@@ -142,6 +139,7 @@ public class LocationActivity extends FragmentActivity {
     {
         Intent i = new Intent();
         i.putExtra(EXTRA_KEY_LOCATION, location);
+        i.putExtra("uidPlate", (getIntent().getStringExtra("uidPlate")));
         setResult(Activity.RESULT_OK, i);
         finish();
     }

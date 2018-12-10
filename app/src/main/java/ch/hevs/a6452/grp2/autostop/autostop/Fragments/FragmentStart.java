@@ -1,13 +1,17 @@
 package ch.hevs.a6452.grp2.autostop.autostop.Fragments;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +29,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +47,7 @@ import ch.hevs.a6452.grp2.autostop.autostop.Models.Position;
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Trip;
 import ch.hevs.a6452.grp2.autostop.autostop.PlateActivity;
 import ch.hevs.a6452.grp2.autostop.autostop.R;
+import ch.hevs.a6452.grp2.autostop.autostop.Utils.PotostopSession;
 import ch.hevs.a6452.grp2.autostop.autostop.WaitingEoTActivity;
 
 
@@ -48,7 +56,12 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
     public static final String TAG = "FragmentStart";
     public static final int REQUEST_NEW_TRIP = 92;
 
+    private final int PERMISSIONS_REQUEST = 100;
+
     private Button buttonStartTrip;
+
+    //Firebase storage
+    private StorageReference mStorageRef;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +71,9 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
 
         buttonStartTrip = (Button) view.findViewById(R.id.buttonStartTrip);
         buttonStartTrip.setOnClickListener(this);
+
+        //Instantiate Firebase storage
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         return view;
     }
@@ -89,6 +105,15 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
 
     private void clickStartTrip()
     {
+
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST);
+            return;
+        }
+
         Log.i(TAG, "ButtonStartTrip clicked");
         Intent i = new Intent( this.getActivity(), PlateActivity.class );
         startActivityForResult( i, REQUEST_NEW_TRIP );
@@ -121,7 +146,7 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
         // Inserting in Firebase
         DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
 
-        String tripUid = refRoot.push().getKey();
+        final String tripUid = refRoot.push().getKey();
         TripEntity trip = createNewTrip( tripUid, destination, plate.getUid() );
 
         // Adding the trip
@@ -131,13 +156,29 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
                     public void onComplete(@NonNull Task<Void> task) {
                         if ( task.isSuccessful() )
                         {
-                            startWaitingEoTActivity();
+                            startWaitingEoTActivity(tripUid);
                         }
                     }
                 });
+
+        //Add the picture in FireBase Storage
+        if(plate.getPicture() != null) {
+            storePlatePicture(plate, trip);
+        }
+        else
+            System.out.println("Picture is null");
     }
 
-
+    private void storePlatePicture(PlateEntity plate, TripEntity trip){
+        StorageReference platesRef = mStorageRef.child(PotostopSession.STORAGE_PLATES_NODES + "/" +
+                plate.getUid() + "/tripId_" + trip.getUid());
+        platesRef.putBytes(plate.getPicture()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                System.out.println("Image uploaded");
+            }
+        });
+    }
 
     private TripEntity createNewTrip( String tripUid, PositionEntity destination, String plateUid )
     {
@@ -150,14 +191,15 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
         trip.setDestination( destination );
         trip.setOwnerUid( userId );
         trip.setPlateUid( plateUid );
-        trip.setPositions( new ArrayList<Position>());
+        trip.setPositions( new ArrayList<PositionEntity>());
 
         return trip;
     }
 
-    private void startWaitingEoTActivity()
+    private void startWaitingEoTActivity(String tripUid)
     {
         Intent i = new Intent( this.getActivity(), WaitingEoTActivity.class );
+        i.putExtra("uidTrip", tripUid);
         startActivity( i );
     }
 }
