@@ -71,8 +71,6 @@ public class LoginActivity extends AppCompatActivity {
 
     //GOOGLE LOGIN REFERENCES
     private static final int RC_SIGN_IN = 1212;
-    @BindView(R.id.loginText)
-    protected TextView lblLogin;
 
     @BindView(R.id.sign_in_button)
     protected SignInButton signInButton;

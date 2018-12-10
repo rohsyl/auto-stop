@@ -1,20 +1,52 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="PotostopTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:textSize">@dimen/textSmall</item>
+
+        <item name="buttonStyle">@style/PotostopTheme.Button</item>
+        <item name="editTextStyle">@style/PotostopTheme.EditText</item>
+        <item name="autoCompleteTextViewStyle">@style/PotostopTheme.AutoComplete</item>
+
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="PotostopTheme.NoActionBar" parent="PotostopTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="PotostopTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="PotostopTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="PotostopTheme.Button" parent="Widget.AppCompat.Button">
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorLightText</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:capitalize">none</item>
+    </style>
+
+    <style name="PotostopTheme.ButtonBig" parent="PotostopTheme.Button">
+        <item name="android:padding">@dimen/spacingGiant</item>
+    </style>
+
+    <style name="PotostopTheme.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textSize">@dimen/textMedium</item>
+    </style>
+
+    <style name="PotostopTheme.AutoComplete" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:textSize">@dimen/textMedium</item>
+    </style>
+
+    <style name="PotostopTheme.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">@dimen/textBig</item>
+        <item name="android:textColor">@color/colorDarkText</item>
+    </style>
 
 </resources>

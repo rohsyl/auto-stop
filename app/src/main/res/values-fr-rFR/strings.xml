@@ -57,4 +57,6 @@
     <string name="plate_number_hint">Numéro de plaque du conducteur - VS 12345</string>
     <string name="plate_picture_instructions">Si vous voulez, vous pouvez prendre une photo de la plaque du conducteur</string>
     <string name="take_plate_picture">Prendre une photo de la plaque</string>
+    <string name="welcome_title">Bienvenue dans Potostop !</string>
+    <string name="welcome_text">Nous sommes prêts à sécuriser votre voyage :)</string>
 </resources>

@@ -7,12 +7,19 @@
     <dimen name="fab_margin">16dp</dimen>
 
 
-    <dimen name="horizontal_page_margin">16dp</dimen>
-    <dimen name="vertical_page_margin">16dp</dimen>
+    <!--<dimen name="horizontal_page_margin">16dp</dimen>
+    <dimen name="vertical_page_margin">16dp</dimen>-->
 
 
+    <!-- Text sizes (small is for "normal text" in TextViews) -->
+    <dimen name="textBig">40sp</dimen>
+    <dimen name="textMedium">30sp</dimen>
+    <dimen name="textSmall">20sp</dimen>
 
-    <dimen name="police_big">35dp</dimen>
-    <dimen name="police_small">20dp</dimen>
+    <!-- General-purpose spacing dimensions. Can be used for margins, paddings etc. -->
+    <dimen name="spacingGiant">48dp</dimen>
+    <dimen name="spacingBig">32dp</dimen>
+    <dimen name="spacingMedium">16dp</dimen>
+    <dimen name="spacingSmall">8dp</dimen>
 
 </resources>

@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/PotostopTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/MY_GOOGLE_API_KEY" />
@@ -26,7 +26,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/PotostopTheme.NoActionBar" />
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".LocationActivity"
@@ -34,7 +34,7 @@
         <activity
             android:name=".SplashActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/PotostopTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

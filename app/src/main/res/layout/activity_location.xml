@@ -7,12 +7,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_gravity="center"
-        android:paddingBottom="@dimen/vertical_page_margin"
-        android:paddingLeft="@dimen/horizontal_page_margin"
-        android:paddingRight="@dimen/horizontal_page_margin"
-        android:paddingTop="@dimen/vertical_page_margin">
+        android:orientation="vertical">
 
         <AutoCompleteTextView
             android:id="@+id/autocomplete_places"
@@ -20,14 +16,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:hint="@string/destination"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textAlignment="center" />
 
         <Button
             android:id="@+id/buttonValidate"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:onClick="clickOk"
             android:layout_gravity="center_horizontal"
+            android:onClick="clickOk"
             android:text="@string/ok" />
 
     </LinearLayout>

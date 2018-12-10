@@ -16,8 +16,7 @@
             android:layout_marginTop="35dp"
             android:layout_marginBottom="25dp"
             android:text="@string/eot_label_arrival_time"
-            android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textAlignment="center" />
 
 
         <TextClock
@@ -35,8 +34,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="35dp"
             android:background="@color/colorPrimary"
-            android:text="@string/eot_button_end_trip"
-            android:textSize="20sp" />
+            android:text="@string/eot_button_end_trip" />
 
         <ProgressBar
             android:id="@+id/progressBar"

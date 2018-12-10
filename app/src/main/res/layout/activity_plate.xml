@@ -20,8 +20,7 @@
             android:id="@+id/tvPlateRegistering"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/plate_registering_instructions"
-            android:textSize="14sp" />
+            android:text="@string/plate_registering_instructions" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

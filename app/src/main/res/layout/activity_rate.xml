@@ -16,27 +16,24 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
             android:layout_marginBottom="25dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:text="@string/pleaseRateTrip" />
+            android:text="@string/pleaseRateTrip"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/dateTrip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="25dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:text="Date" />
+            android:text="Date"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/itineraryTrip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="25dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:text="Trajet" />
+            android:text="Trajet"
+            android:textAlignment="center" />
 
         <Button
             android:id="@+id/button_ok"

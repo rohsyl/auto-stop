@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Original colors changed by us -->
     <color name="colorPrimary">#2ca089</color>
     <color name="colorPrimaryDark">#5fd3bc</color>
     <color name="colorAccent">#56565656</color>
-    <color name="colorLogin">#434343</color>
-    <color name="colorLoginFields">#888888</color>
-    <color name="colorWhite">#FFFFFF</color>
-    <color name="colorBlack">#000000</color>
+
+    <!-- Added for theming -->
+    <color name="colorLightText">#f5f5f5</color>
+    <color name="colorDarkText">#333333</color>
 </resources>

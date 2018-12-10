@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorLogin"
     android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="410dp"
-        android:background="@color/colorAccent"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_button"
-        android:gravity="center_horizontal">
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_button">
 
         <ImageView
             android:id="@+id/appLogo"
@@ -27,35 +24,19 @@
             android:gravity="center_horizontal"
             app:srcCompat="@drawable/ic_logo" />
 
-        <TextView
-            android:id="@+id/email_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/email_label"
-            android:textColor="@color/colorWhite"
-            android:textSize="22sp" />
-
         <EditText
             android:id="@+id/email_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@color/colorLoginFields"
             android:ems="10"
-            android:inputType="textEmailAddress"
-            android:textSize="22sp"
-            android:textColor="@color/colorWhite"/>
+            android:hint="@string/email_label"
+            android:inputType="textEmailAddress" />
 
-        <TextView
-            android:id="@+id/password_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/password_label"
-            android:textColor="@color/colorWhite"
-            android:textSize="22sp" />
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
 
         <EditText
             android:id="@+id/password_input"
@@ -63,11 +44,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@color/colorLoginFields"
             android:ems="10"
-            android:inputType="textPassword"
-            android:textSize="22sp"
-            android:textColor="@color/colorWhite"/>
+            android:hint="@string/password_label"
+            android:inputType="textPassword" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,48 +57,20 @@
                 android:id="@+id/login_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="7dp"
+                android:layout_margin="@dimen/activity_horizontal_margin"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="@string/label_login_button"
-                android:textColor="@color/colorWhite"
-                android:textSize="22sp" />
+                android:text="@string/label_login_button" />
 
             <Button
                 android:id="@+id/create_account_button"
-                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="7dp"
+                android:layout_margin="@dimen/activity_horizontal_margin"
                 android:layout_weight="1"
-                android:textColor="@color/colorPrimary"
-                android:background="@color/colorWhite"
-                android:text="@string/label_create_account"
-                android:textSize="22sp"
-                />
+                android:clickable="true"
+                android:text="@string/label_create_account" />
 
         </LinearLayout>
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:background="@color/colorLogin">
-
-        <TextView
-            android:id="@+id/loginText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center_horizontal"
-            android:padding="6dp"
-            android:text="@string/label_google_login"
-            android:textColor="@color/colorWhite"
-            android:textSize="30sp" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
@@ -129,5 +80,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="48dp"></com.google.android.gms.common.SignInButton>
 
-    </RelativeLayout>
+    </LinearLayout>
+
 </LinearLayout>
