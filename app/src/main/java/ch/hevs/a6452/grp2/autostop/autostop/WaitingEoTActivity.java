@@ -17,19 +17,9 @@ import android.widget.ProgressBar;
 import android.widget.TextClock;
 import android.widget.TextView;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
-import ch.hevs.a6452.grp2.autostop.autostop.Entites.TripEntity;
-import ch.hevs.a6452.grp2.autostop.autostop.Models.Trip;
 import ch.hevs.a6452.grp2.autostop.autostop.Utils.TrackingService;
-import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.TripViewModel;
 
 
 public class WaitingEoTActivity extends AppCompatActivity {

@@ -3,16 +3,12 @@ package ch.hevs.a6452.grp2.autostop.autostop;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.GeoDataClient;
@@ -31,7 +27,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hevs.a6452.grp2.autostop.autostop.Adapter.PlaceAutocompleteAdapter;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
-import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.TripViewModel;
 
 public class LocationActivity extends FragmentActivity {
 
