@@ -85,7 +85,7 @@ public class TrackingService extends Service {
         mDatabase = FirebaseDatabase.getInstance();
         mTripUid = tripUid ;
         DatabaseReference refTrip = mDatabase.getReference(PotostopSession.NODE_TRIP).child(mTripUid);
-        refTrip.addValueEventListener(new ValueEventListener(){
+        refTrip.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("TripVM", "DataSnapShot"+dataSnapshot.getValue());

@@ -5,45 +5,36 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.media.Image;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
-import android.view.View;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.PlateEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.ReportEntity;
-import ch.hevs.a6452.grp2.autostop.autostop.Entites.TripEntity;
-import ch.hevs.a6452.grp2.autostop.autostop.Models.Report;
-import ch.hevs.a6452.grp2.autostop.autostop.Models.Trip;
 
 public class PlateActivity extends AppCompatActivity
 {
@@ -67,7 +58,6 @@ public class PlateActivity extends AppCompatActivity
 
     // This variable is used to keep the plate in memory while selecting a location
     private PlateEntity plate;
-
     private Bitmap picture;
 
     @Override
@@ -95,10 +85,27 @@ public class PlateActivity extends AppCompatActivity
         btnRemovePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Set the picture to null and reset the preview
                 picture = null;
                 platePreview.setImageResource(R.drawable.ic_plaque_bidon_v4);
             }
         });
+    }
+
+    //Prevent the loss of the image if the user rotate his phone
+    @Override
+    public void onSaveInstanceState(Bundle bundle){
+        super.onSaveInstanceState(bundle);
+        bundle.putByteArray("image", PlateEntity.convertPicture(picture));
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+
+        byte[] bytesPicture = (byte[]) savedInstanceState.getSerializable("image");
+        picture = PlateEntity.convertPicture(bytesPicture);
+        platePreview.setImageBitmap(picture);
     }
 
     public void clickGo(View v)
@@ -109,41 +116,21 @@ public class PlateActivity extends AppCompatActivity
         plateNumber = formatPlateNumber(plateNumber);
         etPlateNumber.setText( plateNumber );
 
-        // Checking if the plate number format is valid
-        if ( isPlateNumberValid( plateNumber ) )
-        {
-            Log.i(TAG, "Go button clicked");
+        Log.i(TAG, "Go button clicked");
 
-            plate = new PlateEntity();
-            plate.setPlateNumber( plateNumber );
-            plate.setReports(new ArrayList<ReportEntity>());
-            try{
-                plate.setPicture(PlateEntity.convertPicture(picture));
-            } catch (Exception e){
-                System.out.println("No picture taken.");
-            }
-            requestTripDestination();
+        //Create the plate entity with inputs of the user
+        plate = new PlateEntity();
+        plate.setPlateNumber( plateNumber );
+        plate.setPicture(PlateEntity.convertPicture(picture));
+        plate.setReports(new ArrayList<ReportEntity>());
 
-        }
-
-        else
-        {
-            Toast.makeText(this, "Invalid plate number!", Toast.LENGTH_LONG).show();
-            Log.i(TAG, "Invalid plate number: \""+plateNumber+"\"");
-        }
+        requestTripDestination();
     }
 
-    private String formatPlateNumber( String plateNumber )
-    {
+    private String formatPlateNumber( String plateNumber ) {
         plateNumber = plateNumber.toUpperCase(Locale.ROOT);
         plateNumber = plateNumber.replaceAll("[^A-Z0-9]", "");
         return plateNumber;
-    }
-
-    private boolean isPlateNumberValid( String plateNumber )
-    {
-        String platePattern = "[A-Z0-9]+";
-        return plateNumber.matches( platePattern );
     }
 
     private void requestTripDestination()
@@ -151,8 +138,6 @@ public class PlateActivity extends AppCompatActivity
         Intent i = new Intent(this, LocationActivity.class);
         startActivityForResult( i, REQUEST_DESTINATION );
     }
-
-
 
     @Override
     public void onActivityResult( int requestCode, int resultCode, Intent intent)
@@ -175,6 +160,7 @@ public class PlateActivity extends AppCompatActivity
         {
             try
             {
+                //Store the picture and set it as the preview
                 picture = (Bitmap) intent.getExtras().get("data");
                 platePreview.setImageBitmap(picture);
             }
@@ -184,31 +170,31 @@ public class PlateActivity extends AppCompatActivity
 
     private void checkPlateAndReturnResult(final PlateEntity plateToCheck, final PositionEntity destination )
     {
-        final DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
+        if(!plate.getPlateNumber().equals("")) {
+            final DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
 
-        refRoot.child("plates").orderByChild("plateNumber").equalTo(plateToCheck.getPlateNumber()).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-            {
-                // If the plate exists, we reuse the data we found in the database
-                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() == 1 )
-                {
-                    final PlateEntity existingPlate = dataSnapshot.getChildren().iterator().next().getValue(PlateEntity.class);
-                    existingPlate.setPicture(PlateEntity.convertPicture(picture));
-                    returnPlateLocationResult( existingPlate, (PositionEntity) destination  );
+            refRoot.child("plates").orderByChild("plateNumber").equalTo(plateToCheck.getPlateNumber()).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // If the plate exists, we reuse the data we found in the database
+                    if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() == 1) {
+                        final PlateEntity existingPlate = dataSnapshot.getChildren().iterator().next().getValue(PlateEntity.class);
+                        //Set the picture for an existing plate
+                        existingPlate.setPicture(PlateEntity.convertPicture(picture));
+                        returnPlateLocationResult(existingPlate, (PositionEntity) destination);
+                    } else {
+                        //If plate number is empty
+                        addPlateAndReturnResult(plateToCheck, destination);
+                    }
                 }
 
-                else
-                {
-                    addPlateAndReturnResult( plateToCheck, destination );
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
+            });
+        }
+        //If plate number is empty
+        else
+            returnPlateLocationResult(plate, (PositionEntity) destination);
     }
 
     private void addPlateAndReturnResult( final PlateEntity plateToAdd, final PositionEntity destination )
@@ -229,8 +215,6 @@ public class PlateActivity extends AppCompatActivity
         });
     }
 
-
-
     private void returnPlateLocationResult( PlateEntity plate, PositionEntity destination )
     {
         Intent i = new Intent();
@@ -249,6 +233,7 @@ public class PlateActivity extends AppCompatActivity
                     new String[]{Manifest.permission.CAMERA},
                     PERMISSIONS_REQUEST);
         }
+        //Start camera activity
         else
             startCamera();
     }
@@ -262,11 +247,12 @@ public class PlateActivity extends AppCompatActivity
             Toast.makeText(this, R.string.noCameraGranted, Toast.LENGTH_SHORT).show();
             return;
         }
-        //Start camera
+        //Start camera activity
         else
             startCamera();
     }
 
+    //Create intent for the camera
     private void startCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, CAMERA_RESULT);

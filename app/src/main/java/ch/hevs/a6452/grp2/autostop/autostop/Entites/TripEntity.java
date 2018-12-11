@@ -1,5 +1,7 @@
 package ch.hevs.a6452.grp2.autostop.autostop.Entites;
 
+import android.support.annotation.Nullable;
+
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
@@ -16,18 +18,13 @@ import ch.hevs.a6452.grp2.autostop.autostop.Models.Trip;
 
 public class TripEntity implements Trip, Serializable {
 
-
-
-
     private String uid;
     private String status;
     private PositionEntity destination;
     private String ownerUid;
+    @Nullable
     private String plateUid;
     private List<PositionEntity> positions = new ArrayList<PositionEntity>();
-
-
-
 
     @Override
     public String getUid() {
@@ -71,7 +68,7 @@ public class TripEntity implements Trip, Serializable {
         this.ownerUid = ownerUid;
     }
 
-    public void setPlateUid(String plateUid) {
+    public void setPlateUid(@Nullable String plateUid) {
         this.plateUid = plateUid;
     }
 
@@ -92,6 +89,4 @@ public class TripEntity implements Trip, Serializable {
         result.put("plate", getPlateUid());
         return result;
     }
-
-
 }

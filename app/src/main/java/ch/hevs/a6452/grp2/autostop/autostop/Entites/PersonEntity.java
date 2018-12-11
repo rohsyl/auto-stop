@@ -9,7 +9,7 @@ import java.util.Map;
 
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Person;
 
-public class PersonEntity implements Person{
+public class PersonEntity implements Person {
 
     @Exclude
     @NonNull
@@ -19,7 +19,6 @@ public class PersonEntity implements Person{
     private String email = null;
     private int sex = 999;
     private Long birthDate = null;
-
 
     private String emergencyEmail;
     private String emergencyPhone;

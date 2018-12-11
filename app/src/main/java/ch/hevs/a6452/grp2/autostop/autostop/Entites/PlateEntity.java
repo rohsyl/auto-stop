@@ -1,6 +1,7 @@
 package ch.hevs.a6452.grp2.autostop.autostop.Entites;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.annotations.NotNull;
@@ -81,6 +82,13 @@ public PlateEntity(){}
             pictureBmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
             return stream.toByteArray();
         }
+        return null;
+    }
+
+    @Exclude
+    public static Bitmap convertPicture(byte[] pictureByte){
+        if(pictureByte != null)
+            return BitmapFactory.decodeByteArray(pictureByte, 0, pictureByte.length);
         return null;
     }
 

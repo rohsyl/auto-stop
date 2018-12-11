@@ -105,7 +105,6 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
 
     private void clickStartTrip()
     {
-
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),
@@ -140,10 +139,6 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
 
     private void insertNewTrip( PlateEntity plate, PositionEntity destination )
     {
-
-
-
-        // Inserting in Firebase
         DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
 
         final String tripUid = refRoot.push().getKey();
@@ -170,9 +165,18 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
     }
 
     private void storePlatePicture(PlateEntity plate, TripEntity trip){
-        StorageReference platesRef = mStorageRef.child(PotostopSession.STORAGE_PLATES_NODES + "/" +
-                plate.getUid() + "/tripId_" + trip.getUid());
-        platesRef.putBytes(plate.getPicture()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        String basePath = PotostopSession.STORAGE_PLATES_NODES;
+        if(!plate.getPlateNumber().equals(""))
+            storeInFireBase(plate.getPicture(), basePath + "/" +
+                    plate.getUid() + "/tripId_" + trip.getUid());
+        else
+            storeInFireBase(plate.getPicture(), basePath + "/" +
+                    PotostopSession.STORAGE_UNKNOWN_PLATE_NODES + "/tripId_" + trip.getUid());
+    }
+
+    private void storeInFireBase(byte[] picture, String path) {
+        StorageReference platesRef = mStorageRef.child(path);
+        platesRef.putBytes(picture).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 System.out.println("Image uploaded");
