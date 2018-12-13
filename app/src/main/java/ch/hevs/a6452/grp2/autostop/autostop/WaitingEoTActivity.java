@@ -54,7 +54,6 @@ public class WaitingEoTActivity extends AppCompatActivity {
 
         startTracking();
 
-
         //Action listener for VALIDATE
         buttonEndTrip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,19 +63,17 @@ public class WaitingEoTActivity extends AppCompatActivity {
                 Intent intent = new Intent(WaitingEoTActivity.this, RatingTripActivity.class);
                 intent.putExtra("uidTrip", uidTrip);
                 startActivity(intent);
+                finish();
             }
         });
     }
 
 
     private void startTracking(){
-
-
         Log.i(TAG, "Trip uid  : "+ uidTrip);
         serviceTracking = new Intent(this, TrackingService.class);
         serviceTracking.putExtra("uidTrip", uidTrip);
         startService(serviceTracking);
-
     }
 
 }

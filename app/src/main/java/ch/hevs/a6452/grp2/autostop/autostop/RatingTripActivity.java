@@ -14,7 +14,6 @@ import butterknife.ButterKnife;
 
 public class RatingTripActivity extends AppCompatActivity {
 
-
     public static final String TAG = "RatingTripActivity";
 
     @BindView(R.id.button_ok)
@@ -31,7 +30,6 @@ public class RatingTripActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-
         //Action listener for VALIDATE
         button_ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,21 +38,18 @@ public class RatingTripActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(RatingTripActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
         buttonReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent i = new Intent(RatingTripActivity.this, ReportActivity.class);
                 i.putExtra("uidTrip", (getIntent().getStringExtra("uidTrip")));
                 startActivity(i);
                 finish();
             }
         });
-
     }
-
-
 }
