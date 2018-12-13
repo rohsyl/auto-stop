@@ -5,4 +5,7 @@ public interface Report {
     String getMessage();
     Long getTimestamp();
     String getTripUid();
+    String getPlateNumber();
+    boolean getReadByAdmin();
+    Long getReadDate();
 }

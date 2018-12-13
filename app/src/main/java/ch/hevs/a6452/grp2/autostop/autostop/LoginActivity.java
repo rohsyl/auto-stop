@@ -77,8 +77,6 @@ public class LoginActivity extends AppCompatActivity {
 
     protected GoogleSignInClient mGoogleSignInClient;
 
-    //TODO Julien rework layout to make it cute
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -256,7 +254,6 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     });
-
         }
     }
 

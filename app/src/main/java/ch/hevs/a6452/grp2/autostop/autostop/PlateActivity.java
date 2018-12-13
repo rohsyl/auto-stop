@@ -113,7 +113,7 @@ public class PlateActivity extends AppCompatActivity
         String plateNumber = etPlateNumber.getText().toString();
 
         // Formatting the plate number and updating the view
-        plateNumber = formatPlateNumber(plateNumber);
+        plateNumber = PlateEntity.formatPlateNumber(plateNumber);
         etPlateNumber.setText( plateNumber );
 
         Log.i(TAG, "Go button clicked");
@@ -125,12 +125,6 @@ public class PlateActivity extends AppCompatActivity
         plate.setReports(new ArrayList<ReportEntity>());
 
         requestTripDestination();
-    }
-
-    private String formatPlateNumber( String plateNumber ) {
-        plateNumber = plateNumber.toUpperCase(Locale.ROOT);
-        plateNumber = plateNumber.replaceAll("[^A-Z0-9]", "");
-        return plateNumber;
     }
 
     private void requestTripDestination()

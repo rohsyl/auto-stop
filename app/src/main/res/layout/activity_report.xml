@@ -21,6 +21,14 @@
             android:text="@string/report_Your_Trip"/>
 
     <EditText
+        android:id="@+id/editPlateNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="@string/report_plate_number" />
+
+    <EditText
         android:id="@+id/editTextReport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,17 +39,15 @@
                 />
 
 
-
     <Button
         android:id="@+id/reportButton"
         android:layout_width="200dp"
         android:layout_height="90dp"
         android:layout_gravity="center"
-        android:background="@color/colorPrimary"
-        android:text="@string/report"
-        android:textColor="@android:color/white"
         android:layout_marginTop="30dp"
+        android:background="@color/colorPrimary"
         android:onClick="clickReport"
-        />
+        android:text="@string/report"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

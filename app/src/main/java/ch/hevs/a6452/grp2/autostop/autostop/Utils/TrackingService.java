@@ -138,7 +138,7 @@ public class TrackingService extends Service {
                 currentPosition.setTimestamp(locationResult.getLastLocation().getTime());
 
                 //Add the position to db
-                if (currentPosition !=null  ) {
+                if (currentPosition != null) {
                     Log.i(TAG, "New location : "+ currentPosition);
                     trip.addPosition(currentPosition);
                     updateTrip(trip);

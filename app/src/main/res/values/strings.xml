@@ -125,4 +125,5 @@
     <string name="welcome_title">Welcome in Potostop!</string>
     <string name="welcome_text">We are ready to secure your trip :)</string>
     <string name="noCameraGranted">Potostop cannot access the camera</string>
+    <string name="report_plate_number">Plate number</string>
 </resources>

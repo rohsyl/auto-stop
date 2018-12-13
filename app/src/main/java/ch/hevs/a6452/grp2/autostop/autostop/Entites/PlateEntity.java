@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Plate;
@@ -90,6 +91,13 @@ public PlateEntity(){}
         if(pictureByte != null)
             return BitmapFactory.decodeByteArray(pictureByte, 0, pictureByte.length);
         return null;
+    }
+
+    @Exclude
+    public static String formatPlateNumber( String plateNumber ) {
+        plateNumber = plateNumber.toUpperCase(Locale.ROOT);
+        plateNumber = plateNumber.replaceAll("[^A-Z0-9]", "");
+        return plateNumber;
     }
 
     @Exclude

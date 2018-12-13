@@ -177,7 +177,6 @@ public class MainActivity extends AppCompatActivity
         finish();
     }
 
-
     private void observeViewModel(){
         mViewModel.getEmail().observe(this, new Observer<String>() {
             @Override
@@ -194,7 +193,6 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-
     private void checkGps(){
         //Check if permission is not granted
         if (ContextCompat.checkSelfPermission(this,
@@ -205,7 +203,6 @@ public class MainActivity extends AppCompatActivity
                     PERMISSIONS_REQUEST);
         }
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
@@ -218,6 +215,4 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, R.string.noGPSgranted, Toast.LENGTH_SHORT).show();
         }
     }
-
-
 }

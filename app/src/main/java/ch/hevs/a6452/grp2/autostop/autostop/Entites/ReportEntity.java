@@ -19,6 +19,9 @@ public class ReportEntity implements Report, Serializable {
     private String message;
     private Long timestamp;
     private String tripUid;
+    private String plateNumber;
+    private boolean readByAdmin = false;
+    private long readDate = 0L;
 
     public ReportEntity(){
 
@@ -29,6 +32,9 @@ public class ReportEntity implements Report, Serializable {
         this.message = report.getUid();
         this.timestamp = report.getTimestamp();
         this.tripUid = report.getTripUid();
+        this.plateNumber = report.getPlateNumber();
+        this.readByAdmin = report.getReadByAdmin();
+        this.readDate = report.getReadDate();
     }
 
     @Override
@@ -51,6 +57,21 @@ public class ReportEntity implements Report, Serializable {
         return tripUid;
     }
 
+    @Override
+    public String getPlateNumber() {
+        return plateNumber;
+    }
+
+    @Override
+    public boolean getReadByAdmin() {
+        return readByAdmin;
+    }
+
+    @Override
+    public Long getReadDate() {
+        return readDate;
+    }
+
     public void setUid(@NonNull String uid) {
         this.uid = uid;
     }
@@ -67,6 +88,11 @@ public class ReportEntity implements Report, Serializable {
         this.tripUid = tripUid;
     }
 
+    public void setPlateNumber(String plateNumber){ this.plateNumber = plateNumber; }
+
+    public void setReadByAdmin(boolean readByAdmin){ this.readByAdmin = readByAdmin; }
+
+    public void setReadDate(Long readDate){ this.readDate = readDate; }
 
     @Exclude
     public Map<String, Object> toMap() {
@@ -74,6 +100,9 @@ public class ReportEntity implements Report, Serializable {
         result.put("message", getMessage());
         result.put("timestamp", getTimestamp());
         result.put("trip", getTripUid());
+        result.put("plateNumber", getPlateNumber());
+        result.put("readByAdmin", getReadByAdmin());
+        result.put("readDate", getReadDate());
         return result;
     }
 }

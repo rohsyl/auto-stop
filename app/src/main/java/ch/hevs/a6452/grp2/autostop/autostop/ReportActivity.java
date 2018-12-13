@@ -30,18 +30,18 @@ import ch.hevs.a6452.grp2.autostop.autostop.Utils.PotostopSession;
 
 public class ReportActivity extends AppCompatActivity {
 
-
     public static final String TAG = "ReportActivity";
 
     private FirebaseDatabase mDatabase;
 
     private ReportEntity myReport;
-    private PlateEntity myPlate;
-    private TripEntity myTrip;
-
+    private String uidTrip;
+    private String uidPlate;
 
     @BindView(R.id.editTextReport)
     protected EditText textedit;
+    @BindView(R.id.editPlateNumber)
+    protected EditText editPlateNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +50,18 @@ public class ReportActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mDatabase = FirebaseDatabase.getInstance();
+        //Fetch the intent
+        uidTrip = getIntent().getStringExtra("uidTrip");
+        //Load the current plate
+        getPlateUid(uidTrip);
     }
 
-
     public void clickReport(View v){
-
         String reportText = textedit.getText().toString();
-        long time= System.currentTimeMillis();
+        String plateNumber = PlateEntity.formatPlateNumber(editPlateNumber.getText().toString());
+        long time = System.currentTimeMillis();
 
-        if(reportText.length()==0){
+        if(reportText.length() == 0){
             Toast.makeText(ReportActivity.this, R.string.error_report_text,Toast.LENGTH_SHORT).show();
             return;
         }
@@ -67,77 +70,67 @@ public class ReportActivity extends AppCompatActivity {
             myReport = new ReportEntity();
             myReport.setMessage(reportText);
             myReport.setTimestamp(time);
-            myReport.setTripUid(getIntent().getStringExtra("uidTrip"));
-
-            getTripDetails(getIntent().getStringExtra("uidTrip"));
+            myReport.setTripUid(uidTrip);
+            myReport.setPlateNumber(plateNumber);
+            storeReportInFirebase(myReport);
             endReportTrip();
         }
     }
-
 
     private void endReportTrip()
     {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
-
+        finish();
     }
 
-    private void addReportToPlate(final ReportEntity report, final String uidPlate)
+    private void getPlateUid(final String uidTrip) {
+        final DatabaseReference refTrip = mDatabase.getReference(PotostopSession.NODE_TRIP).child(uidTrip).child("plateUid");
+        refTrip.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                uidPlate = (String) dataSnapshot.getValue();
+                getCurrentPlate(uidPlate);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+    }
+
+    private void getCurrentPlate(final String uidPlate){
+        try {
+            final DatabaseReference refPlate = mDatabase.getReference(PotostopSession.NODE_PLATE).child(uidPlate).child("plateNumber");
+            refPlate.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String plateNumber = (String) dataSnapshot.getValue();
+                    editPlateNumber.setText(plateNumber);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
+            });
+        } catch (Exception e){
+            System.out.println("No plate set at the creation of the trip.");
+            return;
+        }
+    }
+
+    private void storeReportInFirebase(final ReportEntity report)
     {
-        DatabaseReference refPlate = mDatabase.getReference(PotostopSession.NODE_PLATE).child(uidPlate);
-        refPlate.addListenerForSingleValueEvent(new ValueEventListener(){
+        DatabaseReference refRoot = mDatabase.getReference();
+        final String uidReport = refRoot.push().getKey();
+        final DatabaseReference refReport = mDatabase.getReference(PotostopSession.NODE_REPORT).child(uidReport);
+        refReport.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "snap"+dataSnapshot);
-                myPlate = dataSnapshot.getValue(PlateEntity.class);
-                myPlate.setUid(uidPlate);
-                myPlate.addReport(report);
-                addToPlate(myPlate.getUid());
+                refReport.setValue(report);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.out.println("Error while getting current trip");
                 System.out.println(databaseError.getMessage());
             }
         });
     }
-
-
-    private void addToPlate(String uidPlate){
-
-        DatabaseReference refPlate = mDatabase.getReference(PotostopSession.NODE_PLATE).child(uidPlate);
-
-        refPlate.setValue(myPlate, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                if(databaseError == null){
-                    System.out.println("TRIP SUCCESSFULLY udapted");
-                }
-                else {
-                    System.out.println("Error while updating trip");
-                    System.out.println(databaseError.getMessage());
-                }
-            }
-        });
-    }
-
-    private void getTripDetails(String uidTrip)
-    {
-        DatabaseReference refPlate = mDatabase.getReference(PotostopSession.NODE_TRIP).child(uidTrip);
-        refPlate.addListenerForSingleValueEvent(new ValueEventListener(){
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "snap"+dataSnapshot);
-                myTrip = dataSnapshot.getValue(TripEntity.class);
-                addReportToPlate(myReport, myTrip.getPlateUid());
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("Error while getting current trip");
-                System.out.println(databaseError.getMessage());
-            }
-        });
-    }
-
-
 }
