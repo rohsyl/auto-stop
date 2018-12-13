@@ -23,7 +23,7 @@ import ch.hevs.a6452.grp2.autostop.autostop.Utils.TrackingService;
 
 
 public class WaitingEoTActivity extends AppCompatActivity {
-
+    //TODO : Allow the user to come back here if the trip is not finished.
     public static final String TAG = "WaitingEoTActivity";
 
     @BindView(R.id.arrivTime)
