@@ -67,5 +67,6 @@
     <string name="noGPSgranted">Accès à la location</string>
     <string name="nav_header_desc" translatable="false">En-tête de navigation</string>
     <string name="report_plate_number">Plate number</string>
+    <string name="location_instructions">Saisissez votre destination dans le champ ci-dessus. De cette façon, Potostop sait où vous êtes supposé(e) arriver.</string>
 
 </resources>

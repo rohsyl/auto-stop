@@ -160,8 +160,10 @@ public class TrackingService extends Service {
                 //Add the position to db
                 if (currentPosition != null) {
                     Log.i(TAG, "New location : "+ currentPosition);
+                    if(trip != null) {
                         trip.addPosition(currentPosition);
                         updateTrip(trip);
+                    }
                 }
             }
         };
