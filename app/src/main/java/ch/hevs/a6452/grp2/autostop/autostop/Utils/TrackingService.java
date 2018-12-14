@@ -38,7 +38,6 @@ public class TrackingService extends Service {
     private String mTripUid;
     private TripEntity trip;
 
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -66,7 +65,6 @@ public class TrackingService extends Service {
         updateTrip(trip);
         client.removeLocationUpdates(locationCallback);
     }
-
 
     private void buildNotification() {
         Log.i(TAG, "Build notif ");
@@ -140,8 +138,10 @@ public class TrackingService extends Service {
                 //Add the position to db
                 if (currentPosition != null) {
                     Log.i(TAG, "New location : "+ currentPosition);
-                    trip.addPosition(currentPosition);
-                    updateTrip(trip);
+                    if(trip != null) {
+                        trip.addPosition(currentPosition);
+                        updateTrip(trip);
+                    }
                 }
             }
         };
