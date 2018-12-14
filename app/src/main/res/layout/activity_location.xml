@@ -11,20 +11,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:orientation="vertical">
-
-        <AutoCompleteTextView
-            android:id="@+id/autocomplete_places"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:hint="@string/destination"
-            android:singleLine="true"
-            android:textAlignment="center" />
+            android:layout_gravity="top"
+            android:orientation="vertical">
+
+            <AutoCompleteTextView
+                android:id="@+id/autocomplete_places"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/spacingMedium"
+                android:hint="@string/destination"
+                android:singleLine="true" />
+
+            <ImageView
+                android:id="@+id/ivDestination"
+                android:layout_width="341dp"
+                android:layout_height="176dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_destination_v1" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacingBig"
+                android:text="@string/location_instructions"
+                android:textAlignment="center" />
 
         </LinearLayout>
 

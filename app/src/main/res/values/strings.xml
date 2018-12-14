@@ -4,7 +4,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="ok">OK</string>
     <string name="destination">Destination</string>
@@ -126,4 +126,5 @@
     <string name="welcome_text">We are ready to secure your trip :)</string>
     <string name="noCameraGranted">Potostop cannot access the camera</string>
     <string name="report_plate_number">Plate number</string>
+    <string name="location_instructions">Type your destination in the above field. This way, Potostop knows where you are supposed to arrive.</string>
 </resources>
