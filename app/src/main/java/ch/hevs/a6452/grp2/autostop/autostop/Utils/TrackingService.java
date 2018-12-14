@@ -2,8 +2,12 @@ package ch.hevs.a6452.grp2.autostop.autostop.Utils;
 
 import android.Manifest;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -48,7 +52,7 @@ public class TrackingService extends Service {
     public void onCreate() {
         super.onCreate();
         currentPosition = new PositionEntity();
-        //buildNotification();
+        buildNotification();
         requestLocationUpdates();
     }
 
@@ -65,19 +69,35 @@ public class TrackingService extends Service {
         trip.setStatus(Trip.STATUS_FINISHED);
         updateTrip(trip);
         client.removeLocationUpdates(locationCallback);
+        stopSelf();
     }
 
 
     private void buildNotification() {
         Log.i(TAG, "Build notif ");
+        String stop = "stop";
+        registerReceiver(stopReceiver, new IntentFilter(stop));
+        PendingIntent broadcastIntent = PendingIntent.getBroadcast(
+                this, 0, new Intent(stop), PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Notification.Builder builder = new Notification.Builder(getApplicationContext())
+
+        Notification.Builder builder = new Notification.Builder(this)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText("Trip en cours")
                 .setOngoing(true)
+                .setContentIntent(broadcastIntent)
                 .setSmallIcon(R.mipmap.ic_launcher);
         startForeground(1, builder.build());
+
     }
+
+    protected BroadcastReceiver stopReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            unregisterReceiver(stopReceiver);
+            stopSelf();
+        }
+    };
 
 
 
@@ -140,8 +160,8 @@ public class TrackingService extends Service {
                 //Add the position to db
                 if (currentPosition != null) {
                     Log.i(TAG, "New location : "+ currentPosition);
-                    trip.addPosition(currentPosition);
-                    updateTrip(trip);
+                        trip.addPosition(currentPosition);
+                        updateTrip(trip);
                 }
             }
         };
