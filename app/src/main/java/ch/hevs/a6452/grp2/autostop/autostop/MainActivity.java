@@ -36,6 +36,7 @@ import ch.hevs.a6452.grp2.autostop.autostop.Utils.PotostopSession;
 import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.MainActivityViewModel;
 import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.ProfileViewModel;
 
+//TODO : Redirect to the current trip if the status is not "finished"
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

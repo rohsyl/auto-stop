@@ -77,8 +77,6 @@ public class TrackingService extends Service {
         startForeground(1, builder.build());
     }
 
-
-
     private void getTrip(String tripUid){
         mDatabase = FirebaseDatabase.getInstance();
         mTripUid = tripUid ;

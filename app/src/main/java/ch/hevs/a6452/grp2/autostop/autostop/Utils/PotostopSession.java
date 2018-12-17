@@ -56,14 +56,6 @@ public class PotostopSession {
             return;
     }
 
-    public PersonEntity getCurrentUser(){
-        return currentUser;
-    }
-
-    public TripEntity getCurrentTrip(){
-        return currentTrip;
-    }
-
     @Override
     public String toString() {
         return "CURRENT SESSION ||| Uid : " + currentUser.getUid() + " | ";

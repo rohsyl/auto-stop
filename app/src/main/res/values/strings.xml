@@ -6,7 +6,7 @@
     <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
     <string name="nav_header_desc" translatable="false">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="ok">OK</string>
+    <string name="ok">Good !</string>
     <string name="destination">Destination</string>
     <string name="title_activity_profile" translatable="false">ProfileActivity</string>
     <string name="nav_trip_label">Trip</string>
@@ -95,9 +95,9 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-    <string name="report">Report</string>
-    <string name="pleaseRateTrip">Please rate your Trip</string>
-    <string name="ratingTripActivity">Rate your Trip</string>
+    <string name="report">Report a behaviour</string>
+    <string name="pleaseRateTrip">How was your trip ?</string>
+    <string name="ratingTripActivity">How was your trip ?</string>
 
     <string name="toast_could_not_sign_in">You must be signed in</string>
     <string name="email_label">Email address</string>
@@ -114,7 +114,7 @@
 
 
     <string name="report_Your_Trip">Report your Trip</string>
-    <string name="error_report_text">Text is null</string>
+    <string name="error_report_text">What happened ?</string>
 
     <string name="noGPSgranted">To use this service, you have to grant the acess to the location</string>
     <string name="toast_user_already_exists">User already exists.</string>
