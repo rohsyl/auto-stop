@@ -76,4 +76,5 @@ public class WaitingEoTActivity extends AppCompatActivity {
         startService(serviceTracking);
     }
 
+
 }
