@@ -1,13 +1,25 @@
 package ch.hevs.a6452.grp2.autostop.autostop.Utils;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -26,6 +38,7 @@ import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.TripEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Trip;
 import ch.hevs.a6452.grp2.autostop.autostop.R;
+import ch.hevs.a6452.grp2.autostop.autostop.WaitingEoTActivity;
 
 public class TrackingService extends Service {
 
@@ -38,18 +51,22 @@ public class TrackingService extends Service {
     private String mTripUid;
     private TripEntity trip;
 
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate() {
         super.onCreate();
         currentPosition = new PositionEntity();
-        //buildNotification();
+        startNotification();
         requestLocationUpdates();
     }
+
+
 
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
@@ -64,17 +81,41 @@ public class TrackingService extends Service {
         trip.setStatus(Trip.STATUS_FINISHED);
         updateTrip(trip);
         client.removeLocationUpdates(locationCallback);
+        stopSelf();
     }
 
-    private void buildNotification() {
-        Log.i(TAG, "Build notif ");
 
-        Notification.Builder builder = new Notification.Builder(getApplicationContext())
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText("Trip en cours")
-                .setOngoing(true)
-                .setSmallIcon(R.mipmap.ic_launcher);
-        startForeground(1, builder.build());
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startNotification(){
+        String CHANNEL_ONE_ID = "ch.hevs.a6452.grp2.autostop.TRIPSTARTED";
+        String CHANNEL_ONE_NAME = "Channel One";
+        NotificationChannel notificationChannel = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            notificationChannel = new NotificationChannel(CHANNEL_ONE_ID,
+                    CHANNEL_ONE_NAME, NotificationManager.IMPORTANCE_HIGH);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setShowBadge(true);
+            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            manager.createNotificationChannel(notificationChannel);
+        }
+
+        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        Notification notification = new Notification.Builder(getApplicationContext())
+                .setChannelId("ch.hevs.a6452.grp2.autostop.TRIPSTARTED")
+                .setContentTitle(getString(R.string.title_notif_trip))
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(icon)
+                .build();
+
+        Intent notificationIntent = new Intent(getApplicationContext(), WaitingEoTActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        notification.contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
+
+        startForeground(1003, notification);
     }
 
     private void getTrip(String tripUid){

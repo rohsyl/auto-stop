@@ -127,4 +127,5 @@
     <string name="noCameraGranted">Potostop cannot access the camera</string>
     <string name="report_plate_number">Plate number</string>
     <string name="location_instructions">Type your destination in the above field. This way, Potostop knows where you are supposed to arrive.</string>
+    <string name="title_notif_trip">Trip in process</string>
 </resources>
