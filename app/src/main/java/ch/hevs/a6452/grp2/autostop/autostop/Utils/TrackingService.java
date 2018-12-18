@@ -1,16 +1,12 @@
 package ch.hevs.a6452.grp2.autostop.autostop.Utils;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -46,7 +42,6 @@ public class TrackingService extends Service {
 
     private FusedLocationProviderClient client;
     private LocationCallback locationCallback;
-    private PositionEntity currentPosition;
     private FirebaseDatabase mDatabase;
     private String mTripUid;
     private TripEntity trip;
@@ -61,7 +56,6 @@ public class TrackingService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        currentPosition = new PositionEntity();
         startNotification();
         requestLocationUpdates();
     }
@@ -170,13 +164,13 @@ public class TrackingService extends Service {
             public void onLocationResult(LocationResult locationResult) {
 
                 //Fill Position object
+                PositionEntity currentPosition = new PositionEntity();
                 currentPosition.setLatitude(locationResult.getLastLocation().getLatitude());
                 currentPosition.setLongitude(locationResult.getLastLocation().getLongitude());
                 currentPosition.setTimestamp(locationResult.getLastLocation().getTime());
 
                 //Add the position to db
                 if (currentPosition != null) {
-                    Log.i(TAG, "New location : "+ currentPosition);
                     if(trip != null) {
                         trip.addPosition(currentPosition);
                         updateTrip(trip);
@@ -191,5 +185,4 @@ public class TrackingService extends Service {
             client.requestLocationUpdates(request,locationCallback, null);
         }
     }
-
 }
