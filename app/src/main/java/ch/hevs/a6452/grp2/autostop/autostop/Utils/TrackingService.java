@@ -1,16 +1,12 @@
 package ch.hevs.a6452.grp2.autostop.autostop.Utils;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -198,5 +194,4 @@ public class TrackingService extends Service {
             client.requestLocationUpdates(request,locationCallback, null);
         }
     }
-
 }
