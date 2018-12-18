@@ -67,5 +67,10 @@
     <string name="noGPSgranted">Accès à la location</string>
     <string name="report_plate_number">Numéro de plaque</string>
     <string name="location_instructions">Saisissez votre destination dans le champ ci-dessus. De cette façon, Potostop sait où vous êtes supposé(e) arriver.</string>
+    <string name="eot_button_alert">Toggle alert</string>
+    <string name="noSMSgranted">You need to allow the app to send SMS to alert your emergency contact</string>
+    <string name="toast_need_permissions">GPS and SMS permissions are required to launch the app</string>
+    <string name="toast_emergency_sms_send">Alert succesfully sent</string>
+    <string name="toast_emergency_sms_failure">Alert failure</string>
 
 </resources>

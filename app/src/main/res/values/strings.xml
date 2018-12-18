@@ -127,5 +127,10 @@
     <string name="noCameraGranted">Potostop cannot access the camera</string>
     <string name="report_plate_number">Plate number</string>
     <string name="location_instructions">Type your destination in the above field. This way, Potostop knows where you are supposed to arrive.</string>
-    <string name="title_notif_trip">Trip in process</string>
+    <string name="title_notif_trip" translatable="false">Trip in process</string>
+    <string name="eot_button_alert">Toggle alert</string>
+    <string name="noSMSgranted">You need to allow the app to send SMS to alert your emergency contact</string>
+    <string name="toast_need_permissions">GPS and SMS permissions are required to launch the app</string>
+    <string name="toast_emergency_sms_send">Alert succesfully sent</string>
+    <string name="toast_emergency_sms_failure">Alert failure</string>
 </resources>

@@ -11,12 +11,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -51,6 +53,7 @@ public class TrackingService extends Service {
     private String mTripUid;
     private TripEntity trip;
 
+    private SharedPreferences mPrefs;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -61,16 +64,15 @@ public class TrackingService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         currentPosition = new PositionEntity();
         startNotification();
         requestLocationUpdates();
     }
 
-
-
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
-        mTripUid=(String) intent.getExtras().get("uidTrip");
+        mTripUid = (String) intent.getExtras().get("uidTrip");
         Log.i(TAG, "trip uid " + mTripUid);
         getTrip(mTripUid);
         return flags;
@@ -83,9 +85,6 @@ public class TrackingService extends Service {
         client.removeLocationUpdates(locationCallback);
         stopSelf();
     }
-
-
-
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startNotification(){
@@ -159,7 +158,7 @@ public class TrackingService extends Service {
         LocationRequest request = new LocationRequest();
 
         //Interval between each positions
-        request.setInterval(5000);
+        request.setInterval(20000);
 
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         client = LocationServices.getFusedLocationProviderClient(this);
@@ -174,9 +173,17 @@ public class TrackingService extends Service {
                 currentPosition.setLongitude(locationResult.getLastLocation().getLongitude());
                 currentPosition.setTimestamp(locationResult.getLastLocation().getTime());
 
+                //Store last position locally
+                SharedPreferences.Editor mEditor = mPrefs.edit();
+                mEditor.putFloat(PotostopSession.LOCAL_LAST_POSITION_LATITUDE_TAG,
+                        currentPosition.getLatitude().floatValue());
+                mEditor.putFloat(PotostopSession.LOCAL_LAST_POSITION_LONGITUDE_TAG,
+                        currentPosition.getLongitude().floatValue());
+                mEditor.commit();
+
                 //Add the position to db
                 if (currentPosition != null) {
-                    Log.i(TAG, "New location : "+ currentPosition);
+                    Log.i(TAG, "New location : " + currentPosition);
                     if(trip != null) {
                         trip.addPosition(currentPosition);
                         updateTrip(trip);

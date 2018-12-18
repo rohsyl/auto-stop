@@ -3,7 +3,9 @@ package ch.hevs.a6452.grp2.autostop.autostop.Fragments;
 import android.app.DatePickerDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -30,10 +32,10 @@ import ch.hevs.a6452.grp2.autostop.autostop.Fragments.Picker.DatePickerFragment;
 import ch.hevs.a6452.grp2.autostop.autostop.MainActivity;
 import ch.hevs.a6452.grp2.autostop.autostop.R;
 import ch.hevs.a6452.grp2.autostop.autostop.Utils.FirebaseConverter;
+import ch.hevs.a6452.grp2.autostop.autostop.Utils.PotostopSession;
 import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.ProfileViewModel;
 import android.content.Intent;
 import android.widget.Toast;
-
 
 public class FragmentProfile extends Fragment {
 
@@ -68,12 +70,16 @@ public class FragmentProfile extends Fragment {
 
     private PersonEntity person = null;
 
+    private SharedPreferences mPrefs;
+    
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, view);
+
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext().getApplicationContext());
 
         return view;
     }
@@ -166,7 +172,6 @@ public class FragmentProfile extends Fragment {
                     focusView.requestFocus();
                 }
                 else{
-                    // TODO : save to db
                     person.setSex(spiSex.getSelectedItemPosition());
                     person.setFullname(txtFullname.getText().toString());
                     person.setBirthDate(birthdate);
@@ -174,9 +179,16 @@ public class FragmentProfile extends Fragment {
                     person.setEmergencyEmail(txtEmergencyMail.getText().toString());
                     person.setEmergencyPhone(txtEmergencyPhone.getText().toString());
 
+                    //Locally stores the emergency number
+                    SharedPreferences.Editor mEditor = mPrefs.edit();
+                    mEditor.putString(PotostopSession.LOCAL_EMERGENCY_NUMBER_TAG,
+                            txtEmergencyPhone.getText().toString());
+                    mEditor.commit();
+
                     mViewModel.updatePerson(person);
 
-                    Toast.makeText(FragmentProfile.this.getActivity(), getString(R.string.profile_save_message), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FragmentProfile.this.getActivity(),
+                            getString(R.string.profile_save_message), Toast.LENGTH_SHORT).show();
                     mainActivity();
                 }
             }

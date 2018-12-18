@@ -41,8 +41,6 @@ import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.ProfileViewModel;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private final int PERMISSIONS_REQUEST = 100;
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -66,8 +64,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-
-        checkGps();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -167,7 +163,6 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
-
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -189,31 +184,24 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChanged(@Nullable String s) {
                 lblFullname.setText(s);
-
             }
         });
-    }
-
-    private void checkGps(){
-        //Check if permission is not granted
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST);
-        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
             grantResults) {
-
         //If no permission, display warning message
-        if (requestCode != PERMISSIONS_REQUEST || grantResults.length == 1
-                && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-
+        if (requestCode != PotostopSession.PERMISSIONS_LOCALIZATION_REQUEST ||
+                grantResults.length == 1 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, R.string.noGPSgranted, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(requestCode != PotostopSession.PERMISSIONS_SMS_REQUEST ||
+                grantResults.length == 1 && grantResults[0] != PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this, R.string.noSMSgranted, Toast.LENGTH_SHORT).show();
+            return;
         }
     }
 }

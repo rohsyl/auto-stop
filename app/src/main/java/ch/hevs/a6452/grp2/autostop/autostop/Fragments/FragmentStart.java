@@ -3,6 +3,7 @@ package ch.hevs.a6452.grp2.autostop.autostop.Fragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -56,9 +59,9 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
     public static final String TAG = "FragmentStart";
     public static final int REQUEST_NEW_TRIP = 92;
 
-    private final int PERMISSIONS_REQUEST = 100;
-
     private Button buttonStartTrip;
+
+    private AppCompatActivity context;
 
     //Firebase storage
     private StorageReference mStorageRef;
@@ -68,6 +71,8 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_start, container, false);
+
+        context = (AppCompatActivity) getActivity();
 
         buttonStartTrip = (Button) view.findViewById(R.id.buttonStartTrip);
         buttonStartTrip.setOnClickListener(this);
@@ -99,20 +104,19 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
     {
         if ( view == buttonStartTrip )
         {
-            clickStartTrip();
+            if(!PotostopSession.hasGpsPermission(context) || !PotostopSession.hasSmsPermission(context))
+                askPermissions(context);
+            //Check permissions and ask for it if necessary
+            if(PotostopSession.hasGpsPermission(context) && PotostopSession.hasSmsPermission(context))
+                clickStartTrip();
+
+            else
+                Toast.makeText(this.getActivity(), R.string.toast_need_permissions, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void clickStartTrip()
     {
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST);
-            return;
-        }
-
         Log.i(TAG, "ButtonStartTrip clicked");
         Intent i = new Intent( this.getActivity(), PlateActivity.class );
         startActivityForResult( i, REQUEST_NEW_TRIP );
@@ -136,7 +140,6 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
         }
     }
 
-
     private void insertNewTrip( PlateEntity plate, PositionEntity destination )
     {
         DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
@@ -157,9 +160,9 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
                 });
 
         //Add the picture in FireBase Storage
-        if(plate.getPicture() != null) {
+        if(plate.getPicture() != null)
             storePlatePicture(plate, trip);
-        }
+
         else
             System.out.println("Picture is null");
     }
@@ -205,5 +208,10 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
         Intent i = new Intent( this.getActivity(), WaitingEoTActivity.class );
         i.putExtra("uidTrip", tripUid);
         startActivity( i );
+    }
+
+    public void askPermissions(AppCompatActivity activity){
+        PotostopSession.askGps(activity, getContext());
+        PotostopSession.askSms(activity, getContext());
     }
 }

@@ -40,6 +40,15 @@
             android:id="@+id/progressBar"
             android:layout_width="match_parent"
             android:layout_height="61dp"
-            android:layout_marginBottom="400dp" />
+            android:layout_marginBottom="20dp" />
+
+        <Button
+            android:id="@+id/buttonSendAlert"
+            android:layout_width="200dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="35dp"
+            android:backgroundTint="@color/colorAlert"
+            android:text="@string/eot_button_alert" />
 
 </LinearLayout>
