@@ -72,5 +72,6 @@
     <string name="toast_need_permissions">GPS and SMS permissions are required to launch the app</string>
     <string name="toast_emergency_sms_send">Alert succesfully sent</string>
     <string name="toast_emergency_sms_failure">Alert failure</string>
+    <string name="profile_error_phone_error">Phone invalid</string>
 
 </resources>

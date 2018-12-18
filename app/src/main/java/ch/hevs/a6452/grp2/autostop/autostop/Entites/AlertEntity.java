@@ -21,6 +21,7 @@ public class AlertEntity implements Alert {
     private Long timestamp;
     private String tripUid;
     private PositionEntity lastPosition;
+    private String sendTo;
     private boolean readByAdmin = false;
     private long readDate = 0L;
 
@@ -33,6 +34,7 @@ public class AlertEntity implements Alert {
         this.timestamp = alert.getTimestamp();
         this.tripUid = alert.getTripUid();
         this.lastPosition = alert.getLastPosition();
+        this.sendTo = alert.getSendTo();
         this.readByAdmin = alert.getReadByAdmin();
         this.readDate = alert.getReadDate();
     }
@@ -55,6 +57,11 @@ public class AlertEntity implements Alert {
     @Override
     public PositionEntity getLastPosition() {
         return lastPosition;
+    }
+
+    @Override
+    public String getSendTo() {
+        return sendTo;
     }
 
     @Override
@@ -83,6 +90,10 @@ public class AlertEntity implements Alert {
         this.lastPosition = lastPosition;
     }
 
+    public void setSendTo(String sendTo){
+        this.sendTo = sendTo;
+    }
+
     public void setReadByAdmin(boolean readByAdmin){ this.readByAdmin = readByAdmin; }
 
     public void setReadDate(Long readDate){ this.readDate = readDate; }
@@ -93,6 +104,7 @@ public class AlertEntity implements Alert {
         result.put("timestamp", getTimestamp());
         result.put("trip", getTripUid());
         result.put("lastPosition", getLastPosition());
+        result.put("sendTo", getSendTo());
         result.put("readByAdmin", getReadByAdmin());
         result.put("readDate", getReadDate());
         return result;

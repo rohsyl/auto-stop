@@ -7,6 +7,7 @@ public interface Alert {
     Long getTimestamp();
     String getTripUid();
     PositionEntity getLastPosition();
+    String getSendTo();
     boolean getReadByAdmin();
     Long getReadDate();
 }

@@ -155,6 +155,12 @@ public class FragmentProfile extends Fragment {
                     cancel = true;
                 }
 
+                if(!isPhoneNumberValid(emergencyPhone)){
+                    txtEmergencyPhone.setError(getString(R.string.profile_error_phone_error));
+                    focusView = txtEmergencyPhone;
+                    cancel = true;
+                }
+
                 if(TextUtils.isEmpty((emergencyEmail))){
                     txtEmergencyMail.setError(getString(R.string.profile_error_mail_empty));
                     focusView = txtEmergencyMail;
@@ -195,7 +201,6 @@ public class FragmentProfile extends Fragment {
         });
     }
 
-
     private boolean isEmailValid(String email) {
         //Check the pattern of the email input
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
@@ -204,12 +209,18 @@ public class FragmentProfile extends Fragment {
         return matcher.matches();
     }
 
+    private boolean isPhoneNumberValid(String phone){
+        //Check the pattern of the phone input
+        String expression = "^(0041|041|\\+41|\\+\\+41|41)?(0|\\(0\\))?([1-9]\\d{1})(\\d{3})(\\d{2})(\\d{2})$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.matches();
+    }
+
     private void mainActivity()
     {
         Intent i = new Intent(this.getActivity(), MainActivity.class);
         startActivity(i);
-
-
     }
 
     private void observeViewModel(){

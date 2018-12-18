@@ -96,19 +96,21 @@ public class WaitingEoTActivity extends AppCompatActivity {
         buttonAlert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String emergencyNumber = mPrefs.getString(PotostopSession.LOCAL_EMERGENCY_NUMBER_TAG, "0");
-                AlertEntity alert = createAlert();
+                String emergencyNumber = mPrefs.getString(PotostopSession.LOCAL_EMERGENCY_NUMBER_TAG, "");
+                //If number has been sent
+                AlertEntity alert = createAlert(emergencyNumber);
                 sendSms(forgeSms(), emergencyNumber);
                 saveAlertInFirebase(alert);
             }
         });
     }
 
-    private AlertEntity createAlert() {
+    private AlertEntity createAlert(String sendTo) {
         AlertEntity alert = new AlertEntity();
         alert.setTimestamp(System.currentTimeMillis());
         alert.setTripUid(uidTrip);
         alert.setLastPosition(loadLastPosition());
+        alert.setSendTo(sendTo);
         return alert;
     }
 
@@ -150,9 +152,11 @@ public class WaitingEoTActivity extends AppCompatActivity {
 
     private String forgeSms() {
         PositionEntity lastPosition = loadLastPosition();
+        //Display the position on the map
+        String gMapsUrl = "https://www.google.com/maps/place/" + lastPosition.getLatitude() + "N+" +
+                lastPosition.getLongitude() + "E";
         String message = "URGENCE : Je suis en stop et j'ai besoin d'aide. " +
-                "Dernière position connue : latitude " + lastPosition.getLatitude() +
-                " longitude : " + lastPosition.getLongitude() + ".";
+                "Dernière position connue : " + gMapsUrl;
         return message;
     }
 
