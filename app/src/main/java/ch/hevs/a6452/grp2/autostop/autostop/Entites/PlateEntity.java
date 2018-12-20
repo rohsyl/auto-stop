@@ -23,6 +23,7 @@ public class PlateEntity implements Plate, Serializable {
     private String uid;
 
     private String plateNumber;
+    private boolean flaged;
     private List<ReportEntity> reports = new ArrayList<ReportEntity>();
     private byte[] picture;
 
@@ -31,6 +32,7 @@ public PlateEntity(){}
     public PlateEntity(Plate plate){
         this.uid = plate.getUid();
         this.plateNumber = plate.getPlateNumber();
+        this.flaged=plate.isflaged();
         reports = new ArrayList<ReportEntity>();
         this.reports = plate.getReports();
         this.picture = plate.getPicture();
@@ -45,6 +47,9 @@ public PlateEntity(){}
     public String getPlateNumber() {
         return plateNumber;
     }
+
+    @Override
+    public boolean isflaged() { return flaged; }
 
     @Override
     public List<ReportEntity> getReports() {
@@ -64,6 +69,8 @@ public PlateEntity(){}
     public void setPlateNumber(String plateNumber) {
         this.plateNumber = plateNumber;
     }
+
+    public void setFlaged(boolean flaged) { this.flaged = flaged; }
 
     public void setReports(List<ReportEntity> reports) {
         this.reports = reports;
