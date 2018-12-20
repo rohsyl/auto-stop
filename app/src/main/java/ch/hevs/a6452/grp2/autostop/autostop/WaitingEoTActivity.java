@@ -1,8 +1,10 @@
 package ch.hevs.a6452.grp2.autostop.autostop;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -12,7 +14,11 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -96,16 +102,53 @@ public class WaitingEoTActivity extends AppCompatActivity {
         buttonAlert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String emergencyNumber = mPrefs.getString(PotostopSession.LOCAL_EMERGENCY_NUMBER_TAG, "");
-                //If number has been sent
-                AlertEntity alert = createAlert(emergencyNumber);
-                sendSms(forgeSms(), emergencyNumber);
-                saveAlertInFirebase(alert);
+                createAlertDialog().show();
             }
         });
     }
 
+    private AlertDialog createAlertDialog(){
+        //Generate the dialog to confirm the alert
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.manual_alert_title);
+        builder.setMessage(R.string.manual_alert_message);
+        builder.setPositiveButton(R.string.manual_alert_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                confirmPopup();
+                dialogInterface.cancel();
+            }
+        });
+        builder.setNegativeButton(R.string.manual_alert_no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        final AlertDialog alert = builder.create();
+        alert.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                alert.getButton(AlertDialog.BUTTON_NEGATIVE)
+                        .setTextColor(getResources().getColor(R.color.colorBlack));
+                alert.getButton(AlertDialog.BUTTON_POSITIVE)
+                        .setTextColor(getResources().getColor(R.color.colorAlert));
+            }
+        });
+        return alert;
+    }
+
+    private void confirmPopup() {
+        //Load the emergency number from local storage
+        String emergencyNumber = mPrefs.getString(PotostopSession.LOCAL_EMERGENCY_NUMBER_TAG, "");
+        AlertEntity alert = createAlert(emergencyNumber);
+        //Send the SMS
+        sendSms(forgeSms(), emergencyNumber);
+        saveAlertInFirebase(alert);
+    }
+
     private AlertEntity createAlert(String sendTo) {
+        //Generate the alert
         AlertEntity alert = new AlertEntity();
         alert.setTimestamp(System.currentTimeMillis());
         alert.setTripUid(uidTrip);
@@ -118,6 +161,7 @@ public class WaitingEoTActivity extends AppCompatActivity {
         DatabaseReference refRoot = mDatabase.getReference();
         final String uidAlert = refRoot.push().getKey();
         final DatabaseReference refAlert = mDatabase.getReference(PotostopSession.NODE_ALERT).child(uidAlert);
+        //Store the alert in Firebase
         refAlert.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -132,6 +176,7 @@ public class WaitingEoTActivity extends AppCompatActivity {
     }
 
     private PositionEntity loadLastPosition() {
+        //Get the last position recorded from the local storage
         float posLat = mPrefs.getFloat(PotostopSession.LOCAL_LAST_POSITION_LATITUDE_TAG, 0);
         float posLong = mPrefs.getFloat(PotostopSession.LOCAL_LAST_POSITION_LONGITUDE_TAG, 0);
         PositionEntity lastPosition = new PositionEntity();
@@ -143,6 +188,7 @@ public class WaitingEoTActivity extends AppCompatActivity {
     private void sendSms(String emergencyMessage, String number) {
         smsManager = SmsManager.getDefault();
         try {
+            //Send the SMS
             smsManager.sendTextMessage(number, null, emergencyMessage, null, null);
             Toast.makeText(getApplicationContext(), R.string.toast_emergency_sms_send, Toast.LENGTH_LONG);
         } catch (Exception e) {
@@ -158,11 +204,6 @@ public class WaitingEoTActivity extends AppCompatActivity {
         String message = "URGENCE : Je suis en stop et j'ai besoin d'aide. " +
                 "Dernière position connue : " + gMapsUrl;
         return message;
-    }
-
-    @Override
-    public void onActivityResult( int requestCode, int resultCode, Intent intent){
-
     }
 
     private void startTracking(){

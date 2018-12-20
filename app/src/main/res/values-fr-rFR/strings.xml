@@ -73,5 +73,10 @@
     <string name="toast_emergency_sms_send">Alert succesfully sent</string>
     <string name="toast_emergency_sms_failure">Alert failure</string>
     <string name="profile_error_phone_error">Phone invalid</string>
+    <string name="manual_alert_title">Alert about to be sent</string>
+    <string name="manual_alert_message">Do you want to alert your emergency contact ?</string>
+    <string name="manual_alert_yes">Send alert</string>
+    <string name="manual_alert_no">Cancel</string>
+    <string name="toast_alert_sent">Alert has been sent</string>
 
 </resources>
