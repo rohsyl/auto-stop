@@ -137,7 +137,7 @@ public class TrackingService extends Service {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if(databaseError == null){
-                    System.out.println("TRIP SUCCESSFULLY udapted");
+                    System.out.println("TRIP SUCCESSFULLY updated");
                 }
                 else {
                     System.out.println("Error while updating trip");
@@ -160,7 +160,6 @@ public class TrackingService extends Service {
         client = LocationServices.getFusedLocationProviderClient(this);
 
         locationCallback =  new LocationCallback() {
-
             @Override
             public void onLocationResult(LocationResult locationResult) {
 
@@ -169,17 +168,16 @@ public class TrackingService extends Service {
                 currentPosition.setLongitude(locationResult.getLastLocation().getLongitude());
                 currentPosition.setTimestamp(locationResult.getLastLocation().getTime());
 
-                //Store last position locally
-                SharedPreferences.Editor mEditor = mPrefs.edit();
-                mEditor.putFloat(PotostopSession.LOCAL_LAST_POSITION_LATITUDE_TAG,
-                        currentPosition.getLatitude().floatValue());
-                mEditor.putFloat(PotostopSession.LOCAL_LAST_POSITION_LONGITUDE_TAG,
-                        currentPosition.getLongitude().floatValue());
-                mEditor.commit();
-
                 //Add the position to db
                 if (currentPosition != null) {
                     Log.i(TAG, "New location : " + currentPosition);
+                    //Store last position locally
+                    SharedPreferences.Editor mEditor = mPrefs.edit();
+                    mEditor.putFloat(PotostopSession.LOCAL_LAST_POSITION_LATITUDE_TAG,
+                            currentPosition.getLatitude().floatValue());
+                    mEditor.putFloat(PotostopSession.LOCAL_LAST_POSITION_LONGITUDE_TAG,
+                            currentPosition.getLongitude().floatValue());
+                    mEditor.commit();
                     if(trip != null) {
                         trip.addPosition(currentPosition);
                         updateTrip(trip);
