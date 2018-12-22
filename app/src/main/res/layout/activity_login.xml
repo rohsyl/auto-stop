@@ -78,7 +78,8 @@
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="48dp"></com.google.android.gms.common.SignInButton>
+            android:layout_marginBottom="48dp"
+            android:visibility="invisible"></com.google.android.gms.common.SignInButton>
 
     </LinearLayout>
 

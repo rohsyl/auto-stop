@@ -89,8 +89,8 @@ public class LoginActivity extends AppCompatActivity {
         loginFailed = Toast.makeText(this, R.string.toast_could_not_log_in, Toast.LENGTH_LONG);
         loginFailed.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 0);
 
-        loginFailed = Toast.makeText(this, R.string.toast_could_not_sign_in, Toast.LENGTH_LONG);
-        loginFailed.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 0);
+        registerFailed = Toast.makeText(this, R.string.toast_could_not_sign_in, Toast.LENGTH_LONG);
+        registerFailed.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 0);
 
         userAlreadyExists = Toast.makeText(this, R.string.toast_user_already_exists, Toast.LENGTH_LONG);
         userAlreadyExists.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 0);
@@ -136,8 +136,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
-        //Google auth disabled for the moment : need to check if user already exists to make it work properly
-        signInButton.setEnabled(false);
     }
 
     @Override
@@ -181,7 +179,6 @@ public class LoginActivity extends AppCompatActivity {
             emailInvalid.show();
             return false;
         }
-
         return true;
     }
 
@@ -192,7 +189,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //If something went wrong, focus the mismatching field
         if(!fetchMailAndPassword(email, password)){
-
+            return;
         }
         //If email and password are OK, attempt to log in
         else {
@@ -225,10 +222,9 @@ public class LoginActivity extends AppCompatActivity {
         //Fetch inputs
         String email = emailInput.getText().toString();
         String password = passwordInput.getText().toString();
-
-        //If something went wrong, focus the mismatching field
+        //If something went wrong
         if(!fetchMailAndPassword(email, password)){
-            loginFailed.show();
+            return;
         }
         //Email and password OK : attempt to register new user
         else {
@@ -249,7 +245,6 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             //Email was incorrect : do nothing
                             else {
-                                registerFailed.show();
                                 emailInput.requestFocus();
                             }
                         }

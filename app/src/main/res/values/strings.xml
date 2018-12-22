@@ -99,18 +99,18 @@
     <string name="pleaseRateTrip">How was your trip ?</string>
     <string name="ratingTripActivity">How was your trip ?</string>
 
-    <string name="toast_could_not_sign_in">You must be signed in</string>
+    <string name="toast_could_not_sign_in">Impossible to sign in. Email or password invalid.</string>
     <string name="email_label">Email address</string>
     <string name="password_label">Password</string>
     <string name="label_login_button">Log in</string>
     <string name="label_create_account">New account</string>
     <string name="label_mail_error">Invalid email</string>
     <string name="label_password_error">Invalid password</string>
-    <string name="register_failed">Registering failed.</string>
+    <string name="register_failed">Registering failed. Check the email or the password.</string>
     <string name="potostop_logo">Official logo</string>
-    <string name="toast_invalid_password">Invalid password</string>
-    <string name="toast_invalid_email">Invalid email</string>
-    <string name="toast_could_not_log_in">Login failed</string>
+    <string name="toast_invalid_password">Invalid password.</string>
+    <string name="toast_invalid_email">Invalid email.</string>
+    <string name="toast_could_not_log_in">Login failed. Email or password is incorrect.</string>
 
 
     <string name="report_Your_Trip">Report your Trip</string>

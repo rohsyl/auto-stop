@@ -30,7 +30,7 @@
     <string name="profile_emergency_mail_label">E-mail personne de contact</string>
     <string name="startTrip">Commencer le trajet !</string>
     <string name="about_text">\"Cette application a été créée pour le module 645-2.\\n\\n         Avec Potostop, vous pouvez sécuriser vos trajets en autostop.\\n\\n         &#169; 2018\"\\n\\n         Créé par :</string>
-    <string name="toast_could_not_sign_in">Vous devez être connecté</string>
+    <string name="toast_could_not_sign_in">Enregistrement impossible. E-mail ou mot de passe invalide.</string>
     <string name="plate_registering">Enregistrement de plaque</string>
     <string name="plate_number">Numéro de plaque</string>
     <string name="go">Go</string>
@@ -42,11 +42,11 @@
     <string name="label_login_button">Se connecter</string>
     <string name="label_create_account">S\'inscrire</string>
     <string name="label_mail_error">E-mail invalide</string>
-    <string name="register_failed">L\'inscription a échoué</string>
-    <string name="toast_invalid_password">Mot de passe invalide</string>
+    <string name="register_failed">L\'inscription a échoué. Vérifiez l\'e-mail et le mot de passe.</string>
+    <string name="toast_invalid_password">Mot de passe invalide.</string>
     <string name="toast_invalid_email">E-mail invalide</string>
-    <string name="toast_could_not_log_in">La connexion a échoué</string>
-    <string name="toast_user_already_exists">Cet utilisateur existe déjà</string>
+    <string name="toast_could_not_log_in">Connexion échouée. E-mail ou mot de passe incorrect.</string>
+    <string name="toast_user_already_exists">Cet utilisateur existe déjà.</string>
     <string name="eot_label_arrival_time">Heure d\'arrivée</string>
     <string name="eot_title_activity">Voyage en cours</string>
     <string name="eot_button_end_trip">Fin du voyage</string>
@@ -67,16 +67,16 @@
     <string name="noGPSgranted">Accès à la location</string>
     <string name="report_plate_number">Numéro de plaque</string>
     <string name="location_instructions">Saisissez votre destination dans le champ ci-dessus. De cette façon, Potostop sait où vous êtes supposé(e) arriver.</string>
-    <string name="eot_button_alert">Toggle alert</string>
-    <string name="noSMSgranted">You need to allow the app to send SMS to alert your emergency contact</string>
-    <string name="toast_need_permissions">GPS and SMS permissions are required to launch the app</string>
-    <string name="toast_emergency_sms_send">Alert succesfully sent</string>
-    <string name="toast_emergency_sms_failure">Alert failure</string>
-    <string name="profile_error_phone_error">Phone invalid</string>
-    <string name="manual_alert_title">Alert about to be sent</string>
-    <string name="manual_alert_message">Do you want to alert your emergency contact ?</string>
-    <string name="manual_alert_yes">Send alert</string>
-    <string name="manual_alert_no">Cancel</string>
-    <string name="toast_alert_sent">Alert has been sent</string>
+    <string name="eot_button_alert">Envoyer une alerte</string>
+    <string name="noSMSgranted">Vous devez autoriser l\'application à envoyer un SMS à votre contact d\'urgence.</string>
+    <string name="toast_need_permissions">L\'envoi de SMS et le GPS doivent être autorisés pour commencer un trajet.</string>
+    <string name="toast_emergency_sms_send">Alerte envoyée.</string>
+    <string name="toast_emergency_sms_failure">Erreur lors de l\'envoi de l\'alerte.</string>
+    <string name="profile_error_phone_error">Téléphone invalide.</string>
+    <string name="manual_alert_title">L\'alerte est sur le point d\'être donnée.</string>
+    <string name="manual_alert_message">Voulez-vous envoyer un SMS d\'alerte à votre personne de contact ?</string>
+    <string name="manual_alert_yes">Envoyer l\'alerte</string>
+    <string name="manual_alert_no">Annuler</string>
+    <string name="toast_alert_sent">L\'alerte a été envoyée.</string>
 
 </resources>
