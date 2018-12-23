@@ -44,7 +44,6 @@ public class TrackingService extends Service {
 
     private FusedLocationProviderClient client;
     private LocationCallback locationCallback;
-    private PositionEntity currentPosition;
     private FirebaseDatabase mDatabase;
     private String mTripUid;
     private TripEntity trip;
@@ -61,7 +60,6 @@ public class TrackingService extends Service {
     public void onCreate() {
         super.onCreate();
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        currentPosition = new PositionEntity();
         startNotification();
         requestLocationUpdates();
     }
@@ -164,6 +162,7 @@ public class TrackingService extends Service {
             public void onLocationResult(LocationResult locationResult) {
 
                 //Fill Position object
+                PositionEntity currentPosition = new PositionEntity();
                 currentPosition.setLatitude(locationResult.getLastLocation().getLatitude());
                 currentPosition.setLongitude(locationResult.getLastLocation().getLongitude());
                 currentPosition.setTimestamp(locationResult.getLastLocation().getTime());
