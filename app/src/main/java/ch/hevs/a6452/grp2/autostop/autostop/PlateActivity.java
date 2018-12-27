@@ -2,6 +2,9 @@ package ch.hevs.a6452.grp2.autostop.autostop;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.graphics.Color;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -124,7 +127,8 @@ public class PlateActivity extends AppCompatActivity
         plate.setPicture(PlateEntity.convertPicture(picture));
         plate.setReports(new ArrayList<ReportEntity>());
 
-        requestTripDestination();
+        checkPlateandReport(plate);
+        //requestTripDestination();
     }
 
     private void requestTripDestination()
@@ -250,5 +254,76 @@ public class PlateActivity extends AppCompatActivity
     private void startCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, CAMERA_RESULT);
+    }
+
+    private void checkPlateandReport(final PlateEntity plateToCheck) {
+        if (!plate.getPlateNumber().equals("")) {
+            final DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
+
+            refRoot.child("reports").orderByChild("plateNumber").equalTo(plateToCheck.getPlateNumber()).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // If the plate exists, we reuse the data we found in the database
+                    if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() == 1) {
+                        //cette méthode me retourne une plaque existante avec un reports
+                        showAlertDialogButtonClicked();
+
+                    } else {
+                        requestTripDestination();
+
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
+        //If plate number is empty
+        else {
+            Toast.makeText(this,"Impossible champ vide", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void showAlertDialogButtonClicked() {
+
+        // setup the alert builder
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("AlertDialog");
+        builder.setMessage("This plate has a report do you want to continue the trip or escape??");
+
+        // add the buttons
+        builder.setPositiveButton("Continue",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                requestTripDestination();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                CancelTrip();
+
+            }
+        });
+        // create and show the alert dialog
+        final AlertDialog dialog = builder.create();
+
+        dialog.setOnShowListener( new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface arg0) {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+            }
+        });
+        dialog.show();
+    }
+
+    private void CancelTrip()
+    {
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+        finish();
     }
 }
