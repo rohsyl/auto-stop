@@ -25,8 +25,8 @@ import com.google.android.gms.tasks.Task;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ch.hevs.a6452.grp2.autostop.autostop.Adapter.PlaceAutocompleteAdapter;
-import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
+import ch.hevs.a6452.grp2.autostop.autostop.adapter.PlaceAutocompleteAdapter;
+import ch.hevs.a6452.grp2.autostop.autostop.entities.PositionEntity;
 
 public class LocationActivity extends FragmentActivity {
 

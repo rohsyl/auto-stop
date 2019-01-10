@@ -1,38 +1,23 @@
 package ch.hevs.a6452.grp2.autostop.autostop;
 
-import android.Manifest;
-import android.app.Dialog;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.SignInButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,12 +26,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ch.hevs.a6452.grp2.autostop.autostop.Entites.AlertEntity;
-import ch.hevs.a6452.grp2.autostop.autostop.Entites.PlateEntity;
-import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
-import ch.hevs.a6452.grp2.autostop.autostop.Models.Position;
-import ch.hevs.a6452.grp2.autostop.autostop.Utils.PotostopSession;
-import ch.hevs.a6452.grp2.autostop.autostop.Utils.TrackingService;
+import ch.hevs.a6452.grp2.autostop.autostop.entities.AlertEntity;
+import ch.hevs.a6452.grp2.autostop.autostop.entities.PositionEntity;
+import ch.hevs.a6452.grp2.autostop.autostop.utils.PotostopSession;
+import ch.hevs.a6452.grp2.autostop.autostop.utils.TrackingService;
 
 
 public class WaitingEoTActivity extends AppCompatActivity {

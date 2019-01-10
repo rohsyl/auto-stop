@@ -64,7 +64,7 @@
             android:label="@string/report_Your_Trip" />
 
         <service
-            android:name=".Utils.TrackingService"
+            android:name=".utils.TrackingService"
             android:enabled="true"
             android:exported="true" />
 

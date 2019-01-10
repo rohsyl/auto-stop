@@ -34,9 +34,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ch.hevs.a6452.grp2.autostop.autostop.Entites.PlateEntity;
-import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
-import ch.hevs.a6452.grp2.autostop.autostop.Entites.ReportEntity;
+import ch.hevs.a6452.grp2.autostop.autostop.entities.PlateEntity;
+import ch.hevs.a6452.grp2.autostop.autostop.entities.PositionEntity;
+import ch.hevs.a6452.grp2.autostop.autostop.entities.ReportEntity;
 
 public class PlateActivity extends AppCompatActivity {
     public static final String TAG = "PlateActivity";

@@ -1,18 +1,14 @@
 package ch.hevs.a6452.grp2.autostop.autostop;
 
-import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,13 +24,12 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentAbout;
-import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentProfile;
-import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentSettings;
-import ch.hevs.a6452.grp2.autostop.autostop.Fragments.FragmentStart;
-import ch.hevs.a6452.grp2.autostop.autostop.Utils.PotostopSession;
-import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.MainActivityViewModel;
-import ch.hevs.a6452.grp2.autostop.autostop.ViewModels.ProfileViewModel;
+import ch.hevs.a6452.grp2.autostop.autostop.fragments.FragmentAbout;
+import ch.hevs.a6452.grp2.autostop.autostop.fragments.FragmentProfile;
+import ch.hevs.a6452.grp2.autostop.autostop.fragments.FragmentSettings;
+import ch.hevs.a6452.grp2.autostop.autostop.fragments.FragmentStart;
+import ch.hevs.a6452.grp2.autostop.autostop.utils.PotostopSession;
+import ch.hevs.a6452.grp2.autostop.autostop.viewmodels.MainActivityViewModel;
 
 //TODO : Redirect to the current trip if the status is not "finished"
 
