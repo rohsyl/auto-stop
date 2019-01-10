@@ -9,6 +9,7 @@ import com.google.firebase.database.annotations.NotNull;
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -112,5 +113,16 @@ public PlateEntity(){}
         HashMap<String, Object> result = new HashMap<>();
         result.put("plate_number", getPlateNumber());
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PlateEntity{" +
+                "uid='" + uid + '\'' +
+                ", plateNumber='" + plateNumber + '\'' +
+                ", flaged=" + flaged +
+                ", reports=" + reports +
+                ", picture=" + Arrays.toString(picture) +
+                '}';
     }
 }

@@ -127,7 +127,7 @@ public class PlateActivity extends AppCompatActivity
         plate.setPicture(PlateEntity.convertPicture(picture));
         plate.setReports(new ArrayList<ReportEntity>());
 
-        checkPlateandReport(plate);
+        checkPlateandReport(plateNumber);
         //requestTripDestination();
     }
 
@@ -256,27 +256,33 @@ public class PlateActivity extends AppCompatActivity
         startActivityForResult(intent, CAMERA_RESULT);
     }
 
-    private void checkPlateandReport(final PlateEntity plateToCheck) {
+    private void checkPlateandReport(final String plateToCheck) {
         if (!plate.getPlateNumber().equals("")) {
             final DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
 
-            refRoot.child("reports").orderByChild("plateNumber").equalTo(plateToCheck.getPlateNumber()).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            refRoot.child("plates").orderByChild("plateNumber").equalTo(plateToCheck).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    // If the plate exists, we reuse the data we found in the database
-                    if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() == 1) {
-                        //cette méthode me retourne une plaque existante avec un reports
-                        showAlertDialogButtonClicked();
 
-                    } else {
+                    if (dataSnapshot.exists()) {
+                        Log.i("Testplate", dataSnapshot.getValue().toString());
+                        PlateEntity plateToCheck = dataSnapshot.getChildren().iterator().next().getValue(PlateEntity.class);
+                        Log.i("Testplate", plateToCheck.toString());
+                        if(plateToCheck.isflaged()){
+
+                            showAlertDialogButtonClicked();
+                        }
+                        else
+                            { requestTripDestination();}
+                    }else{
                         requestTripDestination();
-
                     }
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
+
         }
         //If plate number is empty
         else {
