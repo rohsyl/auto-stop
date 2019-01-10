@@ -17,6 +17,9 @@ import com.google.firebase.database.ValueEventListener;
 import ch.hevs.a6452.grp2.autostop.autostop.entities.PersonEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.utils.PotostopSession;
 
+/**
+ * This viewmodel is used in the mainactivity
+ */
 public class MainActivityViewModel extends AndroidViewModel {
 
     private FirebaseDatabase mDatabase;
@@ -32,9 +35,11 @@ public class MainActivityViewModel extends AndroidViewModel {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         if(mUser != null){
             DatabaseReference refPerson = mDatabase.getReference(PotostopSession.NODE_PERSON).child(mUser.getUid());
+            // event listener on the currently signed in person
             refPerson.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    // Get the value
                     PersonEntity person = dataSnapshot.getValue(PersonEntity.class);
                     if(person != null){
                         person.setUid(mUser.getUid());
@@ -53,6 +58,15 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     }
 
+    /**
+     * Return an observer on the currently signed in person fullname
+     * @return
+     */
     public LiveData<String> getFullname(){ return personFullname; }
+
+    /**
+     * Return an observer on the currently signed in person email
+     * @return
+     */
     public LiveData<String> getEmail(){ return personEmail; }
 }
