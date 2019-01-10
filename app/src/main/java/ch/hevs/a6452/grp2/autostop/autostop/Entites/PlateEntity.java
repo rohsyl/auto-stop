@@ -33,7 +33,7 @@ public PlateEntity(){}
     public PlateEntity(Plate plate){
         this.uid = plate.getUid();
         this.plateNumber = plate.getPlateNumber();
-        this.flaged=plate.isflaged();
+        this.flaged = plate.isflaged();
         reports = new ArrayList<ReportEntity>();
         this.reports = plate.getReports();
         this.picture = plate.getPicture();
