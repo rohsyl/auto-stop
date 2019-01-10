@@ -343,10 +343,7 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         if(user.getEmergencyEmail().equals(""))
             return false;
-        if(user.getEmergencyPhone().equals(""))
-            return false;
-
-        return true;
+        return !user.getEmergencyPhone().equals("");
     }
 
     private void startMainActivity(){

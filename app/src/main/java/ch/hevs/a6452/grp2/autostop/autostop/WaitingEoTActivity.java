@@ -14,6 +14,8 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,6 +26,7 @@ import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextClock;
 import android.widget.TextView;
@@ -39,6 +42,7 @@ import com.google.firebase.database.ValueEventListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.AlertEntity;
+import ch.hevs.a6452.grp2.autostop.autostop.Entites.PlateEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Models.Position;
 import ch.hevs.a6452.grp2.autostop.autostop.Utils.PotostopSession;
@@ -71,6 +75,7 @@ public class WaitingEoTActivity extends AppCompatActivity {
     private String uidTrip;
 
     private Intent serviceTracking;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +112,7 @@ public class WaitingEoTActivity extends AppCompatActivity {
         });
     }
 
-    private AlertDialog createAlertDialog(){
+    private AlertDialog createAlertDialog() {
         //Generate the dialog to confirm the alert
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.manual_alert_title);
@@ -206,8 +211,8 @@ public class WaitingEoTActivity extends AppCompatActivity {
         return message;
     }
 
-    private void startTracking(){
-        Log.i(TAG, "Trip uid  : "+ uidTrip);
+    private void startTracking() {
+        Log.i(TAG, "Trip uid  : " + uidTrip);
         serviceTracking = new Intent(this, TrackingService.class);
         serviceTracking.putExtra("uidTrip", uidTrip);
         startService(serviceTracking);

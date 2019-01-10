@@ -74,7 +74,7 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
 
         context = (AppCompatActivity) getActivity();
 
-        buttonStartTrip = (Button) view.findViewById(R.id.buttonStartTrip);
+        buttonStartTrip = view.findViewById(R.id.buttonStartTrip);
         buttonStartTrip.setOnClickListener(this);
 
         //Instantiate Firebase storage
