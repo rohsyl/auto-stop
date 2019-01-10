@@ -20,12 +20,6 @@ import ch.hevs.a6452.grp2.autostop.autostop.Entites.PersonEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.TripEntity;
 
 public class PotostopSession {
-    private static PotostopSession instance = null;
-
-    private PersonEntity currentUser = null;
-    private TripEntity currentTrip = null;
-    private FirebaseUser mUser = null;
-    private FirebaseDatabase mData = null;
 
     public static final int PERMISSIONS_LOCALIZATION_REQUEST = 100;
     public static final int PERMISSIONS_SMS_REQUEST = 200;
@@ -41,33 +35,6 @@ public class PotostopSession {
     public static final String NODE_ALERT = "alerts";
     public static final String STORAGE_PLATES_NODES = "Plates";
     public static final String STORAGE_UNKNOWN_PLATE_NODES = "UnknownPlates";
-
-    private PotostopSession(){
-        init();
-    }
-
-    private void init() {
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-        mData = FirebaseDatabase.getInstance();
-        loadPerson();
-        loadTrip();
-    }
-
-    public static PotostopSession getInstance(){
-        if(instance == null)
-            instance = new PotostopSession();
-        return instance;
-    }
-
-    private void loadPerson(){
-        if(mUser == null)
-            return;
-    }
-
-    private void loadTrip(){
-        if(mUser == null)
-            return;
-    }
 
     public static void askGps(AppCompatActivity activity, Context context){
         //Check if permission is not granted
@@ -105,9 +72,5 @@ public class PotostopSession {
                 permission) == PackageManager.PERMISSION_GRANTED);
     }
 
-    @Override
-    public String toString() {
-        return "CURRENT SESSION ||| Uid : " + currentUser.getUid() + " | ";
-    }
 }
 
