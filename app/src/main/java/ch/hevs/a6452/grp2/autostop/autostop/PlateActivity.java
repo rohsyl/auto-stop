@@ -31,7 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,8 +38,7 @@ import ch.hevs.a6452.grp2.autostop.autostop.Entites.PlateEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.PositionEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.Entites.ReportEntity;
 
-public class PlateActivity extends AppCompatActivity
-{
+public class PlateActivity extends AppCompatActivity {
     public static final String TAG = "PlateActivity";
     public static final String EXTRA_KEY_PLATE = "plate";
     public static final String EXTRA_KEY_DESTINATION = "destination";
@@ -97,13 +95,13 @@ public class PlateActivity extends AppCompatActivity
 
     //Prevent the loss of the image if the user rotate his phone
     @Override
-    public void onSaveInstanceState(Bundle bundle){
+    public void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
         bundle.putByteArray("image", PlateEntity.convertPicture(picture));
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState){
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
         byte[] bytesPicture = (byte[]) savedInstanceState.getSerializable("image");
@@ -111,64 +109,55 @@ public class PlateActivity extends AppCompatActivity
         platePreview.setImageBitmap(picture);
     }
 
-    public void clickGo(View v)
-    {
+    public void clickGo(View v) {
         String plateNumber = etPlateNumber.getText().toString();
 
         // Formatting the plate number and updating the view
         plateNumber = PlateEntity.formatPlateNumber(plateNumber);
-        etPlateNumber.setText( plateNumber );
+        etPlateNumber.setText(plateNumber);
 
         Log.i(TAG, "Go button clicked");
 
         //Create the plate entity with inputs of the user
         plate = new PlateEntity();
-        plate.setPlateNumber( plateNumber );
+        plate.setPlateNumber(plateNumber);
         plate.setPicture(PlateEntity.convertPicture(picture));
         plate.setReports(new ArrayList<ReportEntity>());
 
-        checkPlateandReport(plateNumber);
-        //requestTripDestination();
+        checkPlateFlaged(plateNumber);
+
     }
 
-    private void requestTripDestination()
-    {
+    private void requestTripDestination() {
         Intent i = new Intent(this, LocationActivity.class);
-        startActivityForResult( i, REQUEST_DESTINATION );
+        startActivityForResult(i, REQUEST_DESTINATION);
     }
 
     @Override
-    public void onActivityResult( int requestCode, int resultCode, Intent intent)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if (requestCode == REQUEST_DESTINATION)
-        {
-            if (resultCode == Activity.RESULT_OK)
-            {
-                Object destination = intent.getExtras().getSerializable( LocationActivity.EXTRA_KEY_LOCATION );
+        if (requestCode == REQUEST_DESTINATION) {
+            if (resultCode == Activity.RESULT_OK) {
+                Object destination = intent.getExtras().getSerializable(LocationActivity.EXTRA_KEY_LOCATION);
 
-                if ( destination instanceof PositionEntity )
-                {
-                    checkPlateAndReturnResult( plate, (PositionEntity) destination );
+                if (destination instanceof PositionEntity) {
+                    checkPlateAndReturnResult(plate, (PositionEntity) destination);
                 }
             }
         }
         //If the request code is from the camera
-        if(requestCode == CAMERA_RESULT)
-        {
-            try
-            {
+        if (requestCode == CAMERA_RESULT) {
+            try {
                 //Store the picture and set it as the preview
                 picture = (Bitmap) intent.getExtras().get("data");
                 platePreview.setImageBitmap(picture);
+            } catch (NullPointerException e) {
             }
-            catch (NullPointerException e) { }
         }
     }
 
-    private void checkPlateAndReturnResult(final PlateEntity plateToCheck, final PositionEntity destination )
-    {
-        if(!plate.getPlateNumber().equals("")) {
+    private void checkPlateAndReturnResult(final PlateEntity plateToCheck, final PositionEntity destination) {
+        if (!plate.getPlateNumber().equals("")) {
             final DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
 
             refRoot.child("plates").orderByChild("plateNumber").equalTo(plateToCheck.getPlateNumber()).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -179,7 +168,7 @@ public class PlateActivity extends AppCompatActivity
                         final PlateEntity existingPlate = dataSnapshot.getChildren().iterator().next().getValue(PlateEntity.class);
                         //Set the picture for an existing plate
                         existingPlate.setPicture(PlateEntity.convertPicture(picture));
-                        returnPlateLocationResult(existingPlate, (PositionEntity) destination);
+                        returnPlateLocationResult(existingPlate, destination);
                     } else {
                         //If plate number is empty
                         addPlateAndReturnResult(plateToCheck, destination);
@@ -187,34 +176,32 @@ public class PlateActivity extends AppCompatActivity
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {}
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
             });
         }
         //If plate number is empty
         else
-            returnPlateLocationResult(plate, (PositionEntity) destination);
+            returnPlateLocationResult(plate, destination);
     }
 
-    private void addPlateAndReturnResult( final PlateEntity plateToAdd, final PositionEntity destination )
-    {
+    private void addPlateAndReturnResult(final PlateEntity plateToAdd, final PositionEntity destination) {
         final DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
 
         String newPlateUid = refRoot.child("plates").push().getKey();
-        plateToAdd.setUid( newPlateUid );
+        plateToAdd.setUid(newPlateUid);
 
-        refRoot.child("plates/" + newPlateUid).setValue( plateToAdd ).addOnCompleteListener(new OnCompleteListener<Void>() {
+        refRoot.child("plates/" + newPlateUid).setValue(plateToAdd).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful())
-                {
-                    returnPlateLocationResult( plateToAdd, (PositionEntity) destination  );
+                if (task.isSuccessful()) {
+                    returnPlateLocationResult(plateToAdd, destination);
                 }
             }
         });
     }
 
-    private void returnPlateLocationResult( PlateEntity plate, PositionEntity destination )
-    {
+    private void returnPlateLocationResult(PlateEntity plate, PositionEntity destination) {
         Intent i = new Intent();
         i.putExtra(EXTRA_KEY_PLATE, plate);
         i.putExtra(EXTRA_KEY_DESTINATION, destination);
@@ -222,7 +209,7 @@ public class PlateActivity extends AppCompatActivity
         finish();
     }
 
-    private void checkCamera(){
+    private void checkCamera() {
         //Check if permission is not granted
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -256,38 +243,31 @@ public class PlateActivity extends AppCompatActivity
         startActivityForResult(intent, CAMERA_RESULT);
     }
 
-    private void checkPlateandReport(final String plateToCheck) {
-        if (!plate.getPlateNumber().equals("")) {
-            final DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
+    private void checkPlateFlaged(final String plateToCheck) {
 
-            refRoot.child("plates").orderByChild("plateNumber").equalTo(plateToCheck).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        final DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
+        refRoot.child("plates").orderByChild("plateNumber").equalTo(plateToCheck).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    if (dataSnapshot.exists()) {
-                        Log.i("Testplate", dataSnapshot.getValue().toString());
-                        PlateEntity plateToCheck = dataSnapshot.getChildren().iterator().next().getValue(PlateEntity.class);
-                        Log.i("Testplate", plateToCheck.toString());
-                        if(plateToCheck.isflaged()){
+                if (dataSnapshot.exists()) {
+                    PlateEntity plateToCheck = dataSnapshot.getChildren().iterator().next().getValue(PlateEntity.class);
 
-                            showAlertDialogButtonClicked();
-                        }
-                        else
-                            { requestTripDestination();}
-                    }else{
+                    if (plateToCheck.isflaged()) {
+
+                        showAlertDialogButtonClicked();
+                    } else {
                         requestTripDestination();
                     }
+                } else {
+                    requestTripDestination();
                 }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
+            }
 
-        }
-        //If plate number is empty
-        else {
-            Toast.makeText(this,"Impossible champ vide", Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 
     public void showAlertDialogButtonClicked() {
@@ -298,7 +278,7 @@ public class PlateActivity extends AppCompatActivity
         builder.setMessage("This plate has a report do you want to continue the trip or escape??");
 
         // add the buttons
-        builder.setPositiveButton("Continue",new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -310,13 +290,12 @@ public class PlateActivity extends AppCompatActivity
             public void onClick(DialogInterface dialog, int which) {
 
                 CancelTrip();
-
             }
         });
         // create and show the alert dialog
         final AlertDialog dialog = builder.create();
 
-        dialog.setOnShowListener( new DialogInterface.OnShowListener() {
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface arg0) {
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
@@ -326,8 +305,7 @@ public class PlateActivity extends AppCompatActivity
         dialog.show();
     }
 
-    private void CancelTrip()
-    {
+    private void CancelTrip() {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
