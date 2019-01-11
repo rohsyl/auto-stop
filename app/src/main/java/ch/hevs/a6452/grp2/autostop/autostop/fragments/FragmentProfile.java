@@ -45,6 +45,8 @@ public class FragmentProfile extends Fragment {
         return new FragmentProfile();
     }
 
+    // bind with view
+
     @BindView(R.id.profile_fullname)
     protected EditText txtFullname;
 
@@ -79,6 +81,7 @@ public class FragmentProfile extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, view);
 
+        // get prefs
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext().getApplicationContext());
 
         return view;
@@ -88,12 +91,14 @@ public class FragmentProfile extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        // define view model
         mViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
 
         populateTitleSpinner();
 
         observeViewModel();
 
+        // date picker for birth date
         btnDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,13 +118,14 @@ public class FragmentProfile extends Fragment {
 
                         birthdate = c.getTimeInMillis();
 
-                        lblDate.setText(FirebaseConverter.toNiceDateFormat(c.getTimeInMillis()));
+                        lblDate.setText(PotostopSession.toNiceDateFormat(c.getTimeInMillis()));
                     }
                 });
                 dialogFragmentDatePicker.show(getFragmentManager(), "datepicker");
             }
         });
 
+        // listener for save button
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,10 +138,14 @@ public class FragmentProfile extends Fragment {
 
                 String fullname = txtFullname.getText().toString();
                 String emergencyPhone = txtEmergencyPhone.getText().toString();
+                //Remove spaces
+                emergencyPhone = emergencyPhone.replace("\\s", "");
                 String emergencyEmail = txtEmergencyMail.getText().toString();
 
                 boolean cancel = false;
                 View focusView = null;
+
+                // valid input check
 
                 if(TextUtils.isEmpty(fullname)){
                     txtFullname.setError(getString(R.string.profile_error_fullname_empty));
@@ -177,6 +187,7 @@ public class FragmentProfile extends Fragment {
                 if(cancel){
                     focusView.requestFocus();
                 }
+                // populate profile
                 else{
                     person.setSex(spiSex.getSelectedItemPosition());
                     person.setFullname(txtFullname.getText().toString());
@@ -235,7 +246,7 @@ public class FragmentProfile extends Fragment {
             txtEmergencyPhone.setText(personEntity.getEmergencyPhone());
             if(person.getBirthDate() != 0){
                 birthdate = person.getBirthDate();
-                lblDate.setText(FirebaseConverter.toNiceDateFormat(birthdate));
+                lblDate.setText(PotostopSession.toNiceDateFormat(birthdate));
             }
             }
         });

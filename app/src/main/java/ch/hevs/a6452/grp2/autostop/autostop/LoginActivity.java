@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     Button login;
     @BindView(R.id.create_account_button)
     Button createAccount;
+    //Toast elements
     Toast loginFailed;
     Toast registerFailed;
     Toast passwordInvalid;
@@ -97,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
 
+        //Login button
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //Register button
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -255,7 +258,7 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             //Insert the user in the DB
                             //If user exists, it won't overwrite the existing values
-                            //TODO Julien check if user exists in DB to avoid overwritting
+                            //TODO check if user exists in DB to avoid overwritting
                             insertUserInDb(user);
                             // Sign in success, update UI with the signed-in user's information
                             getUserAndChangeUI(mAuth.getCurrentUser().getUid());
@@ -339,12 +342,14 @@ public class LoginActivity extends AppCompatActivity {
         return !user.getEmergencyPhone().equals("");
     }
 
+    //Go to the trip creation activity
     private void startMainActivity(){
         Intent main = new Intent(this, MainActivity.class);
         startActivity(main);
         finish();
     }
 
+    //Go to the trip creation activity and open the profile fragment
     private void redirectToProfile(){
         Intent profile = new Intent(this, MainActivity.class);
         profile.putExtra("profileSet", false);

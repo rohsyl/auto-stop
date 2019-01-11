@@ -17,19 +17,47 @@ import java.util.Map;
 
 import ch.hevs.a6452.grp2.autostop.autostop.models.Plate;
 
+/**
+ * The Plate entity
+ */
 public class PlateEntity implements Plate, Serializable {
 
+    /**
+     * The unique id
+     */
     @NotNull
     @Exclude
     private String uid;
 
+    /**
+     * The plate number
+     */
     private String plateNumber;
+
+    /**
+     * Is this plate flaged
+     */
     private boolean flaged;
+
+    /**
+     * List of reports of this plate
+     */
     private List<ReportEntity> reports = new ArrayList<ReportEntity>();
+
+    /**
+     * The picture
+     */
     private byte[] picture;
 
-public PlateEntity(){}
+    /**
+     * Constructor
+     */
+    public PlateEntity(){}
 
+    /**
+     * Constructor
+     * @param plate
+     */
     public PlateEntity(Plate plate){
         this.uid = plate.getUid();
         this.plateNumber = plate.getPlateNumber();
@@ -84,6 +112,11 @@ public PlateEntity(){}
         this.picture = picture;
     }
 
+    /**
+     * Convert bitmap to bytearray
+     * @param pictureBmp
+     * @return
+     */
     @Exclude
     public static byte[] convertPicture(Bitmap pictureBmp){
         if(pictureBmp != null) {
@@ -94,6 +127,11 @@ public PlateEntity(){}
         return null;
     }
 
+    /**
+     * Convert bytearray to bitmap
+     * @param pictureByte
+     * @return
+     */
     @Exclude
     public static Bitmap convertPicture(byte[] pictureByte){
         if(pictureByte != null)
@@ -108,6 +146,10 @@ public PlateEntity(){}
         return plateNumber;
     }
 
+    /**
+     * Convert the entity to a String, Object Map
+     * @return
+     */
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -115,6 +157,10 @@ public PlateEntity(){}
         return result;
     }
 
+    /**
+     * To String
+     * @return
+     */
     @Override
     public String toString() {
         return "PlateEntity{" +

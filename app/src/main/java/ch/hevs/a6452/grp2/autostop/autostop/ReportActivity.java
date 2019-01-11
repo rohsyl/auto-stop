@@ -38,6 +38,8 @@ public class ReportActivity extends AppCompatActivity {
     @BindView(R.id.editPlateNumber)
     protected EditText editPlateNumber;
 
+
+    // Method of creating the report activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,17 +53,20 @@ public class ReportActivity extends AppCompatActivity {
         getPlateUid(uidTrip);
     }
 
-    public void clickReport(View v){
+    // Method when you click on the report button
+    public void clickReport(View v) {
         String reportText = textedit.getText().toString();
         String plateNumber = PlateEntity.formatPlateNumber(editPlateNumber.getText().toString());
         long time = System.currentTimeMillis();
 
-        if(reportText.length() == 0){
-            Toast.makeText(ReportActivity.this, R.string.error_report_text,Toast.LENGTH_SHORT).show();
+        /* if the text of the report is empty
+         *  we return a Toast saying : "What happende ?" */
+        if (reportText.length() == 0) {
+            Toast.makeText(ReportActivity.this, R.string.error_report_text, Toast.LENGTH_SHORT).show();
             return;
         }
-        else
-        {
+        /* We create a new ReportEntity and fill all the fileds of the report*/
+        else {
             myReport = new ReportEntity();
             myReport.setMessage(reportText);
             myReport.setTimestamp(time);
@@ -72,13 +77,14 @@ public class ReportActivity extends AppCompatActivity {
         }
     }
 
-    private void endReportTrip()
-    {
+    // Method at the end of the report the user return to the main activity
+    private void endReportTrip() {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
     }
 
+    // This method returns the ID of the plate for the trip ended now
     private void getPlateUid(final String uidTrip) {
         final DatabaseReference refTrip = mDatabase.getReference(PotostopSession.NODE_TRIP).child(uidTrip).child("plateUid");
         refTrip.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -89,11 +95,13 @@ public class ReportActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
         });
     }
 
-    private void getCurrentPlate(final String uidPlate){
+    // This method returns the plate number of the ID plate we get above
+    private void getCurrentPlate(final String uidPlate) {
         try {
             final DatabaseReference refPlate = mDatabase.getReference(PotostopSession.NODE_PLATE).child(uidPlate).child("plateNumber");
             refPlate.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -104,24 +112,26 @@ public class ReportActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {}
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
             });
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("No plate set at the creation of the trip.");
             return;
         }
     }
 
-    private void storeReportInFirebase(final ReportEntity report)
-    {
+    // Method to record the report in firebase
+    private void storeReportInFirebase(final ReportEntity report) {
         DatabaseReference refRoot = mDatabase.getReference();
         final String uidReport = refRoot.push().getKey();
         final DatabaseReference refReport = mDatabase.getReference(PotostopSession.NODE_REPORT).child(uidReport);
-        refReport.addListenerForSingleValueEvent(new ValueEventListener(){
+        refReport.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 refReport.setValue(report);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println(databaseError.getMessage());

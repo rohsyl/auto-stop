@@ -9,20 +9,52 @@ import java.util.Map;
 
 import ch.hevs.a6452.grp2.autostop.autostop.models.Person;
 
+/**
+ * The Person entity
+ */
 public class PersonEntity implements Person {
 
+    /**
+     * The unique id
+     */
     @Exclude
     @NonNull
     private String uid;
 
+    /**
+     * The fullname
+     */
     private String fullname = null;
+
+    /**
+     * The email address
+     */
     private String email = null;
+
+    /**
+     * The sex
+     */
     private int sex = 999;
+
+    /**
+     * The birthdate as a long
+     */
     private Long birthDate = null;
 
+    /**
+     * The email of the emergency contact
+     */
     private String emergencyEmail;
+
+    /**
+     * The phone number of the emergency contact
+     */
     private String emergencyPhone;
 
+    /**
+     * Constructor
+     * @param person
+     */
     public PersonEntity(Person person) {
         this.uid = person.getUid();
         this.fullname = person.getFullname();
@@ -33,6 +65,9 @@ public class PersonEntity implements Person {
         this.emergencyPhone = person.getEmergencyPhone();
     }
 
+    /**
+     * Constructor
+     */
     public PersonEntity() {
         this.fullname = "";
         this.sex = 0;
@@ -105,6 +140,10 @@ public class PersonEntity implements Person {
         this.sex = sex;
     }
 
+    /**
+     * Convert the entity to a String, Object Map
+     * @return
+     */
     @Exclude
     public Map<String, Object> toMap() {
 

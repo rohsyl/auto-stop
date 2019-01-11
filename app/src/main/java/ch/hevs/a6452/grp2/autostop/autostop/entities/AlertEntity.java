@@ -9,23 +9,59 @@ import java.util.Map;
 
 import ch.hevs.a6452.grp2.autostop.autostop.models.Alert;
 
+/**
+ * The alert entity
+ */
 public class AlertEntity implements Alert {
 
+    /**
+     * The unique id
+     */
     @NonNull
     @Exclude
     private String uid;
 
+    /**
+     * When the alert was sent
+     */
     private Long timestamp;
+
+    /**
+     * To which Trip this alert belongs to
+     */
     private String tripUid;
+
+    /**
+     * The position where the alert was sent
+     */
     private PositionEntity lastPosition;
+
+    /**
+     * Alert is send to
+     */
     private String sendTo;
+
+    /**
+     * Is this alert red by an admin
+     */
     private boolean readByAdmin = false;
+
+    /**
+     * When this alert was red by an admin
+     */
     private long readDate = 0L;
 
+    /**
+     * Contructor
+     */
     public AlertEntity(){
 
     }
 
+    /**
+     * Constructor
+     * @param alert
+     */
     public AlertEntity(Alert alert){
         this.uid = alert.getUid();
         this.timestamp = alert.getTimestamp();
@@ -95,6 +131,10 @@ public class AlertEntity implements Alert {
 
     public void setReadDate(Long readDate){ this.readDate = readDate; }
 
+    /**
+     * Convert the entity to a String, Object Map
+     * @return
+     */
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();

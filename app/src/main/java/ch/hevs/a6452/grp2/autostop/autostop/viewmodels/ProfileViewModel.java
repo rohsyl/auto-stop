@@ -46,8 +46,6 @@ public class ProfileViewModel extends AndroidViewModel {
             }
         });
     }
-    // TODO: Implement the ViewModel
-
     public LiveData<PersonEntity> getPerson() {
         return mObservablePerson;
     }

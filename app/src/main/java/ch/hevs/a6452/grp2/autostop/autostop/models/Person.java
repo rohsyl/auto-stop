@@ -8,6 +8,4 @@ public interface Person {
     Long getBirthDate();
     String getEmergencyEmail();
     String getEmergencyPhone();
-
-
 }

@@ -92,13 +92,16 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
     {
         if ( view == buttonStartTrip )
         {
-            if(!PotostopSession.hasGpsPermission(context) || !PotostopSession.hasSmsPermission(context))
-                askPermissions(context);
             //Check permissions and ask for it if necessary
+            if(!PotostopSession.hasGpsPermission(context) || !PotostopSession.hasSmsPermission(context))
+                // if perm not ok -> ask for perm
+                askPermissions(context);
             if(PotostopSession.hasGpsPermission(context) && PotostopSession.hasSmsPermission(context))
+                // if perm ok -> start trip
                 clickStartTrip();
 
             else
+                // if perm not accepted, send toast
                 Toast.makeText(this.getActivity(), R.string.toast_need_permissions, Toast.LENGTH_SHORT).show();
         }
     }
@@ -113,6 +116,7 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult( int requestCode, int resultCode, Intent intent)
     {
+        // prepare the trip
         if (requestCode == REQUEST_NEW_TRIP)
         {
             if (resultCode == Activity.RESULT_OK)
@@ -128,6 +132,7 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
         }
     }
 
+    // populate DB with trips
     private void insertNewTrip( PlateEntity plate, PositionEntity destination )
     {
         DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
@@ -155,6 +160,7 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
             System.out.println("Picture is null");
     }
 
+    // populate DB with plate picture
     private void storePlatePicture(PlateEntity plate, TripEntity trip){
         String basePath = PotostopSession.STORAGE_PLATES_NODES;
         if(!plate.getPlateNumber().equals(""))
@@ -165,6 +171,7 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
                     PotostopSession.STORAGE_UNKNOWN_PLATE_NODES + "/tripId_" + trip.getUid());
     }
 
+    // Firebase storage method
     private void storeInFireBase(byte[] picture, String path) {
         StorageReference platesRef = mStorageRef.child(path);
         platesRef.putBytes(picture).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -175,6 +182,7 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
         });
     }
 
+    // create Trip entity
     private TripEntity createNewTrip( String tripUid, PositionEntity destination, String plateUid )
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -191,6 +199,7 @@ public class FragmentStart extends Fragment implements View.OnClickListener {
         return trip;
     }
 
+    // Start trip
     private void startWaitingEoTActivity(String tripUid)
     {
         Intent i = new Intent( this.getActivity(), WaitingEoTActivity.class );

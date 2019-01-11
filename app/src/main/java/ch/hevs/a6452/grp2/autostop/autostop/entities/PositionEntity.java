@@ -9,21 +9,49 @@ import java.util.Map;
 
 import ch.hevs.a6452.grp2.autostop.autostop.models.Position;
 
+/**
+ * The position entity
+ */
 public class PositionEntity implements Position, Serializable {
 
+    /**
+     * The unique id
+     */
     @NotNull
     @Exclude
     private String uid;
 
+    /**
+     * The latitude
+     */
     private Double latitude;
+
+    /**
+     * The longitude
+     */
     private Double longitude;
+
+    /**
+     * The name of the position
+     */
     private String name;
+
+    /**
+     * The timestamps
+     */
     private Long timestamp;
 
+    /**
+     * Constructor
+     */
     public PositionEntity(){
 
     }
 
+    /**
+     * Constructor
+     * @param position
+     */
     public PositionEntity(Position position){
         this.uid = position.getUid();
         this.latitude = position.getLatitude();
@@ -77,6 +105,10 @@ public class PositionEntity implements Position, Serializable {
         this.name = name;
     }
 
+    /**
+     * Convert the entity to a String, Object Map
+     * @return
+     */
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();

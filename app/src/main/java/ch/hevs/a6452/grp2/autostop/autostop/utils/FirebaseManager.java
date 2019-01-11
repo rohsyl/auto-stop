@@ -25,7 +25,6 @@ public class FirebaseManager {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.out.println("LOAD PERSON CANCELED");
             }
         });
     }

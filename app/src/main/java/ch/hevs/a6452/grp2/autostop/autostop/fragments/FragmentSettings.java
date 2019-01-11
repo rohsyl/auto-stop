@@ -23,6 +23,7 @@ public class FragmentSettings extends Fragment {
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
+        // define settings view
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         return view;

@@ -22,6 +22,7 @@ public class FragmentAbout extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        //define the view
         View view = inflater.inflate(R.layout.fragment_about, container, false);
 
         return view;
