@@ -36,6 +36,8 @@ public class WaitingEoTActivity extends AppCompatActivity {
     //TODO : Allow the user to come back here if the trip is not finished.
     public static final String TAG = "WaitingEoTActivity";
 
+
+    // Bind with view items
     @BindView(R.id.arrivTime)
     protected TextView arrivTime;
 
