@@ -38,43 +38,52 @@ import ch.hevs.a6452.grp2.autostop.autostop.entities.PlateEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.entities.PositionEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.entities.ReportEntity;
 
-public class PlateActivity extends AppCompatActivity {
+// This activity allows the user to input a plate number and/or a plate picture.
+// The user can also ignore both and bypass the activity.
+public class PlateActivity extends AppCompatActivity
+{
     public static final String TAG = "PlateActivity";
     public static final String EXTRA_KEY_PLATE = "plate";
     public static final String EXTRA_KEY_DESTINATION = "destination";
-    public static final int REQUEST_DESTINATION = 90;
-    private static final int PERMISSIONS_REQUEST = 1515;
-    private static final int CAMERA_RESULT = 2323;
+
+    // Request codes
+    public static final int REQUEST_DESTINATION = 90; // Trip destination request code
+    private static final int PERMISSIONS_REQUEST = 1515; // OS permission request code
+    private static final int CAMERA_RESULT = 2323; // Camera picture request code
 
     @BindView(R.id.etPlateNumber)
-    protected EditText etPlateNumber;
+    protected EditText etPlateNumber; // EditText containing the plate number input by the user
     @BindView(R.id.fab_validate_plate)
-    protected FloatingActionButton btnValidatePlate;
+    protected FloatingActionButton btnValidatePlate; // Validation button
     @BindView(R.id.button_remove_picture)
-    protected FloatingActionButton btnRemovePic;
+    protected FloatingActionButton btnRemovePic; // Button used to remove a previously taken picture
     @BindView(R.id.button_picture_plate)
-    protected Button btnTakePicture;
+    protected Button btnTakePicture; // Button to start the camera and take a picture of the plate
     @BindView(R.id.ivPlatePicture)
-    protected ImageView platePreview;
+    protected ImageView platePreview; // An ImageView to show the plate picture to the user
 
     // This variable is used to keep the plate in memory while selecting a location
     private PlateEntity plate;
+
+    // A Bitmap object containing the original plate picture
     private Bitmap picture;
 
     @Override
+    // Creation of the activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plate);
 
+        // ButterKnife binding
         ButterKnife.bind(this);
 
+        // Adding listeners to the buttons
         btnValidatePlate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clickGo(view);
             }
         });
-
         btnTakePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,7 +91,6 @@ public class PlateActivity extends AppCompatActivity {
                 checkCamera();
             }
         });
-
         btnRemovePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,23 +101,31 @@ public class PlateActivity extends AppCompatActivity {
         });
     }
 
-    //Prevent the loss of the image if the user rotate his phone
+    // Function called when the activity instance is saved (notably when the user rotates his/her device)
     @Override
     public void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
+
+        // If the user rotates his/her device, the image is saved so that it can be restored later
         bundle.putByteArray("image", PlateEntity.convertPicture(picture));
     }
 
+
+    // Function called when the activity instance is restored (notably when the device rotation is over)
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
+        // Restoring the image bytes to a Bitmap object and to the ImageView
         byte[] bytesPicture = (byte[]) savedInstanceState.getSerializable("image");
         picture = PlateEntity.convertPicture(bytesPicture);
         platePreview.setImageBitmap(picture);
     }
 
+    // Function called when the user validates his/her input
     public void clickGo(View v) {
+
+        //Getting the pate number
         String plateNumber = etPlateNumber.getText().toString();
 
         // Formatting the plate number and updating the view
@@ -118,37 +134,45 @@ public class PlateActivity extends AppCompatActivity {
 
         Log.i(TAG, "Go button clicked");
 
-        //Create the plate entity with inputs of the user
+        // Creating the plate entity with inputs of the user
         plate = new PlateEntity();
         plate.setPlateNumber(plateNumber);
         plate.setPicture(PlateEntity.convertPicture(picture));
         plate.setReports(new ArrayList<ReportEntity>());
 
+        // We check if the plate was flagged by another user
         checkPlateFlaged(plateNumber);
-
     }
 
+    // Starts the destination activity to get the trip's destination
     private void requestTripDestination() {
         Intent i = new Intent(this, LocationActivity.class);
         startActivityForResult(i, REQUEST_DESTINATION);
     }
 
+    // Function called to handle request results
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
+
+        // Handling the trip destination request
         if (requestCode == REQUEST_DESTINATION) {
+
+            // If the user validated his/her input
             if (resultCode == Activity.RESULT_OK) {
                 Object destination = intent.getExtras().getSerializable(LocationActivity.EXTRA_KEY_LOCATION);
 
+                // Once the destination was input, the cumulated result is returned to the calling activity
                 if (destination instanceof PositionEntity) {
                     checkPlateAndReturnResult(plate, (PositionEntity) destination);
                 }
             }
         }
-        //If the request code is from the camera
+
+        // Handling the plate picture request
         if (requestCode == CAMERA_RESULT) {
             try {
-                //Store the picture and set it as the preview
+                // Store/updates the plate picture and set it as the preview
                 picture = (Bitmap) intent.getExtras().get("data");
                 platePreview.setImageBitmap(picture);
             } catch (NullPointerException e) {
@@ -156,10 +180,17 @@ public class PlateActivity extends AppCompatActivity {
         }
     }
 
+    // Checks if the plate number points to an already existing plate entity
+    // If so, uses the existing entity; calls a method to create it and return the results otherwise.
     private void checkPlateAndReturnResult(final PlateEntity plateToCheck, final PositionEntity destination) {
+
+        // If the plate number is not empty, we return the result
         if (!plate.getPlateNumber().equals("")) {
+
+            // Getting a Firebase reference
             final DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
 
+            // Looking for a plate entity with the right plate number
             refRoot.child("plates").orderByChild("plateNumber").equalTo(plateToCheck.getPlateNumber()).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -170,7 +201,7 @@ public class PlateActivity extends AppCompatActivity {
                         existingPlate.setPicture(PlateEntity.convertPicture(picture));
                         returnPlateLocationResult(existingPlate, destination);
                     } else {
-                        //If plate number is empty
+                        // if  a plate entity was not found, we create it and return the result
                         addPlateAndReturnResult(plateToCheck, destination);
                     }
                 }
@@ -180,27 +211,34 @@ public class PlateActivity extends AppCompatActivity {
                 }
             });
         }
-        //If plate number is empty
+
+        // If plate number is empty, we return the result directly
         else
             returnPlateLocationResult(plate, destination);
     }
 
+    // Generates a UID for the new plate entity and adds it to the database, then returns the result
     private void addPlateAndReturnResult(final PlateEntity plateToAdd, final PositionEntity destination) {
         final DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
 
+        // Getting a new UID
         String newPlateUid = refRoot.child("plates").push().getKey();
         plateToAdd.setUid(newPlateUid);
 
+        // Adding the entity to the database
         refRoot.child("plates/" + newPlateUid).setValue(plateToAdd).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
+
+                    // Returning the result
                     returnPlateLocationResult(plateToAdd, destination);
                 }
             }
         });
     }
 
+    // Returns the plate and destination as a request result to the calling activity
     private void returnPlateLocationResult(PlateEntity plate, PositionEntity destination) {
         Intent i = new Intent();
         i.putExtra(EXTRA_KEY_PLATE, plate);
@@ -209,43 +247,52 @@ public class PlateActivity extends AppCompatActivity {
         finish();
     }
 
+    // Checks if the camera can be used. Opens the camera if granted to do so, asks for the permission otherwise.
     private void checkCamera() {
-        //Check if permission is not granted
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            //If not : ask the user
+        // If the camera permission is not granted, we ask the user to get it
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
+            // Camera permission request
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA},
                     PERMISSIONS_REQUEST);
         }
-        //Start camera activity
+
+        // Otherwise the camera is started
         else
             startCamera();
     }
 
+    // Handling the camera permission request result
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
             grantResults) {
-        //If no permission, display warning message
+
+        // If permission was not granted, a warning message is displayed
         if (requestCode != PERMISSIONS_REQUEST || grantResults.length == 1
                 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, R.string.noCameraGranted, Toast.LENGTH_SHORT).show();
             return;
         }
-        //Start camera activity
+
+        // If the permission was granted, the camera is started
         else
             startCamera();
     }
 
-    //Create intent for the camera
+    // Starts the camera
     private void startCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, CAMERA_RESULT);
     }
 
+    // Checks if the plate was flagged as dangerous by another user
     private void checkPlateFlaged(final String plateToCheck) {
 
+        // Getting a Firebase reference
         final DatabaseReference refRoot = FirebaseDatabase.getInstance().getReference();
+
+        // looks for the plate number in the database
         refRoot.child("plates").orderByChild("plateNumber").equalTo(plateToCheck).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -253,13 +300,20 @@ public class PlateActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     PlateEntity plateToCheck = dataSnapshot.getChildren().iterator().next().getValue(PlateEntity.class);
 
+                    // An alert is shown if the plate was flagged
                     if (plateToCheck.isflaged()) {
 
                         showAlertDialogButtonClicked();
-                    } else {
+                    }
+
+                    // If the plate was not flagged, the result is returned
+                    else {
                         requestTripDestination();
                     }
-                } else {
+                }
+
+                // If the plate was not found, the result is returned
+                else {
                     requestTripDestination();
                 }
             }
@@ -270,6 +324,7 @@ public class PlateActivity extends AppCompatActivity {
         });
     }
 
+    // Shows an alert to tell the user the plate was flagged
     public void showAlertDialogButtonClicked() {
 
         // setup the alert builder
@@ -305,6 +360,7 @@ public class PlateActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    // Finishes this activity and goes back to the main activity
     private void CancelTrip() {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
