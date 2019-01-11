@@ -10,23 +10,59 @@ import java.util.Map;
 
 import ch.hevs.a6452.grp2.autostop.autostop.models.Report;
 
+/**
+ * The Report entity
+ */
 public class ReportEntity implements Report, Serializable {
 
+    /**
+     * The unique id
+     */
     @NonNull
     @Exclude
     private String uid;
 
+    /**
+     * The report message
+     */
     private String message;
+
+    /**
+     * When does the report was sent
+     */
     private Long timestamp;
+
+    /**
+     * To which trip this report is related to
+     */
     private String tripUid;
+
+    /**
+     * The plate number
+     */
     private String plateNumber;
+
+    /**
+     * Does this report has been red by an admin
+     */
     private boolean readByAdmin = false;
+
+    /**
+     * And when
+     */
     private long readDate = 0L;
 
+    /**
+     * Constructor
+     */
     public ReportEntity(){
 
     }
 
+    /**
+     * Constructor
+     * @param report
+     */
     public ReportEntity(Report report){
         this.uid = report.getUid();
         this.message = report.getUid();
@@ -94,6 +130,10 @@ public class ReportEntity implements Report, Serializable {
 
     public void setReadDate(Long readDate){ this.readDate = readDate; }
 
+    /**
+     * Convert the entity to a String, Object Map
+     * @return
+     */
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();

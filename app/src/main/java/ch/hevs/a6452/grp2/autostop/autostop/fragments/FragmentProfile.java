@@ -113,7 +113,7 @@ public class FragmentProfile extends Fragment {
 
                         birthdate = c.getTimeInMillis();
 
-                        lblDate.setText(FirebaseConverter.toNiceDateFormat(c.getTimeInMillis()));
+                        lblDate.setText(PotostopSession.toNiceDateFormat(c.getTimeInMillis()));
                     }
                 });
                 dialogFragmentDatePicker.show(getFragmentManager(), "datepicker");
@@ -132,6 +132,8 @@ public class FragmentProfile extends Fragment {
 
                 String fullname = txtFullname.getText().toString();
                 String emergencyPhone = txtEmergencyPhone.getText().toString();
+                //Remove spaces
+                emergencyPhone = emergencyPhone.replace("\\s", "");
                 String emergencyEmail = txtEmergencyMail.getText().toString();
 
                 boolean cancel = false;
@@ -235,7 +237,7 @@ public class FragmentProfile extends Fragment {
             txtEmergencyPhone.setText(personEntity.getEmergencyPhone());
             if(person.getBirthDate() != 0){
                 birthdate = person.getBirthDate();
-                lblDate.setText(FirebaseConverter.toNiceDateFormat(birthdate));
+                lblDate.setText(PotostopSession.toNiceDateFormat(birthdate));
             }
             }
         });

@@ -7,6 +7,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class PotostopSession {
 
     public static final int PERMISSIONS_LOCALIZATION_REQUEST = 100;
@@ -60,5 +63,9 @@ public class PotostopSession {
                 permission) == PackageManager.PERMISSION_GRANTED);
     }
 
+    public static String toNiceDateFormat(Long time){
+        SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy");
+        return format.format(new Date(time));
+    }
 }
 

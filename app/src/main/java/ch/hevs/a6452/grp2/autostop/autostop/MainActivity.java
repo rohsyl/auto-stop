@@ -150,24 +150,35 @@ public class MainActivity extends AppCompatActivity
             redirectToLogin();
             return true;
         }
+
+        // try to instance the fragment
         try {
             fragment = (Fragment) (fragmentClass != null ? fragmentClass.newInstance() : null);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // and display it
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
+        // finally close the drawer
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    /**
+     * Redirect to the login activity
+     */
     private void redirectToLogin() {
         Intent login = new Intent(this, LoginActivity.class);
         startActivity(login);
         finish();
     }
 
+    /**
+     * Define the observer
+     */
     private void observeViewModel(){
         mViewModel.getEmail().observe(this, new Observer<String>() {
             @Override
@@ -183,6 +194,12 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Handle permission result
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
             grantResults) {
