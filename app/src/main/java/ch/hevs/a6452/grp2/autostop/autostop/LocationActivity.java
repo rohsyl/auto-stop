@@ -33,24 +33,28 @@ public class LocationActivity extends FragmentActivity {
     public static final String TAG = "LocationActivity";
 
     public static final String EXTRA_KEY_LOCATION = "location";
-    private PositionEntity location;
 
-    protected GeoDataClient  mGeoDataClient;
+    //Geo client for location response
+    protected GeoDataClient mGeoDataClient;
+
+    //Adapter for location proposition
     private PlaceAutocompleteAdapter mAdapter;
 
+    //Autocomplete location field
     @BindView(R.id.autocomplete_places)
     protected AutoCompleteTextView mAutocompleteView;
 
     @BindView(R.id.fab_validate_location)
     protected FloatingActionButton btnValidateLocation;
+    private PositionEntity location;
 
+    //Limit bound for location propositon
     private static final LatLngBounds BOUNDS_VALAIS = new LatLngBounds(
             new LatLng(45.803399, 6.768166), new LatLng(46.534593, 8.36554000));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         // Construct a GeoDataClient for the Google Places API for Android.
         mGeoDataClient = Places.getGeoDataClient(this);
@@ -67,21 +71,23 @@ public class LocationActivity extends FragmentActivity {
         mAdapter = new PlaceAutocompleteAdapter(this, mGeoDataClient, BOUNDS_VALAIS, null);
         mAutocompleteView.setAdapter(mAdapter);
 
-
         btnValidateLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "buttonValidate clicked");
 
-                if(mAutocompleteView.getText().toString()==""){
+                //Do nothing if no location written
+                if (mAutocompleteView.getText().toString() == "") {
                     return;
                 }
-
-                returnLocationResult( location );
+                //Give destination to the next activity
+                returnLocationResult(location);
             }
         });
     }
 
+
+    //When you select a location from propositions
     private AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {
         @Override
@@ -94,20 +100,11 @@ public class LocationActivity extends FragmentActivity {
             final AutocompletePrediction item = mAdapter.getItem(position);
 
             // Getting infos about the place
-            Task<PlaceBufferResponse> placeResult = mGeoDataClient.getPlaceById( item.getPlaceId() );
-            placeResult.addOnCompleteListener( mUpdatePlaceDetailsCallback );
-            /*
-            final String placeId = item.getPlaceId();
-            final CharSequence destination = item.getPrimaryText(null);
-
-
-            Log.i(TAG, "Autocomplete item selected: " + destination + " place id : " + placeId);
-
-            Toast.makeText(getApplicationContext(), "Clicked: " + destination +" Id: "+ placeId,
-                    Toast.LENGTH_SHORT).show();
-            */
+            Task<PlaceBufferResponse> placeResult = mGeoDataClient.getPlaceById(item.getPlaceId());
+            placeResult.addOnCompleteListener(mUpdatePlaceDetailsCallback);
         }
     };
+
 
     private OnCompleteListener<PlaceBufferResponse> mUpdatePlaceDetailsCallback
             = new OnCompleteListener<PlaceBufferResponse>() {
@@ -119,15 +116,13 @@ public class LocationActivity extends FragmentActivity {
                 // Get the Place object from the buffer.
                 Place place = places.get(0);
                 location = new PositionEntity();
-                location.setName( place.getName().toString() );
-                location.setLatitude( place.getLatLng().latitude );
-                location.setLongitude( place.getLatLng().longitude );
+                location.setName(place.getName().toString());
+                location.setLatitude(place.getLatLng().latitude);
+                location.setLongitude(place.getLatLng().longitude);
                 // The timestamp is not set since we don't know exactly when the passenger will be there
 
                 places.release();
-            }
-
-            catch (RuntimeRemoteException e) {
+            } catch (RuntimeRemoteException e) {
                 // Request did not complete successfully
                 Log.e(TAG, "Place query did not complete.", e);
                 return;
@@ -135,8 +130,8 @@ public class LocationActivity extends FragmentActivity {
         }
     };
 
-    private void returnLocationResult( PositionEntity location )
-    {
+    //Give destination to the next activity and start it
+    private void returnLocationResult(PositionEntity location) {
         Intent i = new Intent();
         i.putExtra(EXTRA_KEY_LOCATION, location);
         i.putExtra("uidPlate", (getIntent().getStringExtra("uidPlate")));
