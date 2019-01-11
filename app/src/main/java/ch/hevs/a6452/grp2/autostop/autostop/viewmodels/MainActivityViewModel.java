@@ -22,7 +22,10 @@ import ch.hevs.a6452.grp2.autostop.autostop.utils.PotostopSession;
  */
 public class MainActivityViewModel extends AndroidViewModel {
 
+    // Database ref
     private FirebaseDatabase mDatabase;
+
+    // Current user
     private FirebaseUser mUser;
 
     private MutableLiveData<String> personFullname = new MutableLiveData<>();

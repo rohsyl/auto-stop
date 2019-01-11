@@ -16,8 +16,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
-
 import ch.hevs.a6452.grp2.autostop.autostop.entities.TripEntity;
 import ch.hevs.a6452.grp2.autostop.autostop.utils.PotostopSession;
 
