@@ -16,9 +16,9 @@ public class RatingTripActivity extends AppCompatActivity {
 
     public static final String TAG = "RatingTripActivity";
 
+
     @BindView(R.id.button_ok)
     protected Button button_ok;
-
     @BindView(R.id.buttonReport)
     protected Button buttonReport;
 
@@ -30,12 +30,12 @@ public class RatingTripActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        //Action listener for VALIDATE
         button_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Ok clicked");
 
+                //Go back to the main activity
                 Intent intent = new Intent(RatingTripActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -45,6 +45,8 @@ public class RatingTripActivity extends AppCompatActivity {
         buttonReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Sart the report activity
                 Intent i = new Intent(RatingTripActivity.this, ReportActivity.class);
                 i.putExtra("uidTrip", (getIntent().getStringExtra("uidTrip")));
                 startActivity(i);
